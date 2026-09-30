@@ -39,6 +39,29 @@ export default async function ExpertProfilePage({
 
   const location = [expert.city, expert.country].filter(Boolean).join(", ");
 
+  // Uploaded media flags (delegate cast: local Prisma client is stale;
+  // production regenerates it at build time).
+  const mediaKinds: string[] = db
+    ? (
+        await (
+          db as unknown as {
+            expertMedia: {
+              findMany(args: unknown): Promise<{ kind: string }[]>;
+            };
+          }
+        ).expertMedia.findMany({
+          where: { expertId: expert.id },
+          select: { kind: true },
+        })
+      ).map((m) => m.kind)
+    : [];
+  const hasVideo = mediaKinds.includes("VIDEO");
+  const uploadedPhotoUrl = mediaKinds.includes("PHOTO")
+    ? `/api/experts/media/${expert.id}/photo`
+    : null;
+  const legacyPhotoUrl = (expert as unknown as { photoUrl?: string | null }).photoUrl ?? null;
+  const photoSrc = uploadedPhotoUrl ?? legacyPhotoUrl;
+
   return (
     <div className="container">
       <nav className="crumbs" aria-label="Breadcrumb">
@@ -50,7 +73,11 @@ export default async function ExpertProfilePage({
       <div className="profile-grid">
         <div className="profile-main">
           <header className="profile-head">
-            <ExpertAvatar name={expert.name} size={96} />
+            {photoSrc ? (
+              <img src={photoSrc} alt={`${expert.name}`} className="profile-photo" />
+            ) : (
+              <ExpertAvatar name={expert.name} size={96} />
+            )}
             <div>
               <span className="pill">{expert.specialty}</span>
               <h1>{expert.name}</h1>
@@ -64,6 +91,20 @@ export default async function ExpertProfilePage({
               </div>
             </div>
           </header>
+
+          {hasVideo && (
+            <section aria-labelledby="intro-video">
+              <h2 id="intro-video">Intro video</h2>
+              <video
+                className="profile-video"
+                src={`/api/experts/media/${expert.id}/video`}
+                poster={photoSrc ?? undefined}
+                controls
+                playsInline
+                preload="metadata"
+              />
+            </section>
+          )}
 
           <section aria-labelledby="about">
             <h2 id="about">About</h2>

@@ -81,6 +81,22 @@ model ExpertProfile {
 
   @@index([specialty, status])
   @@index([status, ratingAvg])
+  media ExpertMedia[]
+}
+
+// Uploaded expert media: profile photo and intro video, stored as binary in
+// the database so onboarding uploads survive deploys without extra storage
+// services. Served via /api/experts/media/[expertId]/[kind].
+model ExpertMedia {
+  id        String        @id @default(uuid())
+  expertId  String
+  expert    ExpertProfile @relation(fields: [expertId], references: [id], onDelete: Cascade)
+  kind      String // PHOTO | VIDEO
+  mime      String
+  data      Bytes
+  createdAt DateTime      @default(now())
+
+  @@unique([expertId, kind])
 }
 
 model Conversation {

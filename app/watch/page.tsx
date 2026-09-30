@@ -35,13 +35,34 @@ export default async function WatchPage({
       } as never)
     : [];
 
+  // Which experts have uploaded photo/video (media bytes stay out of the
+  // list query; they are streamed per-expert by the media route).
+  const mediaRows: { expertId: string; kind: string }[] = db
+    ? await (
+        db as unknown as {
+          expertMedia: {
+            findMany(args: unknown): Promise<{ expertId: string; kind: string }[]>;
+          };
+        }
+      ).expertMedia.findMany({ select: { expertId: true, kind: true } })
+    : [];
+  const mediaByExpert = new Map<string, Set<string>>();
+  for (const m of mediaRows) {
+    const set = mediaByExpert.get(m.expertId) ?? new Set<string>();
+    set.add(m.kind);
+    mediaByExpert.set(m.expertId, set);
+  }
+
   const experts: WatchExpert[] = (rows as unknown as Record<string, unknown>[]).map((r) => ({
+    id: String(r.id ?? ""),
     slug: String(r.slug ?? ""),
     name: String(r.name ?? "Prolorg expert"),
     headline: String(r.headline ?? ""),
     specialty: String(r.specialty ?? (Array.isArray(r.specialties) ? r.specialties[0] : "") ?? ""),
     skills: Array.isArray(r.skills) ? (r.skills as string[]) : [],
     photoUrl: typeof r.photoUrl === "string" ? r.photoUrl : null,
+    hasPhoto: mediaByExpert.get(String(r.id))?.has("PHOTO") ?? false,
+    hasVideo: mediaByExpert.get(String(r.id))?.has("VIDEO") ?? false,
     hourlyRate: typeof r.hourlyRate === "number" ? r.hourlyRate : null,
     projectRate: typeof r.projectRate === "number" ? r.projectRate : null,
     availability: typeof r.availability === "string" ? r.availability : null,

@@ -6,12 +6,15 @@ import { useCallback, useEffect, useRef, useState } from "react";
 import { avatarHue, formatRate, initials } from "@/lib/experts";
 
 export interface WatchExpert {
+  id: string;
   slug: string;
   name: string;
   headline: string;
   specialty: string;
   skills: string[];
   photoUrl: string | null;
+  hasPhoto: boolean;
+  hasVideo: boolean;
   hourlyRate: number | null;
   projectRate: number | null;
   availability: string | null;
@@ -82,8 +85,29 @@ function ChevronRight() {
   );
 }
 
+function SpeakerIcon({ muted }: { muted: boolean }) {
+  return (
+    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+      <polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5" />
+      {muted ? (
+        <>
+          <line x1="23" y1="9" x2="17" y2="15" />
+          <line x1="17" y1="9" x2="23" y2="15" />
+        </>
+      ) : (
+        <>
+          <path d="M15.54 8.46a5 5 0 0 1 0 7.07" />
+          <path d="M19.07 4.93a10 10 0 0 1 0 14.14" />
+        </>
+      )}
+    </svg>
+  );
+}
+
 // Swipeable expert viewer (TikTok-style feed). Swipe left/right, use the
-// arrows, or the keyboard to move between experts. Heart likes the expert
+// arrows, or the keyboard to move between experts. Experts with an uploaded
+// intro video autoplay it (muted; tap to unmute). Heart likes the expert
 // (saved locally), person icon opens the full profile.
 export default function WatchFeed({
   experts,
@@ -99,11 +123,16 @@ export default function WatchFeed({
     return found >= 0 ? found : 0;
   });
   const [likes, setLikes] = useState<Set<string>>(() => new Set());
+  const [muted, setMuted] = useState(true);
   const touchX = useRef<number | null>(null);
 
   useEffect(() => {
     setLikes(loadLikes());
   }, []);
+
+  useEffect(() => {
+    setMuted(true); // each expert's video starts muted
+  }, [index]);
 
   const go = useCallback(
     (next: number) => {
@@ -163,6 +192,9 @@ export default function WatchFeed({
   const liked = likes.has(expert.slug);
   const location = [expert.city, expert.country].filter(Boolean).join(", ");
   const hue = avatarHue(expert.name);
+  const photoSrc = expert.hasPhoto
+    ? `/api/experts/media/${expert.id}/photo`
+    : expert.photoUrl;
 
   return (
     <div className="watch">
@@ -179,8 +211,22 @@ export default function WatchFeed({
           else if (dx >= SWIPE_MIN) prev();
         }}
       >
-        {expert.photoUrl ? (
-          <img src={expert.photoUrl} alt={`${expert.name} intro`} className="watch-photo" />
+        {expert.hasVideo ? (
+          <video
+            key={expert.id}
+            className="watch-video"
+            src={`/api/experts/media/${expert.id}/video`}
+            poster={photoSrc ?? undefined}
+            autoPlay
+            muted={muted}
+            loop
+            playsInline
+            preload="metadata"
+            onClick={() => setMuted((m) => !m)}
+            aria-label={`${expert.name} intro video${muted ? " (muted, tap to unmute)" : ""}`}
+          />
+        ) : photoSrc ? (
+          <img src={photoSrc} alt={`${expert.name} intro`} className="watch-photo" />
         ) : (
           <div
             className="watch-photo-fallback"
@@ -202,6 +248,19 @@ export default function WatchFeed({
             {index + 1} / {experts.length}
           </span>
         </div>
+
+        {expert.hasVideo && (
+          <button
+            type="button"
+            className="watch-mute"
+            onClick={() => setMuted((m) => !m)}
+            aria-pressed={!muted}
+            aria-label={muted ? "Unmute video" : "Mute video"}
+            title={muted ? "Unmute" : "Mute"}
+          >
+            <SpeakerIcon muted={muted} />
+          </button>
+        )}
 
         <div className="watch-rail">
           <button

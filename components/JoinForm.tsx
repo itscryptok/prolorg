@@ -10,20 +10,35 @@ type Status = { ok: boolean; message: string } | null;
 
 // Expert onboarding: creates a PENDING profile for review. Phase 3 links it
 // to an expert account. No website/email fields — contact lockdown.
+// Experts can attach a profile photo and an intro video (played in /watch).
 export default function JoinForm() {
   const [status, setStatus] = useState<Status>(null);
   const [busy, setBusy] = useState(false);
+  const [photoPreview, setPhotoPreview] = useState<string | null>(null);
+  const [videoName, setVideoName] = useState<string | null>(null);
+
+  function onPhotoChange(e: React.ChangeEvent<HTMLInputElement>) {
+    const file = e.target.files?.[0];
+    setPhotoPreview((prev) => {
+      if (prev) URL.revokeObjectURL(prev);
+      return null;
+    });
+    if (file) setPhotoPreview(URL.createObjectURL(file));
+  }
+
+  function onVideoChange(e: React.ChangeEvent<HTMLInputElement>) {
+    const file = e.target.files?.[0];
+    setVideoName(file ? `${file.name} (${(file.size / 1024 / 1024).toFixed(1)} MB)` : null);
+  }
 
   async function onSubmit(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault();
     setBusy(true);
     setStatus(null);
-    const data = Object.fromEntries(new FormData(e.currentTarget).entries());
     try {
       const res = await fetch("/api/experts", {
         method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(data),
+        body: new FormData(e.currentTarget),
       });
       const json = await res.json();
       if (!res.ok) throw new Error(json.error ?? "Something went wrong.");
@@ -33,6 +48,8 @@ export default function JoinForm() {
           "Profile received — it's now pending review. We'll list it in the directory once approved.",
       });
       (e.target as HTMLFormElement).reset();
+      setPhotoPreview(null);
+      setVideoName(null);
     } catch (err) {
       setStatus({ ok: false, message: err instanceof Error ? err.message : "Something went wrong." });
     } finally {
@@ -115,6 +132,23 @@ export default function JoinForm() {
             <input name="country" maxLength={80} placeholder="United States" autoComplete="country-name" />
           </label>
         </div>
+      </div>
+
+      <div className="join-grid">
+        <label className={input}>
+          <span>Profile photo</span>
+          <input type="file" name="photo" accept="image/*" onChange={onPhotoChange} />
+          <small className="join-hint">Square works best. Max 5 MB.</small>
+          {photoPreview && (
+            <img src={photoPreview} alt="Photo preview" className="join-photo-preview" />
+          )}
+        </label>
+        <label className={input}>
+          <span>Intro video</span>
+          <input type="file" name="video" accept="video/*" onChange={onVideoChange} />
+          <small className="join-hint">Short clip introducing yourself — plays in the Watch feed. Max 25 MB.</small>
+          {videoName && <span className="join-file-name">{videoName}</span>}
+        </label>
       </div>
 
       <div className="notice">

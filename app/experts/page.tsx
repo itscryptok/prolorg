@@ -4,6 +4,7 @@ import { Suspense } from "react";
 import type { Prisma } from "@prisma/client";
 import { getDb } from "@/lib/db";
 import FilterBar from "@/components/FilterBar";
+import FilterToggle from "@/components/FilterToggle";
 import ExpertCard from "@/components/ExpertCard";
 
 export const dynamic = "force-dynamic";
@@ -77,6 +78,13 @@ export default async function ExpertsPage({
           vetted experts by specialty, compare rates and availability, and hire
           through the Prolorg inbox — no bidding, no exposed emails.
         </p>
+      </div>
+
+      <div className="experts-toolbar">
+        <p className="experts-count" role="status">
+          {experts.length} expert{experts.length === 1 ? "" : "s"}
+        </p>
+        <FilterToggle />
       </div>
 
       <Suspense>
