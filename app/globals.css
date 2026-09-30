@@ -75,7 +75,26 @@ a:hover { color: #dcf77e; }
   height: auto;
   pointer-events: none;
   z-index: 0;
-  opacity: 0.85;
+  opacity: 0.6;
+}
+/* Every header text element stays above the decorative bars with a
+   subtle shadow so contrast holds over the graphic in both themes. */
+.site-header .brand,
+.site-header .site-nav a,
+.site-header .header-icon-row,
+.site-header .header-mobile-actions,
+.mobile-panel a {
+  position: relative;
+  z-index: 1;
+  text-shadow: 0 1px 3px rgba(0, 0, 0, 0.45);
+}
+html[data-theme="light"] .brand-bars { opacity: 0.22; }
+html[data-theme="light"] .site-header .brand,
+html[data-theme="light"] .site-header .site-nav a,
+html[data-theme="light"] .site-header .header-icon-row,
+html[data-theme="light"] .site-header .header-mobile-actions,
+html[data-theme="light"] .mobile-panel a {
+  text-shadow: 0 1px 3px rgba(255, 255, 255, 0.85);
 }
 .brand {
   display: inline-flex;
@@ -135,6 +154,8 @@ a:hover { color: #dcf77e; }
   border-top: 1px solid rgba(255, 255, 255, 0.08);
   background: #5f656c;
   padding: 0.75rem 1.25rem 1.25rem;
+  position: relative;
+  z-index: 1;
 }
 .mobile-panel.open { display: block; }
 .mobile-panel a {
