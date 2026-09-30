@@ -3,7 +3,7 @@ import { SITE_URL } from "@/lib/site";
 
 // Public content pages only — auth and stub pages are deliberately excluded.
 export default function sitemap(): MetadataRoute.Sitemap {
-  const pages = ["", "/about", "/how-it-works", "/experts", "/join", "/terms", "/privacy"];
+  const pages = ["", "/about", "/how-it-works", "/experts", "/watch", "/join", "/terms", "/privacy"];
   return pages.map((p) => ({
     url: `${SITE_URL}${p || "/"}`,
     lastModified: new Date(),

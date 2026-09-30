@@ -14,11 +14,19 @@ const NAV_LINKS = [
   { href: "/login", label: "Login" },
 ];
 
-// Sticky site header: logo left, filter toggle icon between the logo and the
-// menu (opens the advanced-search panel on /experts, highlighted while open),
-// nav center/right, theme toggle below the nav on desktop and left of the
-// hamburger on mobile, orange Sign Up pill,
+// Sticky site header: logo left, quick icons (watch feed + filter toggle)
+// between the logo and the menu, nav center/right, theme toggle below the
+// nav on desktop and left of the hamburger on mobile, orange Sign Up pill,
 // hamburger menu with slide-out panel on mobile.
+function PlayIcon() {
+  return (
+    <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+      <polygon points="6 3 20 12 6 21 6 3" />
+    </svg>
+  );
+}
+
 function FilterIcon() {
   return (
     <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor"
@@ -56,6 +64,9 @@ export default function SiteHeader() {
           <span className="brand-name">Prolorg</span>
         </Link>
         <div className="header-icons" aria-label="Search tools">
+          <Link href="/watch" aria-label="Watch expert intros" title="Watch expert intros">
+            <PlayIcon />
+          </Link>
           <button
             type="button"
             onClick={onFilterClick}

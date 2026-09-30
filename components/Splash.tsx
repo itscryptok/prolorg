@@ -4,13 +4,13 @@ import { useEffect, useState } from "react";
 import LogoMark from "./LogoMark";
 import { SITE_TAGLINE } from "@/lib/site";
 
-// Splash screen shown on first load (~1.2s): black background, centered logo,
-// "Prolorg" in orange, tagline, thin animated orange progress bar.
+// Splash screen shown on first load (~2.8s): gray background, centered logo,
+// "Prolorg" in lime, tagline, thin animated lime progress bar.
 export default function Splash() {
   const [hidden, setHidden] = useState(false);
 
   useEffect(() => {
-    const timer = setTimeout(() => setHidden(true), 1200);
+    const timer = setTimeout(() => setHidden(true), 2800);
     return () => clearTimeout(timer);
   }, []);
 

@@ -47,16 +47,17 @@ export function RatingStars({ rating, count }: { rating: number; count: number }
 }
 
 // Expert directory card: avatar, name, specialty, headline, rating, rate,
-// availability, and a link to the full public profile.
+// availability, and a link that opens the expert's video in the watch feed.
 export default function ExpertCard({ expert }: { expert: ExpertCardData }) {
   const location = [expert.city, expert.country].filter(Boolean).join(", ");
+  const watchHref = `/watch?expert=${expert.slug}`;
   return (
     <article className="expert-card">
       <div className="expert-card-top">
         <ExpertAvatar name={expert.name} />
         <div className="expert-card-id">
           <h3>
-            <Link href={`/experts/${expert.slug}`}>{expert.name}</Link>
+            <Link href={watchHref}>{expert.name}</Link>
           </h3>
           <span className="pill">{expert.specialty}</span>
         </div>
@@ -71,8 +72,8 @@ export default function ExpertCard({ expert }: { expert: ExpertCardData }) {
         {location && <span className="loc">{location}</span>}
         {expert.completedJobs > 0 && <span>{expert.completedJobs} jobs done</span>}
       </div>
-      <Link href={`/experts/${expert.slug}`} className="btn btn-outline expert-cta">
-        View profile
+      <Link href={watchHref} className="btn btn-outline expert-cta">
+        Watch intro
       </Link>
     </article>
   );

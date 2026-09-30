@@ -1,0 +1,59 @@
+import type { Metadata } from "next";
+import { getDb } from "@/lib/db";
+import WatchFeed, { type WatchExpert } from "@/components/WatchFeed";
+
+export const dynamic = "force-dynamic";
+
+export const metadata: Metadata = {
+  title: "Watch Expert Intros",
+  description:
+    "Swipe through Prolorg AI expert video intros — forensic analysis, genealogy trace, lab discovery, market advantage, personal AI tutoring, technical project development, and data collection & analysis. Like an expert or open their full profile.",
+  alternates: { canonical: "/watch" },
+};
+
+type Params = { [k: string]: string | string[] | undefined };
+
+// Full-screen swipeable expert viewer. Data is mapped through a local
+// interface so the page is insulated from generated-client drift.
+export default async function WatchPage({
+  searchParams,
+}: {
+  searchParams: Promise<Params>;
+}) {
+  const sp = await searchParams;
+  const raw = sp.expert;
+  const startSlug = Array.isArray(raw) ? raw[0] ?? null : raw ?? null;
+
+  const db = getDb();
+  // Cast: the local generated client is stale (production regenerates it at
+  // build time); the query is valid against the real schema.
+  const rows = db
+    ? await db.expertProfile.findMany({
+        where: { status: "APPROVED" },
+        orderBy: [{ ratingAvg: "desc" }, { reviewCount: "desc" }],
+        take: 60,
+      } as never)
+    : [];
+
+  const experts: WatchExpert[] = (rows as unknown as Record<string, unknown>[]).map((r) => ({
+    slug: String(r.slug ?? ""),
+    name: String(r.name ?? "Prolorg expert"),
+    headline: String(r.headline ?? ""),
+    specialty: String(r.specialty ?? (Array.isArray(r.specialties) ? r.specialties[0] : "") ?? ""),
+    skills: Array.isArray(r.skills) ? (r.skills as string[]) : [],
+    photoUrl: typeof r.photoUrl === "string" ? r.photoUrl : null,
+    hourlyRate: typeof r.hourlyRate === "number" ? r.hourlyRate : null,
+    projectRate: typeof r.projectRate === "number" ? r.projectRate : null,
+    availability: typeof r.availability === "string" ? r.availability : null,
+    city: typeof r.city === "string" ? r.city : null,
+    country: typeof r.country === "string" ? r.country : null,
+    ratingAvg: typeof r.ratingAvg === "number" ? r.ratingAvg : 0,
+    reviewCount: typeof r.reviewCount === "number" ? r.reviewCount : 0,
+  })).filter((e) => e.slug);
+
+  return (
+    <div className="container">
+      <WatchFeed experts={experts} startSlug={startSlug} />
+    </div>
+  );
+}
