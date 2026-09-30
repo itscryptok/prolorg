@@ -198,6 +198,28 @@ a:hover { color: #dcf77e; }
 }
 .header-menu-col .site-nav { margin-left: 0; }
 .theme-toggle-desktop { padding: 0.35rem; }
+/* Watch play button: same bordered style as the theme toggle, sits beside it. */
+.header-icon-row {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+.watch-link {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  background: transparent;
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  border-radius: 10px;
+  color: var(--ink);
+  padding: 0.5rem;
+  line-height: 0;
+  text-decoration: none;
+  transition: color 0.12s ease, border-color 0.12s ease, transform 0.12s ease;
+}
+.watch-link:hover { color: var(--orange); border-color: var(--orange); transform: translateY(-1px); }
+.watch-link:focus-visible { outline: 3px solid var(--orange); outline-offset: 2px; }
+.watch-link-desktop { padding: 0.35rem; }
 /* Mobile: toggle sits left of the hamburger. */
 .header-mobile-actions { display: none; }
 

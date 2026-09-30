@@ -4,6 +4,7 @@ import Link from "next/link";
 import { useState } from "react";
 import LogoMark from "./LogoMark";
 import ThemeToggle from "./ThemeToggle";
+import WatchLink from "./WatchLink";
 
 const NAV_LINKS = [
   { href: "/experts", label: "Find Experts" },
@@ -15,7 +16,8 @@ const NAV_LINKS = [
 // Sticky site header: logo left, nav center/right, theme toggle below the
 // nav on desktop and left of the hamburger on mobile, orange Sign Up pill,
 // hamburger menu with slide-out panel on mobile.
-// (Watch + filter quick icons live on the /experts toolbar, above the cards.)
+// (Watch play button sits beside the theme toggle; the filter toggle lives
+// on the /experts toolbar, above the cards.)
 export default function SiteHeader() {
   const [open, setOpen] = useState(false);
 
@@ -37,9 +39,13 @@ export default function SiteHeader() {
               Sign Up
             </Link>
           </nav>
-          <ThemeToggle className="theme-toggle-desktop" />
+          <div className="header-icon-row">
+            <WatchLink className="watch-link-desktop" />
+            <ThemeToggle className="theme-toggle-desktop" />
+          </div>
         </div>
         <div className="header-mobile-actions">
+          <WatchLink />
           <ThemeToggle className="theme-toggle-mobile" />
           <button
             type="button"

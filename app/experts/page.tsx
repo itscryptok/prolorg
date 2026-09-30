@@ -85,17 +85,6 @@ export default async function ExpertsPage({
           {experts.length} expert{experts.length === 1 ? "" : "s"}
         </p>
         <div className="experts-tools">
-          <Link
-            href="/watch"
-            className="filter-toggle"
-            aria-label="Watch expert intros"
-            title="Watch expert intros"
-          >
-            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor"
-              strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
-              <polygon points="6 3 20 12 6 21 6 3" />
-            </svg>
-          </Link>
           <FilterToggle />
         </div>
       </div>
