@@ -56,3 +56,43 @@
   expert, expert per client, or either side).
 - Payment provider for the unlock fee (likely Stripe — needs Yemi's own
   account setup via browser).
+
+## Phase 2 — expert discovery (2026-09-30)
+
+### Database: separate `prolorg` database on the existing Postgres server
+- At Yemi's explicit approval (2026-09-29), Prolorg uses its own **separate
+  database** (`prolorg`) on the existing paid Render Postgres server that also
+  hosts REMU (`emus-db`). Same $6/mo server, $0 extra cost; REMU's database is
+  untouched.
+- Practical notes: Render's Postgres role owns the server, so
+  `CREATE DATABASE prolorg;` works from the external connection URL with the
+  dbname swapped. The `prolorg` Render web service gets `DATABASE_URL` set to
+  that URL (set manually in the dashboard — never committed).
+- Sandbox limitation: `npx prisma generate` cannot download engines here (the
+  sandbox proxy blocks binaries.prisma.sh), so the Prisma client is generated
+  at Render build time. DB access from this environment uses raw SQL via
+  psycopg (`prisma/seed.py`), not the Prisma runtime.
+
+### What shipped
+- Header: play (→ /experts) + filter funnel (→ /experts#filters) icons between
+  the logo and the menu, mobile + desktop, both themes (Yemi's screenshot request).
+- `/experts`: server-rendered directory with keyword/specialty/max-rate/
+  availability filters + 5 sort orders; shareable URLs; empty states.
+- `/experts/[slug]`: public profile pages with SEO metadata, skills, rates,
+  availability, reviews placeholder (fills in Phase 4).
+- `/join`: expert onboarding form → POST /api/experts → creates PENDING
+  profile (slug deduped). No website/email fields — contact lockdown by design.
+- `prisma/migrations/0001_phase2_init/migration.sql`: hand-written initial
+  migration (all tables; inbox/hire tables forward-looking for Phase 3+).
+  Applied via `prisma migrate deploy` in the Render build when DATABASE_URL exists.
+- Seed: `prisma/seed.py` — 8 sample experts (one per specialty),
+  `isSample=true`, `status='APPROVED'`. Remove once real experts join.
+- Homepage "Join as an expert" CTA now points to `/join`.
+- `lib/db.ts`: null-safe lazy Prisma client — pages render empty states when
+  DATABASE_URL is unset instead of crashing the build.
+
+### Still open after Phase 2
+- Live stats band still shows seeded 0s (`lib/site.ts` STATS) — wire to
+  `COUNT(*) FROM "ExpertProfile" WHERE status='APPROVED'` next.
+- `/login`, `/signup` remain stubs (Phase 3: auth + inbox + hiring).
+- Profile "Message expert" CTA points to `/signup` until accounts exist.

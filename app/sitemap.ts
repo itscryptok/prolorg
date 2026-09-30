@@ -3,11 +3,11 @@ import { SITE_URL } from "@/lib/site";
 
 // Public content pages only — auth and stub pages are deliberately excluded.
 export default function sitemap(): MetadataRoute.Sitemap {
-  const pages = ["", "/about", "/how-it-works", "/terms", "/privacy"];
+  const pages = ["", "/about", "/how-it-works", "/experts", "/join", "/terms", "/privacy"];
   return pages.map((p) => ({
     url: `${SITE_URL}${p || "/"}`,
     lastModified: new Date(),
-    changeFrequency: p === "" ? "weekly" : "monthly",
-    priority: p === "" ? 1 : 0.7,
+    changeFrequency: p === "" ? "weekly" : p === "/experts" ? "daily" : "monthly",
+    priority: p === "" ? 1 : p === "/experts" ? 0.9 : 0.7,
   }));
 }
