@@ -224,7 +224,7 @@ export default function HomePage() {
 
       {/* 7. Final CTA band */}
       <section className="cta-band">
-        <h2>You are the big deal. Let them find you.</h2>
+        <h2>You are the big deal. Let clients find you.</h2>
         <Link href="/signup" className="btn btn-orange">Join Prolorg</Link>
       </section>
     </>
