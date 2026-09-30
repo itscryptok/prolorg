@@ -11,7 +11,7 @@ services:
     name: prolorg
     runtime: node
     plan: free # sleepy: sleeps after 15 min idle; upgrade to `starter` ($7/mo) to keep awake
-    buildCommand: npm install && npx prisma generate && if [ -n "$DATABASE_URL" ]; then npx prisma migrate deploy; fi && npm run build # npm install (not ci): no lockfile is generated in this sandbox; Render's network reaches the registry
+    buildCommand: npm install && npx prisma generate && if [ -n "$DATABASE_URL" ]; then dbname=$(printf '%s' "$DATABASE_URL" | sed -E 's#^[a-zA-Z][a-zA-Z0-9+.-]*://[^/]*/([^/?]+).*#\1#'); if [ "$dbname" = "prolorg" ]; then npx prisma migrate deploy; else echo "skipping migrate: DATABASE_URL dbname is '$dbname', not 'prolorg'"; fi; fi && npm run build # npm install (not ci): no lockfile is generated in this sandbox; Render's network reaches the registry
     startCommand: npm start
     healthCheckPath: /
     envVars:
