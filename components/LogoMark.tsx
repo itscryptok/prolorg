@@ -31,7 +31,7 @@ export default function LogoMark({ size = 36, title = "Prolorg logo" }: LogoMark
         fontFamily="Segoe UI, system-ui, sans-serif"
         fontWeight="900"
         fontSize="30"
-        fill="#ffa500"
+        fill="#c8f04a"
       >
         P
       </text>

@@ -1,16 +1,17 @@
-/* Prolorg design system — near-black + orange + deep blue, matching the brand. */
+/* Prolorg design system — NIGHT (experimental 2026-09-30): gray + white + lime.
+   Revert commit to restore the previous near-black + orange night theme. */
 
 :root {
-  --bg: #0a0a0a;
-  --bg-soft: #111111;
-  --bg-card: #161616;
+  --bg: #6f747a;
+  --bg-soft: #656b72;
+  --bg-card: #7c828a;
   --ink: #ffffff;
-  --ink-dim: #a1a1a1;
-  --orange: #ffa500;
-  --orange-deep: #e69500;
+  --ink-dim: #d9d9d9;
+  --orange: #c8f04a; /* accent hue is lime in night mode; name kept for compatibility */
+  --orange-deep: #a9d63a;
   --blue: #1e3a8a;
   --blue-bright: #3b82f6;
-  --line: rgba(255, 165, 0, 0.18);
+  --line: rgba(200, 240, 74, 0.28);
   --ok: #4ade80;
   --warn: #fbbf24;
   --bad: #f87171;
@@ -32,7 +33,7 @@ body {
 }
 
 a { color: var(--orange); }
-a:hover { color: #ffc14d; }
+a:hover { color: #dcf77e; }
 
 :focus-visible {
   outline: 3px solid var(--orange);
@@ -52,7 +53,7 @@ a:hover { color: #ffc14d; }
   position: sticky;
   top: 0;
   z-index: 50;
-  background: rgba(10, 10, 10, 0.92);
+  background: rgba(111, 116, 122, 0.94);
   backdrop-filter: blur(8px);
   border-bottom: 1px solid rgba(255, 255, 255, 0.08);
 }
@@ -100,9 +101,9 @@ a:hover { color: #ffc14d; }
 }
 .btn:hover { transform: translateY(-1px); }
 .btn-orange { background: var(--orange); color: #0a0a0a; }
-.btn-orange:hover { background: #ffc14d; color: #0a0a0a; box-shadow: 0 6px 24px rgba(255, 165, 0, 0.35); }
+.btn-orange:hover { background: #dcf77e; color: #0a0a0a; box-shadow: 0 6px 24px rgba(200, 240, 74, 0.35); }
 .btn-outline { border-color: var(--orange); color: var(--orange); background: transparent; }
-.btn-outline:hover { background: rgba(255, 165, 0, 0.12); color: var(--orange); }
+.btn-outline:hover { background: rgba(200, 240, 74, 0.14); color: var(--orange); }
 
 .menu-button {
   display: none;
@@ -118,7 +119,7 @@ a:hover { color: #ffc14d; }
 .mobile-panel {
   display: none;
   border-top: 1px solid rgba(255, 255, 255, 0.08);
-  background: #0d0d0d;
+  background: #5f656c;
   padding: 0.75rem 1.25rem 1.25rem;
 }
 .mobile-panel.open { display: block; }
@@ -377,7 +378,7 @@ html[data-theme="light"] .splash-bar { background: rgba(0, 0, 0, 0.08); }
 
 /* ---------- CTA band ---------- */
 .cta-band {
-  background: linear-gradient(135deg, #1a1206 0%, #0a0a0a 60%);
+  background: linear-gradient(135deg, #82888f 0%, #6f747a 60%);
   border-top: 1px solid var(--line);
   border-bottom: 1px solid var(--line);
   text-align: center;
@@ -444,7 +445,7 @@ html[data-theme="light"] .splash-bar { background: rgba(0, 0, 0, 0.08); }
   position: fixed;
   inset: 0;
   z-index: 100;
-  background: #000;
+  background: #6f747a;
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -508,7 +509,7 @@ html[data-theme="light"] .splash-bar { background: rgba(0, 0, 0, 0.08); }
 .join-input textarea:focus {
   outline: none;
   border-color: var(--orange);
-  box-shadow: 0 0 0 3px rgba(255, 165, 0, 0.18);
+  box-shadow: 0 0 0 3px rgba(200, 240, 74, 0.28);
 }
 html[data-theme="light"] .filter-field input:focus,
 html[data-theme="light"] .filter-field select:focus,
