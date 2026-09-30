@@ -65,13 +65,16 @@
   hosts REMU (`emus-db`). Same $6/mo server, $0 extra cost; REMU's database is
   untouched.
 - Practical notes: Render's Postgres role owns the server, so
-  `CREATE DATABASE prolorg;` works from the external connection URL with the
-  dbname swapped. The `prolorg` Render web service gets `DATABASE_URL` set to
-  that URL (set manually in the dashboard — never committed).
+  `CREATE DATABASE prolorg;` works from the external connection URL —
+  **verified 2026-09-30 ~02:17 UTC** via the token-protected `/api/init-db`
+  endpoint (`{"ok":true,"created":true}`); a genuinely separate `prolorg`
+  database now exists alongside `emus_db` on the same server. The `prolorg`
+  Render web service gets `DATABASE_URL` set to that URL (set manually in
+  the dashboard — never committed).
 - Sandbox limitation: `npx prisma generate` cannot download engines here (the
   sandbox proxy blocks binaries.prisma.sh), so the Prisma client is generated
   at Render build time. DB access from this environment uses raw SQL via
-  the token-protected `/api/init-seed` endpoint (removed after use), not the Prisma runtime.
+  the token-protected `/api/init-seed` endpoint (used once on 2026-09-30, removed afterward), not the Prisma runtime.
 
 ### What shipped
 - Header: play (→ /experts) + filter funnel (→ /experts#filters) icons between
