@@ -71,7 +71,7 @@
 - Sandbox limitation: `npx prisma generate` cannot download engines here (the
   sandbox proxy blocks binaries.prisma.sh), so the Prisma client is generated
   at Render build time. DB access from this environment uses raw SQL via
-  psycopg (`prisma/seed.py`), not the Prisma runtime.
+  the token-protected `/api/init-seed` endpoint (removed after use), not the Prisma runtime.
 
 ### What shipped
 - Header: play (→ /experts) + filter funnel (→ /experts#filters) icons between
@@ -85,7 +85,7 @@
 - `prisma/migrations/0001_phase2_init/migration.sql`: hand-written initial
   migration (all tables; inbox/hire tables forward-looking for Phase 3+).
   Applied via `prisma migrate deploy` in the Render build when DATABASE_URL exists.
-- Seed: `prisma/seed.py` — 8 sample experts (one per specialty),
+- Seed: `POST /api/init-seed` (token-protected, removed after use) — 8 sample experts (one per specialty),
   `isSample=true`, `status='APPROVED'`. Remove once real experts join.
 - Homepage "Join as an expert" CTA now points to `/join`.
 - `lib/db.ts`: null-safe lazy Prisma client — pages render empty states when
