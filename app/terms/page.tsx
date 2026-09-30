@@ -3,7 +3,7 @@ import type { Metadata } from "next";
 export const metadata: Metadata = {
   title: "Terms of Use",
   description:
-    "Prolorg Terms of Use — the rules for using the AI pro marketplace, including the fair-play rule on direct contact and account suspension for evading the contact unlock fee.",
+    "AiProlice Terms of Use — the rules for using the AI pro marketplace, including the fair-play rule on direct contact and account suspension for evading the contact unlock fee.",
   alternates: { canonical: "/terms" },
 };
 
@@ -15,19 +15,19 @@ export default function TermsPage() {
 
       <h2>1. Acceptance of terms</h2>
       <p>
-        By accessing or using Prolorg, you agree to these Terms of Use and to
+        By accessing or using AiProlice, you agree to these Terms of Use and to
         our Privacy Policy. If you do not agree, do not use the platform.
       </p>
 
       <h2>2. Eligibility</h2>
       <p>
-        You must be at least 18 years old to register an account on Prolorg.
+        You must be at least 18 years old to register an account on AiProlice.
       </p>
 
       <h2>3. Content ownership</h2>
       <p>
         You retain ownership of the content you post — your profile, portfolio,
-        and messages. By posting it on Prolorg, you grant Cryp Tok Solutions a
+        and messages. By posting it on AiProlice, you grant Cryp Tok Solutions a
         non-exclusive, royalty-free, worldwide license to display and
         distribute that content as part of operating the platform.
       </p>
@@ -53,7 +53,7 @@ export default function TermsPage() {
         paid for that pair. Attempting to share or solicit contact details to
         dodge the fee — including spelled-out numbers, &lsquo;at gmail dot
         com&rsquo;-style tricks, or other workarounds — is a violation of
-        these terms and will result in account suspension or blocking. Prolorg
+        these terms and will result in account suspension or blocking. AiProlice
         runs automated checks on platform messages to detect such attempts.
       </p>
 
@@ -66,14 +66,14 @@ export default function TermsPage() {
 
       <h2>7. Intellectual property</h2>
       <p>
-        The Prolorg brand, logo, design, and platform software are the
+        The AiProlice brand, logo, design, and platform software are the
         intellectual property of Cryp Tok Solutions. You may not copy,
         reproduce, or reuse them without permission.
       </p>
 
       <h2>8. As-is disclaimer</h2>
       <p>
-        Prolorg is provided &ldquo;as is&rdquo; without warranties of any
+        AiProlice is provided &ldquo;as is&rdquo; without warranties of any
         kind. We do not guarantee the quality, availability, or outcome of
         work arranged between clients and AI pros.
       </p>
@@ -88,7 +88,7 @@ export default function TermsPage() {
 
       <h2>10. Changes and contact</h2>
       <p>
-        We may update these terms; continued use of Prolorg after changes
+        We may update these terms; continued use of AiProlice after changes
         means you accept them. Questions: contact us at hello@prolorg.app.
       </p>
     </article>

@@ -4,7 +4,7 @@ import Link from "next/link";
 export const metadata: Metadata = {
   title: "How It Works",
   description:
-    "How Prolorg works: clients browse AI pro profiles, open the platform inbox, and hire through Prolorg. AI pros create profiles, get discovered, and get hired. Direct contact unlocks with a one-time fee per AI pro.",
+    "How AiProlice works: clients browse AI pro profiles, open the platform inbox, and hire through AiProlice. AI pros create profiles, get discovered, and get hired. Direct contact unlocks with a one-time fee per AI pro.",
   alternates: { canonical: "/how-it-works" },
 };
 
@@ -15,7 +15,7 @@ const CLIENT_STEPS = [
   },
   {
     title: "Open the inbox",
-    text: "Message the AI pro directly inside Prolorg. All communication stays on the platform — no exposed emails, no outside links.",
+    text: "Message the AI pro directly inside AiProlice. All communication stays on the platform — no exposed emails, no outside links.",
   },
   {
     title: "Hire through the platform",
@@ -45,7 +45,7 @@ export default function HowItWorksPage() {
         <h1 className="section-title">How It Works</h1>
         <p className="section-lead">
           Clients find AI pros. AI pros get hired. Everything happens inside
-          Prolorg.
+          AiProlice.
         </p>
         <div className="tracks">
           <div className="track">

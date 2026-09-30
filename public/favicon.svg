@@ -1,5 +1,6 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64">
-  <path d="M32 4 L54 13 V30 C54 44 46 53.5 33.5 58.5 Q32 59.8 30.5 58.5 C18 53.5 10 44 10 30 V13 Z" fill="#1e40af"/>
-  <path d="M32 4 L54 13 V30 C54 44 46 53.5 33.5 58.5 Q32 59.8 30.5 58.5 C18 53.5 10 44 10 30 V13 Z" fill="none" stroke="#f5a623" stroke-width="2.5"/>
-  <text x="32" y="43" text-anchor="middle" font-family="Segoe UI, system-ui, sans-serif" font-weight="900" font-size="30" fill="#f5a623">P</text>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="-4 -4 72 72">
+  <path d="M32 8 C36 11 41 12 46 12 L58 14 C57 20 56 26 56 32 C56 43 47 52 32 59.5 C17 52 8 43 8 32 C8 26 7 20 6 14 L18 12 C23 12 28 11 32 8 Z" fill="#1e40af"/>
+  <path d="M32 8 C36 11 41 12 46 12 L58 14 C57 20 56 26 56 32 C56 43 47 52 32 59.5 C17 52 8 43 8 32 C8 26 7 20 6 14 L18 12 C23 12 28 11 32 8 Z" fill="none" stroke="#f5a623" stroke-width="2.5"/>
+  <path d="M32.00,13.50 L33.53,17.90 L38.18,17.99 L34.47,20.80 L35.82,25.26 L32.00,22.60 L28.18,25.26 L29.53,20.80 L25.82,17.99 L30.47,17.90 Z" fill="#f5a623"/>
+  <text x="32" y="45" text-anchor="middle" font-family="Segoe UI, system-ui, sans-serif" font-weight="900" font-size="15" fill="#f5a623">Pro</text>
 </svg>

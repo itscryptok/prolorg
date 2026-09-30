@@ -152,7 +152,7 @@ export default function JoinForm() {
       </div>
 
       <div className="notice">
-        <strong>No websites, no emails.</strong> Prolorg profiles never show
+        <strong>No websites, no emails.</strong> AiProlice profiles never show
         website links or email addresses — clients reach you through the
         platform inbox.
       </div>

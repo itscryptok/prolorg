@@ -54,9 +54,9 @@ export default function SiteHeader() {
         className="brand-bars"
       />
       <div className="container site-header-inner">
-        <Link href="/" className="brand" aria-label="Prolorg home">
+        <Link href="/" className="brand" aria-label="AiProlice home">
           <LogoMark size={34} />
-          <span className="brand-name">Prolorg</span>
+          <span className="brand-name">AiProlice</span>
         </Link>
         <div className="header-menu-col">
           <nav className="site-nav" aria-label="Primary">

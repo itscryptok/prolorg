@@ -2,21 +2,21 @@ import type { Metadata } from "next";
 import Link from "next/link";
 
 export const metadata: Metadata = {
-  title: "About Prolorg",
+  title: "About AiProlice",
   description:
-    "About Prolorg — the AI pro marketplace by Cryp Tok Solutions. Why hiring a vetted AI pro beats burning time and tokens, and how clients hire AI pros through a private platform inbox.",
+    "About AiProlice — the AI pro marketplace by Cryp Tok Solutions. Why hiring a vetted AI pro beats burning time and tokens, and how clients hire AI pros through a private platform inbox.",
   alternates: { canonical: "/about" },
 };
 
 export default function AboutPage() {
   return (
     <article className="legal">
-      <h1>About Prolorg</h1>
+      <h1>About AiProlice</h1>
       <p className="updated">The AI pro marketplace by Cryp Tok Solutions.</p>
 
       <h2>Our mission</h2>
       <p>
-        Prolorg is a talent marketplace built by Cryp Tok Solutions for the era
+        AiProlice is a talent marketplace built by Cryp Tok Solutions for the era
         of authentic connection. We believe the best AI outcomes don&rsquo;t
         come from buying more tokens — they come from the right AI pro guiding
         the work.
@@ -33,7 +33,7 @@ export default function AboutPage() {
 
       <h2>The AI pro answer</h2>
       <p>
-        On Prolorg, clients find vetted AI pros — for forensic work,
+        On AiProlice, clients find vetted AI pros — for forensic work,
         genealogy traces, lab discovery, market advantage, personal AI
         tutoring, technical project development, skilled data collection and
         analysis, or any other kind of AI work — and hire them through a
@@ -49,13 +49,13 @@ export default function AboutPage() {
 
       <h2>Built by Cryp Tok Solutions</h2>
       <p>
-        Prolorg is a product of Cryp Tok Solutions, built for the era of
+        AiProlice is a product of Cryp Tok Solutions, built for the era of
         authentic connection: real, verified AI pros, talking to real clients,
         doing real work.
       </p>
 
       <p style={{ marginTop: "2.5rem" }}>
-        <Link href="/signup" className="btn btn-orange">Join Prolorg</Link>
+        <Link href="/signup" className="btn btn-orange">Join AiProlice</Link>
       </p>
     </article>
   );

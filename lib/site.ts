@@ -1,5 +1,5 @@
-// Prolorg — single source of truth for brand + site constants.
-export const SITE_NAME = "Prolorg";
+// AiProlice — single source of truth for brand + site constants.
+export const SITE_NAME = "AiProlice";
 export const SITE_TAGLINE = "Find your AI pro.";
 export const SITE_URL =
   process.env.NEXT_PUBLIC_SITE_URL ?? "https://prolorg.onrender.com";

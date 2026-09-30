@@ -21,7 +21,7 @@ export default function SiteFooter() {
           <div>
             <div className="footer-brand">
               <LogoMark size={30} />
-              <span className="brand-name">Prolorg</span>
+              <span className="brand-name">AiProlice</span>
             </div>
             <p className="footer-tag">
               Find your AI pro. Partner with or hire a vetted AI pro and
@@ -45,14 +45,14 @@ export default function SiteFooter() {
                 href={CONTACT_X}
                 target="_blank"
                 rel="noopener noreferrer"
-                aria-label="Prolorg on X"
+                aria-label="AiProlice on X"
               >
                 <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
                   <path d="M18.9 1.15h3.68l-8.04 9.19L24 22.85h-7.41l-5.8-7.58-6.64 7.58H.47l8.6-9.83L0 1.15h7.59l5.24 6.93 6.07-6.93zm-1.29 19.5h2.04L6.49 3.24H4.3l13.31 17.41z" />
                 </svg>
                 X
               </a>
-              <a href={`mailto:${CONTACT_EMAIL}`} aria-label="Email Prolorg">
+              <a href={`mailto:${CONTACT_EMAIL}`} aria-label="Email AiProlice">
                 <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" aria-hidden="true">
                   <rect x="2" y="4" width="20" height="16" rx="2" />
                   <path d="m22 7-10 6L2 7" />

@@ -3,7 +3,7 @@ import type { Metadata } from "next";
 export const metadata: Metadata = {
   title: "Privacy Policy",
   description:
-    "Prolorg Privacy Policy — what we collect (account info, profiles, messages, usage data), who can see it, and your rights to access, correct, or delete your data.",
+    "AiProlice Privacy Policy — what we collect (account info, profiles, messages, usage data), who can see it, and your rights to access, correct, or delete your data.",
   alternates: { canonical: "/privacy" },
 };
 
@@ -13,9 +13,9 @@ export default function PrivacyPage() {
       <h1>Privacy Policy</h1>
       <p className="updated">Last updated: September 2026</p>
 
-      <h2>Who operates Prolorg</h2>
+      <h2>Who operates AiProlice</h2>
       <p>
-        Prolorg is operated by Cryp Tok Solutions. Contact:
+        AiProlice is operated by Cryp Tok Solutions. Contact:
         hello@prolorg.app.
       </p>
 
@@ -31,7 +31,7 @@ export default function PrivacyPage() {
       <p>
         AI pro profiles are visible to anyone, including guests who are not
         signed in. Inbox message contents are private to the participants and
-        to Prolorg administrators for safety review (including detecting
+        to AiProlice administrators for safety review (including detecting
         attempts to exchange contact details to evade the unlock fee).
       </p>
 

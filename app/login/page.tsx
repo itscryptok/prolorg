@@ -4,7 +4,7 @@ import LogoMark from "@/components/LogoMark";
 
 export const metadata: Metadata = {
   title: "Login",
-  description: "Log in to Prolorg. Client and AI pro login is coming soon.",
+  description: "Log in to AiProlice. Client and AI pro login is coming soon.",
   robots: { index: false, follow: true },
   alternates: { canonical: "/login" },
 };

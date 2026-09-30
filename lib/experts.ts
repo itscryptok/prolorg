@@ -1,4 +1,4 @@
-// Prolorg AI pro-domain constants shared by the directory, profiles, filters,
+// AiProlice AI pro-domain constants shared by the directory, profiles, filters,
 // onboarding form, and seed script.
 
 export const SPECIALTIES = [
