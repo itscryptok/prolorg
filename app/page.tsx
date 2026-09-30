@@ -95,7 +95,7 @@ export default function HomePage() {
           <h1>
             Hire an expert. Not the AI.{" "}
             <span className="accent">
-              <a href="#why">See why.</a>
+              <a href="#why">Here's why.</a>
             </span>
           </h1>
           <p className="hero-sub">

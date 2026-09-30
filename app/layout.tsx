@@ -7,7 +7,7 @@ import { FilterPanelProvider } from "@/components/FilterPanelContext";
 import "./globals.css";
 
 const DESCRIPTION =
-  "Prolorg — the AI expert marketplace. Hire an AI expert for forensic analysis, genealogy traces, lab discovery, market advantage, a personal AI tutor, technical project development, or skilled data collection and analysis. Hire an expert. Not the AI. See why.";
+  "Prolorg — the AI expert marketplace. Hire an AI expert for forensic analysis, genealogy traces, lab discovery, market advantage, a personal AI tutor, technical project development, or skilled data collection and analysis. Hire an expert. Not the AI. Here's why.";
 
 export const metadata: Metadata = {
   metadataBase: new URL(SITE_URL),
