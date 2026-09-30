@@ -94,7 +94,7 @@ export default function RootLayout({
           }}
         />
         {/* Hero visual preload for fastest first paint */}
-        <link rel="preload" href="/hero-banner.jpg" as="image" type="image/jpeg" />
+        <link rel="preload" href="/hero-glow.svg" as="image" type="image/svg+xml" />
         <script
           type="application/ld+json"
           dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}

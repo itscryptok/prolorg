@@ -300,16 +300,8 @@ html[data-theme="light"] .splash-bar { background: rgba(0, 0, 0, 0.08); }
   margin: 0 auto 2rem;
 }
 .hero-ctas { display: flex; gap: 1rem; justify-content: center; flex-wrap: wrap; }
-.hero-visual { margin: 2.75rem auto 0; max-width: 1200px; }
-.hero-visual img {
-  width: 100%;
-  height: auto;
-  display: block;
-  border-radius: var(--radius);
-  /* Melt the banner edges into the hero background on all sides. */
-  -webkit-mask-image: radial-gradient(ellipse 88% 88% at 50% 50%, #000 58%, transparent 98%);
-  mask-image: radial-gradient(ellipse 88% 88% at 50% 50%, #000 58%, transparent 98%);
-}
+.hero-visual { margin: 2.75rem auto 0; max-width: 720px; }
+.hero-visual img { width: 100%; height: auto; display: block; border-radius: var(--radius); }
 
 /* ---------- Stats band ---------- */
 .stats-band {

@@ -111,10 +111,10 @@ export default function HomePage() {
           <div className="hero-visual">
             {/* eslint-disable-next-line @next/next/no-img-element */}
             <img
-              src="/hero-banner.jpg"
-              alt="Glowing orange light ribbons sweeping across a dark background"
-              width={2352}
-              height={1008}
+              src="/hero-glow.svg"
+              alt="Prolorg shield emblem glowing in orange and blue"
+              width={720}
+              height={320}
               fetchPriority="high"
             />
           </div>
