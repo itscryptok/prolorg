@@ -143,6 +143,13 @@ html[data-theme="light"] .mobile-panel a {
 .btn:hover { transform: translateY(-1px); }
 .btn-orange { background: var(--orange); color: #0a0a0a; }
 .btn-orange:hover { background: #dcf77e; color: #0a0a0a; box-shadow: 0 6px 24px rgba(200, 240, 74, 0.35); }
+/* The header Sign Up pill lives inside .site-nav, whose link color rule is
+   more specific than .btn-orange and was washing the text out. This keeps
+   black text on the lime pill (white text on rose in day mode). */
+.site-nav a.btn-orange,
+.site-nav a.btn-orange:hover { color: #0a0a0a; }
+html[data-theme="light"] .site-nav a.btn-orange,
+html[data-theme="light"] .site-nav a.btn-orange:hover { color: #ffffff; }
 .btn-outline { border-color: var(--orange); color: var(--orange); background: transparent; }
 .btn-outline:hover { background: rgba(200, 240, 74, 0.14); color: var(--orange); }
 
