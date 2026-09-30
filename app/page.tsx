@@ -91,68 +91,32 @@ export default function HomePage() {
       {/* 1. Hero */}
       <section className="hero">
         <div className="container">
-          <div className="banner">
-            <div className="banner-art" aria-hidden="true">
-              <svg viewBox="0 0 700 700" preserveAspectRatio="xMaxYMid slice" focusable="false">
-                <defs>
-                  <radialGradient id="blobA" cx="38%" cy="32%" r="72%">
-                    <stop offset="0%" stopColor="#ffe873" />
-                    <stop offset="55%" stopColor="#ffb52e" />
-                    <stop offset="100%" stopColor="#ff7b00" />
-                  </radialGradient>
-                  <radialGradient id="blobB" cx="42%" cy="30%" r="75%">
-                    <stop offset="0%" stopColor="#fff3a0" />
-                    <stop offset="50%" stopColor="#ffc93c" />
-                    <stop offset="100%" stopColor="#ff9500" />
-                  </radialGradient>
-                  <linearGradient id="bannerWave" x1="0" y1="0" x2="1" y2="1">
-                    <stop offset="0%" stopColor="#3d1478" />
-                    <stop offset="100%" stopColor="#240856" />
-                  </linearGradient>
-                </defs>
-                <path
-                  d="M0 520 C 140 470 260 570 410 535 C 540 505 620 575 700 550 L700 700 L0 700 Z"
-                  fill="url(#bannerWave)"
-                  opacity="0.8"
-                />
-                <path
-                  d="M470 20 C 560 20 640 90 645 180 C 650 270 590 350 510 355 C 430 360 370 300 375 215 C 380 130 400 20 470 20 Z"
-                  fill="url(#blobA)"
-                />
-                <path
-                  d="M545 400 C 610 400 655 455 650 520 C 645 585 590 630 530 620 C 470 610 440 550 450 490 C 458 440 490 400 545 400 Z"
-                  fill="url(#blobB)"
-                />
-                <path
-                  d="M620 560 C 700 560 760 640 745 730 C 730 820 640 860 560 830 C 480 800 450 720 480 650 C 505 595 555 560 620 560 Z"
-                  fill="url(#blobA)"
-                />
-              </svg>
-            </div>
-            <div className="banner-copy">
-              <span className="eyebrow">THE AI EXPERT MARKETPLACE</span>
-              <h1>
-                Hire an expert instead. Not the AI.{" "}
-                <span className="accent">
-                  <a href="#why">See why.</a>
-                </span>
-              </h1>
-              <p className="hero-sub">
-                Partner with or hire a vetted AI expert for forensic work,
-                genealogy traces, lab discovery, market advantage, a personal AI
-                tutor, technical project development, skilled data collection and
-                analysis — or any other kind of AI work.
-              </p>
-              <div className="banner-dots" aria-hidden="true">
-                <span className="on" />
-                <span />
-                <span />
-              </div>
-              <div className="hero-ctas">
-                <Link href="/experts" className="btn-banner">Browse experts</Link>
-                <Link href="/join" className="btn-banner-outline">Join as an expert</Link>
-              </div>
-            </div>
+          <span className="eyebrow">THE AI EXPERT MARKETPLACE</span>
+          <h1>
+            Hire an expert instead. Not the AI.{" "}
+            <span className="accent">
+              <a href="#why">See why.</a>
+            </span>
+          </h1>
+          <p className="hero-sub">
+            Partner with or hire a vetted AI expert for forensic work,
+            genealogy traces, lab discovery, market advantage, a personal AI
+            tutor, technical project development, skilled data collection and
+            analysis — or any other kind of AI work.
+          </p>
+          <div className="hero-ctas">
+            <Link href="/experts" className="btn btn-orange">Browse experts</Link>
+            <Link href="/join" className="btn btn-outline">Join as an expert</Link>
+          </div>
+          <div className="hero-visual">
+            {/* eslint-disable-next-line @next/next/no-img-element */}
+            <img
+              src="/hero-banner.jpg"
+              alt="Glowing orange light ribbons sweeping across a dark background"
+              width={2352}
+              height={1008}
+              fetchPriority="high"
+            />
           </div>
         </div>
       </section>

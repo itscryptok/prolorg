@@ -93,7 +93,8 @@ export default function RootLayout({
               "(function(){try{var t=localStorage.getItem('prolorg-theme');if(t==='light'||t==='dark'){document.documentElement.setAttribute('data-theme',t);}}catch(e){}})();",
           }}
         />
-        {/* Banner art is inline SVG/CSS, so no hero image preload is needed. */}
+        {/* Hero visual preload for fastest first paint */}
+        <link rel="preload" href="/hero-banner.jpg" as="image" type="image/jpeg" />
         <script
           type="application/ld+json"
           dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
