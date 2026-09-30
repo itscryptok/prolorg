@@ -19,9 +19,10 @@
   <circle cx="360" cy="160" r="190" fill="url(#orangeGlow)"/>
   <circle cx="200" cy="90" r="130" fill="url(#blueGlow)"/>
   <circle cx="540" cy="240" r="140" fill="url(#blueGlow)"/>
-  <g transform="translate(360,160)">
-    <path d="M0 -78 L62 -52 V6 C62 52 -27 86 -62 100 C-97 86 -62 52 -62 6 V-52 Z" fill="#1e3a8a" stroke="url(#cardEdge)" stroke-width="3"/>
-    <text x="0" y="38" text-anchor="middle" font-family="Segoe UI, system-ui, sans-serif" font-weight="900" font-size="72" fill="#ffa500">P</text>
+  <g transform="translate(289.6,89.6) scale(2.2)">
+    <path d="M32 8 C36 11 41 12 46 12 L58 14 C57 20 56 26 56 32 C56 43 47 52 32 59.5 C17 52 8 43 8 32 C8 26 7 20 6 14 L18 12 C23 12 28 11 32 8 Z" fill="#1e40af" stroke="#f5a623" stroke-width="2.5"/>
+    <path d="M32.00,13.50 L33.53,17.90 L38.18,17.99 L34.47,20.80 L35.82,25.26 L32.00,22.60 L28.18,25.26 L29.53,20.80 L25.82,17.99 L30.47,17.90 Z" fill="#f5a623"/>
+    <text x="32" y="45" text-anchor="middle" font-family="Segoe UI, system-ui, sans-serif" font-weight="900" font-size="15" fill="#f5a623">Pro</text>
   </g>
   <g font-family="Segoe UI, system-ui, sans-serif" font-size="13" font-weight="700" fill="#a1a1a1">
     <rect x="96" y="216" width="150" height="34" rx="17" fill="#161616" stroke="#ffa500" stroke-opacity="0.35"/>
