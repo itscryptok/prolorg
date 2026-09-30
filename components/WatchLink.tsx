@@ -25,8 +25,8 @@ export default function WatchLink({ className = "" }: { className?: string }) {
     <Link
       href="/watch"
       className={`watch-link ${className}`.trim()}
-      aria-label="Watch expert intros"
-      title="Watch expert intros"
+      aria-label="Watch AI pro intros"
+      title="Watch AI pro intros"
     >
       <PlayIcon />
     </Link>

@@ -4,7 +4,7 @@ import { CONTACT_EMAIL, CONTACT_X } from "@/lib/site";
 
 const FOOTER_NAV = [
   { href: "/", label: "Home" },
-  { href: "/experts", label: "Find Experts" },
+  { href: "/experts", label: "Find AI pros" },
   { href: "/how-it-works", label: "How It Works" },
   { href: "/about", label: "About" },
   { href: "/login", label: "Login" },
@@ -24,7 +24,7 @@ export default function SiteFooter() {
               <span className="brand-name">Prolorg</span>
             </div>
             <p className="footer-tag">
-              Find your AI expert. Partner with or hire a vetted AI expert and
+              Find your AI pro. Partner with or hire a vetted AI pro and
               get the work done through a private platform inbox.
             </p>
           </div>

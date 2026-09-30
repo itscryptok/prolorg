@@ -36,7 +36,7 @@ export function ExpertAvatar({ name, size = 64 }: { name: string; size?: number 
 }
 
 export function RatingStars({ rating, count }: { rating: number; count: number }) {
-  if (count === 0) return <span className="rating-new">New expert</span>;
+  if (count === 0) return <span className="rating-new">New AI pro</span>;
   const full = Math.round(rating);
   return (
     <span className="rating" aria-label={`Rated ${rating.toFixed(1)} out of 5 from ${count} reviews`}>
@@ -46,8 +46,8 @@ export function RatingStars({ rating, count }: { rating: number; count: number }
   );
 }
 
-// Expert directory card: avatar, name, specialty, headline, rating, rate,
-// availability, and a link that opens the expert's video in the watch feed.
+// AI pro directory card: avatar, name, specialty, headline, rating, rate,
+// availability, and a link that opens the AI pro's video in the watch feed.
 export default function ExpertCard({ expert }: { expert: ExpertCardData }) {
   const location = [expert.city, expert.country].filter(Boolean).join(", ");
   const watchHref = `/watch?expert=${expert.slug}`;

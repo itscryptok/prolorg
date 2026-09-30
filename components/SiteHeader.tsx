@@ -7,7 +7,7 @@ import ThemeToggle from "./ThemeToggle";
 import WatchLink from "./WatchLink";
 
 const NAV_LINKS = [
-  { href: "/experts", label: "Find Experts" },
+  { href: "/experts", label: "Find AI pros" },
   { href: "/how-it-works", label: "How It Works" },
   { href: "/about", label: "About" },
   { href: "/login", label: "Login" },

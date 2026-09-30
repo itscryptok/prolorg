@@ -10,9 +10,9 @@ import ExpertCard from "@/components/ExpertCard";
 export const dynamic = "force-dynamic";
 
 export const metadata: Metadata = {
-  title: "Find AI Experts",
+  title: "Find AI pros",
   description:
-    "Browse Prolorg's directory of vetted AI experts — forensic analysis, genealogy trace, lab discovery, market advantage, personal AI tutoring, technical project development, and data collection & analysis. Filter by specialty, rate, and availability, then hire through the platform inbox.",
+    "Browse Prolorg's directory of vetted AI pros — forensic analysis, genealogy trace, lab discovery, market advantage, personal AI tutoring, technical project development, and data collection & analysis. Filter by specialty, rate, and availability, then hire through the platform inbox.",
   alternates: { canonical: "/experts" },
 };
 
@@ -71,18 +71,18 @@ export default async function ExpertsPage({
   return (
     <div className="container">
       <div className="page-head">
-        <p className="eyebrow">Expert directory</p>
-        <h1>Find your AI expert</h1>
+        <p className="eyebrow">AI pro directory</p>
+        <h1>Find your AI pro</h1>
         <p className="section-lead" style={{ marginBottom: 0 }}>
-          Hire an expert. Not the AI. Browse
-          vetted experts by specialty, compare rates and availability, and hire
+          Hire an AI pro. Not the AI. Browse
+          vetted AI pros by specialty, compare rates and availability, and hire
           through the Prolorg inbox — no bidding, no exposed emails.
         </p>
       </div>
 
       <div className="experts-toolbar">
         <p className="experts-count" role="status">
-          {experts.length} expert{experts.length === 1 ? "" : "s"}
+          {experts.length} AI pro{experts.length === 1 ? "" : "s"}
         </p>
         <div className="experts-tools">
           <FilterToggle />
@@ -95,15 +95,15 @@ export default async function ExpertsPage({
 
       {experts.length === 0 ? (
         <div className="empty-state">
-          <h2>No experts match those filters</h2>
+          <h2>No AI pros match those filters</h2>
           <p>
             {db
               ? "Try widening the rate range, clearing the keyword, or choosing a different specialty."
-              : "The directory database is still connecting. Check back shortly — or be the first expert on it."}
+              : "The directory database is still connecting. Check back shortly — or be the first AI pro on it."}
           </p>
           <div className="hero-ctas">
             <Link href="/experts" className="btn btn-outline">Clear filters</Link>
-            <Link href="/join" className="btn btn-orange">Join as an expert</Link>
+            <Link href="/join" className="btn btn-orange">Join as an AI pro</Link>
           </div>
         </div>
       ) : (
@@ -115,9 +115,9 @@ export default async function ExpertsPage({
       )}
 
       <div className="directory-cta">
-        <h2>Are you an AI expert?</h2>
+        <h2>Are you an AI pro?</h2>
         <p>Create your Prolorg profile and get hired through the inbox — no bidding wars, no proposal spam.</p>
-        <Link href="/join" className="btn btn-orange">Join as an expert</Link>
+        <Link href="/join" className="btn btn-orange">Join as an AI pro</Link>
       </div>
     </div>
   );

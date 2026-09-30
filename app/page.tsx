@@ -4,49 +4,49 @@ import { STATS } from "@/lib/site";
 const WHY_POINTS = [
   {
     title: "Faster and cheaper than tokens",
-    text: "Hiring or partnering with an individual AI expert is faster and cheaper than repeatedly buying AI tokens or hiring an expensive consulting firm.",
+    text: "Hiring or partnering with an individual AI pro is faster and cheaper than repeatedly buying AI tokens or hiring an expensive consulting firm.",
   },
   {
     title: "The right model for each job",
-    text: "Experts know which AI model fits each part of a project — and which parts don\u2019t need AI at all.",
+    text: "AI pros know which AI model fits each part of a project — and which parts don\u2019t need AI at all.",
   },
   {
     title: "No wasted spend",
-    text: "Experts control costs and keep token use lean. No burning money on trial and error.",
+    text: "AI pros control costs and keep token use lean. No burning money on trial and error.",
   },
   {
     title: "Skilled prompting, solved faster",
-    text: "Expert prompting skill gets work done in hours, not weeks.",
+    text: "AI pro prompting skill gets work done in hours, not weeks.",
   },
   {
     title: "Your competitive edge",
-    text: "An expert partnership gives you a market advantage your competitors don\u2019t have.",
+    text: "An AI pro partnership gives you a market advantage your competitors don\u2019t have.",
   },
   {
     title: "Talk to a human",
-    text: "Real, verified experts. No bots, no guesswork.",
+    text: "Real, verified AI pros. No bots, no guesswork.",
   },
 ] as const;
 
 const CATEGORIES = [
   { title: "Forensic analysis", text: "AI-assisted forensic investigation and evidence analysis." },
-  { title: "Genealogy trace", text: "Trace family lines and ancestry with expert-guided AI research." },
+  { title: "Genealogy trace", text: "Trace family lines and ancestry with AI pro-guided AI research." },
   { title: "Lab discovery", text: "Accelerate lab research and discovery with AI workflows." },
-  { title: "Market advantage", text: "Turn AI into a market advantage with expert strategy." },
+  { title: "Market advantage", text: "Turn AI into a market advantage with AI pro strategy." },
   { title: "Personal AI tutor", text: "One-on-one tutoring to master AI tools and techniques." },
   { title: "Technical project developer", text: "End-to-end development of your technical AI project." },
   { title: "Data collector & analyst", text: "Skilled collection, cleaning, and analysis of your data." },
-  { title: "Other AI work", text: "Any other kind of AI work — ask an expert what\u2019s possible." },
+  { title: "Other AI work", text: "Any other kind of AI work — ask an AI pro what\u2019s possible." },
 ] as const;
 
 const CLIENT_STEPS = [
   {
-    title: "Browse expert profiles",
-    text: "Search by specialty, skill, and availability to find the right expert.",
+    title: "Browse AI pro profiles",
+    text: "Search by specialty, skill, and availability to find the right AI pro.",
   },
   {
     title: "Open the inbox",
-    text: "Message the expert directly inside Prolorg — no exposed emails, no outside links.",
+    text: "Message the AI pro directly inside Prolorg — no exposed emails, no outside links.",
   },
   {
     title: "Hire through the platform",
@@ -91,22 +91,22 @@ export default function HomePage() {
       {/* 1. Hero */}
       <section className="hero">
         <div className="container">
-          <span className="eyebrow">THE AI EXPERT MARKETPLACE</span>
+          <span className="eyebrow">THE AI PRO MARKETPLACE</span>
           <h1>
-            Hire an expert. Not the AI.{" "}
+            Hire an AI pro. Not the AI.{" "}
             <span className="accent">
               <a href="#why">Here's why.</a>
             </span>
           </h1>
           <p className="hero-sub">
-            Partner with or hire a vetted AI expert for forensic work,
+            Partner with or hire a vetted AI pro for forensic work,
             genealogy traces, lab discovery, market advantage, a personal AI
             tutor, technical project development, skilled data collection and
             analysis — or any other kind of AI work.
           </p>
           <div className="hero-ctas">
-            <Link href="/experts" className="btn btn-orange">Browse experts</Link>
-            <Link href="/join" className="btn btn-outline">Join as an expert</Link>
+            <Link href="/experts" className="btn btn-orange">Browse AI pros</Link>
+            <Link href="/join" className="btn btn-outline">Join as an AI pro</Link>
           </div>
           <div className="hero-visual">
             {/* eslint-disable-next-line @next/next/no-img-element */}
@@ -126,7 +126,7 @@ export default function HomePage() {
         <div className="container stats-band-inner">
           <div>
             <div className="stat-num">{STATS.totalExperts}</div>
-            <div className="stat-label">Total experts</div>
+            <div className="stat-label">Total AI pros</div>
           </div>
           <div>
             <div className="stat-num">{STATS.newThisWeek}</div>
@@ -144,7 +144,7 @@ export default function HomePage() {
         <div className="container">
           <h2 className="section-title">Why Prolorg</h2>
           <p className="section-lead">
-            Hire an expert. Not the AI.
+            Hire an AI pro. Not the AI.
           </p>
           <div className="cards">
             {WHY_POINTS.map((point) => (
@@ -157,12 +157,12 @@ export default function HomePage() {
         </div>
       </section>
 
-      {/* 4. Expert categories */}
+      {/* 4. AI pro categories */}
       <section className="section" id="categories" style={{ paddingTop: 0 }}>
         <div className="container">
-          <h2 className="section-title">Expert categories</h2>
+          <h2 className="section-title">AI pro categories</h2>
           <p className="section-lead">
-            Whatever the AI work, there is an expert for it.
+            Whatever the AI work, there is an AI pro for it.
           </p>
           <div className="cards">
             {CATEGORIES.map((cat) => (
@@ -181,7 +181,7 @@ export default function HomePage() {
         <div className="container">
           <h2 className="section-title">How It Works</h2>
           <p className="section-lead">
-            Clients find experts. Experts get hired. Everything happens inside
+            Clients find AI pros. AI pros get hired. Everything happens inside
             Prolorg.
           </p>
           <div className="tracks">
@@ -190,14 +190,14 @@ export default function HomePage() {
               <StepList steps={CLIENT_STEPS} />
               <div className="notice" role="note">
                 <strong>Fair-play rule:</strong> Direct contact (email, phone)
-                unlocks with a one-time fee per expert. Sharing contact details
+                unlocks with a one-time fee per AI pro. Sharing contact details
                 to dodge the fee gets your account blocked — our checks catch
                 spelled-out numbers, &lsquo;at gmail dot com&rsquo; tricks, and
                 other workarounds.
               </div>
             </div>
             <div className="track">
-              <h3>FOR EXPERTS</h3>
+              <h3>FOR AI PROS</h3>
               <StepList steps={EXPERT_STEPS} />
             </div>
           </div>
@@ -211,8 +211,8 @@ export default function HomePage() {
           <p className="section-lead" style={{ maxWidth: "72ch" }}>
             Prolorg is a talent marketplace built by Cryp Tok Solutions for the
             era of authentic connection. The best AI outcomes don&rsquo;t come
-            from buying more tokens — they come from the right expert guiding
-            the work. On Prolorg, clients find vetted AI experts and hire them
+            from buying more tokens — they come from the right AI pro guiding
+            the work. On Prolorg, clients find vetted AI pros and hire them
             through a private platform inbox: no exposed emails, no outside
             links, no guesswork.
           </p>

@@ -22,7 +22,7 @@ export default function FilterToggle() {
       type="button"
       onClick={toggle}
       aria-label={open ? "Hide search filters" : "Show search filters"}
-      title="Filter experts"
+      title="Filter AI pros"
       aria-expanded={open}
       className={`filter-toggle${open ? " active" : ""}`}
     >

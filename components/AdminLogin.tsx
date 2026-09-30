@@ -43,7 +43,7 @@ export default function AdminLogin() {
   return (
     <div className="admin-gate">
       <h1>Admin</h1>
-      <p className="admin-sub">Restricted area — expert approvals live behind this login.</p>
+      <p className="admin-sub">Restricted area — AI pro approvals live behind this login.</p>
       <form onSubmit={onSubmit} className="admin-form">
         <label className="join-input">
           <span>Password</span>

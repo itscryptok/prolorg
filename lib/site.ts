@@ -1,6 +1,6 @@
 // Prolorg — single source of truth for brand + site constants.
 export const SITE_NAME = "Prolorg";
-export const SITE_TAGLINE = "Find your AI expert.";
+export const SITE_TAGLINE = "Find your AI pro.";
 export const SITE_URL =
   process.env.NEXT_PUBLIC_SITE_URL ?? "https://prolorg.onrender.com";
 export const CONTACT_X = "https://x.com/prolorg";

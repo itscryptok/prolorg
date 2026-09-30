@@ -171,7 +171,7 @@ export default function AdminDashboard() {
     <div>
       <div className="admin-top">
         <div>
-          <h1>Expert approvals</h1>
+          <h1>AI pro approvals</h1>
           <p className="admin-sub">
             {pending.length} application{pending.length === 1 ? "" : "s"} waiting for review.
           </p>
@@ -190,7 +190,7 @@ export default function AdminDashboard() {
       {!loading && !error && pending.length === 0 && (
         <div className="empty-state">
           <h2>All caught up</h2>
-          <p>No pending expert applications right now.</p>
+          <p>No pending AI pro applications right now.</p>
         </div>
       )}
       <div className="admin-list">

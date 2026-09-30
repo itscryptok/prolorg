@@ -22,7 +22,7 @@ type PendingRow = {
   hasVideo: boolean;
 };
 
-// Lists PENDING expert profiles for admin review. Admin only.
+// Lists PENDING AI pro profiles for admin review. Admin only.
 export async function GET(req: Request) {
   if (!isAdminRequest(req)) {
     return NextResponse.json({ error: "Not authorized." }, { status: 401 });

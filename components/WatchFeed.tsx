@@ -106,9 +106,9 @@ function SpeakerIcon({ muted }: { muted: boolean }) {
   );
 }
 
-// Swipeable expert viewer (TikTok-style feed). Swipe left/right, use the
-// arrows, or the keyboard to move between experts. Experts with an uploaded
-// intro video autoplay it (muted; tap to unmute). Heart likes the expert
+// Swipeable AI pro viewer (TikTok-style feed). Swipe left/right, use the
+// arrows, or the keyboard to move between AI pros. AI pros with an uploaded
+// intro video autoplay it (muted; tap to unmute). Heart likes the AI pro
 // (saved locally), person icon opens the full profile.
 export default function WatchFeed({
   experts,
@@ -135,7 +135,7 @@ export default function WatchFeed({
   }, []);
 
   useEffect(() => {
-    setMuted(true); // each expert's video starts muted
+    setMuted(true); // each AI pro's video starts muted
   }, [index]);
 
   const go = useCallback(
@@ -195,11 +195,11 @@ export default function WatchFeed({
     return (
       <div className="container">
         <div className="empty-state">
-          <h2>No expert videos yet</h2>
-          <p>The directory is still filling up. Browse the list or be the first expert on it.</p>
+          <h2>No AI pro videos yet</h2>
+          <p>The directory is still filling up. Browse the list or be the first AI pro on it.</p>
           <div className="hero-ctas">
-            <Link href="/experts" className="btn btn-outline">Browse experts</Link>
-            <Link href="/join" className="btn btn-orange">Join as an expert</Link>
+            <Link href="/experts" className="btn btn-outline">Browse AI pros</Link>
+            <Link href="/join" className="btn btn-orange">Join as an AI pro</Link>
           </div>
         </div>
       </div>
@@ -258,9 +258,9 @@ export default function WatchFeed({
         <div className="watch-shade" aria-hidden="true" />
 
         <div className="watch-top">
-          <Link href="/experts" className="watch-back" aria-label="Back to expert list">
+          <Link href="/experts" className="watch-back" aria-label="Back to AI pro list">
             <BackIcon />
-            <span>Experts</span>
+            <span>AI pros</span>
           </Link>
           <span className="watch-count" aria-live="polite">
             {index + 1} / {experts.length}
@@ -287,7 +287,7 @@ export default function WatchFeed({
               className={`watch-action${liked ? " liked" : ""}`}
               aria-pressed={liked}
               aria-label={liked ? `Unlike ${expert.name}` : `Like ${expert.name}`}
-              title="Like this expert"
+              title="Like this AI pro"
               onClick={() => toggleLike(expert.slug, expert.id)}
             >
               <HeartIcon filled={liked} />
@@ -325,7 +325,7 @@ export default function WatchFeed({
         </div>
 
         <div className="watch-nav">
-          <button type="button" className="watch-nav-btn" onClick={prev} aria-label="Previous expert">
+          <button type="button" className="watch-nav-btn" onClick={prev} aria-label="Previous AI pro">
             <ChevronLeft />
           </button>
           <div className="watch-dots" aria-hidden="true">
@@ -333,12 +333,12 @@ export default function WatchFeed({
               <span key={e.slug} className={i === index ? "on" : undefined} />
             ))}
           </div>
-          <button type="button" className="watch-nav-btn" onClick={next} aria-label="Next expert">
+          <button type="button" className="watch-nav-btn" onClick={next} aria-label="Next AI pro">
             <ChevronRight />
           </button>
         </div>
       </div>
-      <p className="watch-hint">Swipe or use the arrows to browse experts</p>
+      <p className="watch-hint">Swipe or use the arrows to browse AI pros</p>
     </div>
   );
 }

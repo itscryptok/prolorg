@@ -8,7 +8,7 @@ type Raw = {
 
 const STATUSES = new Set(["APPROVED", "REJECTED"]);
 
-// Approve/reject/delete an expert profile. Admin only.
+// Approve/reject/delete an AI pro profile. Admin only.
 // Raw SQL keeps this independent of the generated client version.
 export async function PATCH(
   req: Request,
@@ -35,7 +35,7 @@ export async function PATCH(
     id,
     status
   );
-  if (!updated) return NextResponse.json({ error: "Expert not found." }, { status: 404 });
+  if (!updated) return NextResponse.json({ error: "AI pro not found." }, { status: 404 });
   return NextResponse.json({ ok: true, status });
 }
 
@@ -52,6 +52,6 @@ export async function DELETE(
   const raw = db as unknown as Raw;
   await raw.$executeRawUnsafe('DELETE FROM "ExpertMedia" WHERE "expertId" = $1', id);
   const deleted = await raw.$executeRawUnsafe('DELETE FROM "ExpertProfile" WHERE "id" = $1', id);
-  if (!deleted) return NextResponse.json({ error: "Expert not found." }, { status: 404 });
+  if (!deleted) return NextResponse.json({ error: "AI pro not found." }, { status: 404 });
   return NextResponse.json({ ok: true });
 }

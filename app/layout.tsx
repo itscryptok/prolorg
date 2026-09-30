@@ -7,19 +7,19 @@ import { FilterPanelProvider } from "@/components/FilterPanelContext";
 import "./globals.css";
 
 const DESCRIPTION =
-  "Prolorg — the AI expert marketplace. Hire an AI expert for forensic analysis, genealogy traces, lab discovery, market advantage, a personal AI tutor, technical project development, or skilled data collection and analysis. Hire an expert. Not the AI. Here's why.";
+  "Prolorg — the AI pro marketplace. Hire an AI pro for forensic analysis, genealogy traces, lab discovery, market advantage, a personal AI tutor, technical project development, or skilled data collection and analysis. Hire an AI pro. Not the AI. Here's why.";
 
 export const metadata: Metadata = {
   metadataBase: new URL(SITE_URL),
   title: {
-    default: `${SITE_NAME} — Hire an AI Expert | ${SITE_TAGLINE}`,
+    default: `${SITE_NAME} — Hire an AI pro | ${SITE_TAGLINE}`,
     template: `%s | ${SITE_NAME}`,
   },
   description: DESCRIPTION,
   keywords: [
     "Prolorg",
-    "hire AI expert",
-    "AI expert marketplace",
+    "hire AI pro",
+    "AI pro marketplace",
     "forensic AI analysis",
     "genealogy trace",
     "lab discovery",
@@ -38,13 +38,13 @@ export const metadata: Metadata = {
     type: "website",
     url: SITE_URL,
     siteName: SITE_NAME,
-    title: `${SITE_NAME} — Hire an AI Expert`,
+    title: `${SITE_NAME} — Hire an AI pro`,
     description: DESCRIPTION,
     images: [{ url: "/og-image.png", width: 1200, height: 630, alt: SITE_NAME }],
   },
   twitter: {
     card: "summary_large_image",
-    title: `${SITE_NAME} — Hire an AI Expert`,
+    title: `${SITE_NAME} — Hire an AI pro`,
     description: DESCRIPTION,
     images: ["/og-image.png"],
   },

@@ -18,7 +18,7 @@ async function isAuthed(): Promise<boolean> {
   return jar.get(ADMIN_COOKIE)?.value === expected;
 }
 
-// Unlisted admin area (like REMU's /addy): password gate, then the expert
+// Unlisted admin area (like REMU's /addy): password gate, then the AI pro
 // approval queue. Not linked from the nav, sitemap, or robots.
 export default async function AdminPage() {
   const authed = await isAuthed();

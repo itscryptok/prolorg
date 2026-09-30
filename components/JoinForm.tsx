@@ -8,9 +8,9 @@ const input = "join-input";
 
 type Status = { ok: boolean; message: string } | null;
 
-// Expert onboarding: creates a PENDING profile for review. Phase 3 links it
-// to an expert account. No website/email fields — contact lockdown.
-// Experts can attach a profile photo and an intro video (played in /watch).
+// AI pro onboarding: creates a PENDING profile for review. Phase 3 links it
+// to an AI pro account. No website/email fields — contact lockdown.
+// AI pros can attach a profile photo and an intro video (played in /watch).
 export default function JoinForm() {
   const [status, setStatus] = useState<Status>(null);
   const [busy, setBusy] = useState(false);
@@ -167,7 +167,7 @@ export default function JoinForm() {
         <button type="submit" className="btn btn-orange" disabled={busy}>
           {busy ? "Submitting…" : "Submit profile for review"}
         </button>
-        <Link href="/experts" className="btn btn-outline">Browse experts</Link>
+        <Link href="/experts" className="btn btn-outline">Browse AI pros</Link>
       </div>
     </form>
   );

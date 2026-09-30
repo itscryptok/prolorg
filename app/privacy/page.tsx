@@ -29,7 +29,7 @@ export default function PrivacyPage() {
 
       <h2>Who can see your data</h2>
       <p>
-        Expert profiles are visible to anyone, including guests who are not
+        AI pro profiles are visible to anyone, including guests who are not
         signed in. Inbox message contents are private to the participants and
         to Prolorg administrators for safety review (including detecting
         attempts to exchange contact details to evade the unlock fee).

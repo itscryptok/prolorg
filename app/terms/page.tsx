@@ -3,7 +3,7 @@ import type { Metadata } from "next";
 export const metadata: Metadata = {
   title: "Terms of Use",
   description:
-    "Prolorg Terms of Use — the rules for using the AI expert marketplace, including the fair-play rule on direct contact and account suspension for evading the contact unlock fee.",
+    "Prolorg Terms of Use — the rules for using the AI pro marketplace, including the fair-play rule on direct contact and account suspension for evading the contact unlock fee.",
   alternates: { canonical: "/terms" },
 };
 
@@ -49,7 +49,7 @@ export default function TermsPage() {
       <h2>5. Contact unlock fee and fair play</h2>
       <p>
         Direct contact information (email, phone) may only be shared between a
-        client and an expert after the one-time contact unlock fee has been
+        client and an AI pro after the one-time contact unlock fee has been
         paid for that pair. Attempting to share or solicit contact details to
         dodge the fee — including spelled-out numbers, &lsquo;at gmail dot
         com&rsquo;-style tricks, or other workarounds — is a violation of
@@ -75,7 +75,7 @@ export default function TermsPage() {
       <p>
         Prolorg is provided &ldquo;as is&rdquo; without warranties of any
         kind. We do not guarantee the quality, availability, or outcome of
-        work arranged between clients and experts.
+        work arranged between clients and AI pros.
       </p>
 
       <h2>9. Limitation of liability</h2>
@@ -83,7 +83,7 @@ export default function TermsPage() {
         To the maximum extent permitted by law, Cryp Tok Solutions is not
         liable for indirect, incidental, or consequential damages arising from
         your use of the platform or from engagements between clients and
-        experts.
+        AI pros.
       </p>
 
       <h2>10. Changes and contact</h2>

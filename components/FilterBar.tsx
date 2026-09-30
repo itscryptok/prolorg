@@ -40,7 +40,7 @@ export default function FilterBar({ total }: { total: number }) {
     <form
       id="filters"
       className="filter-bar"
-      aria-label="Filter experts"
+      aria-label="Filter AI pros"
       onSubmit={(e) => {
         e.preventDefault();
         set("q", q.trim());
@@ -101,7 +101,7 @@ export default function FilterBar({ total }: { total: number }) {
           <select
             value={params.get("sort") ?? ""}
             onChange={(e) => set("sort", e.target.value)}
-            aria-label="Sort experts"
+            aria-label="Sort AI pros"
           >
             <option value="">Recommended</option>
             <option value="rating">Highest rated</option>
@@ -113,7 +113,7 @@ export default function FilterBar({ total }: { total: number }) {
       </div>
       <div className="filter-meta">
         <p className="filter-count" role="status">
-          {total} expert{total === 1 ? "" : "s"} found
+          {total} AI pro{total === 1 ? "" : "s"} found
         </p>
         {hasFilters && (
           <button type="button" className="filter-clear" onClick={clear}>

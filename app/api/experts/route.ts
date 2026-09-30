@@ -50,7 +50,7 @@ function checkFile(
   return { ok: true, file };
 }
 
-// Creates a PENDING expert profile with optional photo + intro video uploads.
+// Creates a PENDING AI pro profile with optional photo + intro video uploads.
 // Accepts multipart/form-data. No website/email fields are accepted — contact
 // lockdown is enforced by simply not collecting them.
 export async function POST(req: Request) {
@@ -95,7 +95,7 @@ export async function POST(req: Request) {
   if (!photo.ok && photo.error) return NextResponse.json({ error: photo.error }, { status: 400 });
   if (!video.ok && video.error) return NextResponse.json({ error: video.error }, { status: 400 });
 
-  const base = slugify(name) || "expert";
+  const base = slugify(name) || "AI pro";
   let slug = base;
   for (let i = 2; ; i++) {
     const taken = await db.expertProfile.findUnique({ where: { slug } });

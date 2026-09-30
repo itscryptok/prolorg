@@ -17,10 +17,10 @@ export async function generateMetadata({
   const expert = db
     ? await db.expertProfile.findFirst({ where: { slug, status: "APPROVED" } })
     : null;
-  if (!expert) return { title: "Expert not found" };
+  if (!expert) return { title: "AI pro not found" };
   return {
-    title: `${expert.name} — ${expert.specialty} expert`,
-    description: `${expert.headline} Hire ${expert.name}, a Prolorg ${expert.specialty} expert, through the platform inbox. ${formatRate(expert.hourlyRate, expert.projectRate)}.`,
+    title: `${expert.name} — ${expert.specialty} AI pro`,
+    description: `${expert.headline} Hire ${expert.name}, a Prolorg ${expert.specialty} AI pro, through the platform inbox. ${formatRate(expert.hourlyRate, expert.projectRate)}.`,
     alternates: { canonical: `/experts/${expert.slug}` },
   };
 }
@@ -86,7 +86,7 @@ export default async function ExpertProfilePage({
   return (
     <div className="container">
       <nav className="crumbs" aria-label="Breadcrumb">
-        <Link href="/experts">Experts</Link>
+        <Link href="/experts">AI pros</Link>
         <span aria-hidden="true"> / </span>
         <span>{expert.name}</span>
       </nav>
@@ -150,13 +150,13 @@ export default async function ExpertProfilePage({
             <div className="empty-state" style={{ padding: "2rem 1.25rem" }}>
               <p style={{ margin: 0 }}>
                 No reviews yet — client reviews appear here after this
-                expert&rsquo;s first completed hires.
+                AI pro&rsquo;s first completed hires.
               </p>
             </div>
           </section>
         </div>
 
-        <aside className="profile-side" aria-label="Hire this expert">
+        <aside className="profile-side" aria-label="Hire this AI pro">
           <div className="rate-card">
             <p className="rate-big">{formatRate(expert.hourlyRate, expert.projectRate)}</p>
             {expert.availability && (
@@ -175,7 +175,7 @@ export default async function ExpertProfilePage({
               <dd>{inProgressJobs}</dd>
             </dl>
             <Link href="/signup" className="btn btn-orange profile-cta">
-              Message expert
+              Message AI pro
             </Link>
             <p className="fine-print">
               Free client accounts open soon — messaging and hiring unlock with
@@ -183,7 +183,7 @@ export default async function ExpertProfilePage({
             </p>
           </div>
           <div className="notice" style={{ marginTop: "1rem" }}>
-            <strong>Stays on Prolorg.</strong> Experts never share website
+            <strong>Stays on Prolorg.</strong> AI pros never share website
             links or email addresses here — every conversation and hire happens
             inside the platform inbox.
           </div>

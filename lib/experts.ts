@@ -1,4 +1,4 @@
-// Prolorg expert-domain constants shared by the directory, profiles, filters,
+// Prolorg AI pro-domain constants shared by the directory, profiles, filters,
 // onboarding form, and seed script.
 
 export const SPECIALTIES = [
@@ -47,7 +47,7 @@ export function initials(name: string): string {
     .join("");
 }
 
-// Deterministic avatar hue per expert (used for the initials avatar).
+// Deterministic avatar hue per AI pro (used for the initials avatar).
 export function avatarHue(seed: string): number {
   let h = 0;
   for (let i = 0; i < seed.length; i++) h = (h * 31 + seed.charCodeAt(i)) % 360;

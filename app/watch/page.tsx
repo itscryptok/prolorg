@@ -5,15 +5,15 @@ import WatchFeed, { type WatchExpert } from "@/components/WatchFeed";
 export const dynamic = "force-dynamic";
 
 export const metadata: Metadata = {
-  title: "Watch Expert Intros",
+  title: "Watch AI pro Intros",
   description:
-    "Swipe through Prolorg AI expert video intros — forensic analysis, genealogy trace, lab discovery, market advantage, personal AI tutoring, technical project development, and data collection & analysis. Like an expert or open their full profile.",
+    "Swipe through Prolorg AI pro video intros — forensic analysis, genealogy trace, lab discovery, market advantage, personal AI tutoring, technical project development, and data collection & analysis. Like an AI pro or open their full profile.",
   alternates: { canonical: "/watch" },
 };
 
 type Params = { [k: string]: string | string[] | undefined };
 
-// Full-screen swipeable expert viewer. Data is mapped through a local
+// Full-screen swipeable AI pro viewer. Data is mapped through a local
 // interface so the page is insulated from generated-client drift.
 export default async function WatchPage({
   searchParams,
@@ -35,8 +35,8 @@ export default async function WatchPage({
       } as never)
     : [];
 
-  // Which experts have uploaded photo/video (media bytes stay out of the
-  // list query; they are streamed per-expert by the media route).
+  // Which AI pros have uploaded photo/video (media bytes stay out of the
+  // list query; they are streamed per-AI pro by the media route).
   const mediaRows: { expertId: string; kind: string }[] = db
     ? await (
         db as unknown as {
@@ -56,7 +56,7 @@ export default async function WatchPage({
   const experts: WatchExpert[] = (rows as unknown as Record<string, unknown>[]).map((r) => ({
     id: String(r.id ?? ""),
     slug: String(r.slug ?? ""),
-    name: String(r.name ?? "Prolorg expert"),
+    name: String(r.name ?? "Prolorg AI pro"),
     headline: String(r.headline ?? ""),
     specialty: String(r.specialty ?? (Array.isArray(r.specialties) ? r.specialties[0] : "") ?? ""),
     skills: Array.isArray(r.skills) ? (r.skills as string[]) : [],

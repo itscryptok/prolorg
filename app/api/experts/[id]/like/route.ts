@@ -41,7 +41,7 @@ export async function POST(
 
   const likesCount = await adjustLikes(id, delta);
   if (likesCount === null) {
-    return NextResponse.json({ error: "Expert not found." }, { status: 404 });
+    return NextResponse.json({ error: "AI pro not found." }, { status: 404 });
   }
   return NextResponse.json({ likesCount });
 }

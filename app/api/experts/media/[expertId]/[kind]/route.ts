@@ -14,7 +14,7 @@ type MediaDelegate = {
 
 const KINDS = new Set(["photo", "video"]);
 
-// Serves an expert's uploaded photo or intro video binary.
+// Serves an AI pro's uploaded photo or intro video binary.
 // Supports single-range requests so <video> can seek.
 export async function GET(
   req: Request,
