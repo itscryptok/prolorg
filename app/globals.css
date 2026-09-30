@@ -96,6 +96,14 @@ html[data-theme="light"] .site-header .header-mobile-actions,
 html[data-theme="light"] .mobile-panel a {
   text-shadow: 0 1px 3px rgba(255, 255, 255, 0.85);
 }
+/* Mobile: thinner, smaller diagonals in the header corner. */
+@media (max-width: 640px) {
+  .brand-bars {
+    width: 150px;
+    top: -6px;
+    left: -14px;
+  }
+}
 .brand {
   display: inline-flex;
   align-items: center;
