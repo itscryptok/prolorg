@@ -1,9 +1,11 @@
 "use client";
 
 import Link from "next/link";
+import { usePathname, useRouter } from "next/navigation";
 import { useState } from "react";
 import LogoMark from "./LogoMark";
 import ThemeToggle from "./ThemeToggle";
+import { useFilterPanel } from "./FilterPanelContext";
 
 const NAV_LINKS = [
   { href: "/experts", label: "Find Experts" },
@@ -12,19 +14,11 @@ const NAV_LINKS = [
   { href: "/login", label: "Login" },
 ];
 
-// Sticky site header: logo left, quick icons (browse / filter) between the
-// logo and the menu, nav center/right, theme toggle below the nav on desktop
-// and left of the hamburger on mobile, orange Sign Up pill,
+// Sticky site header: logo left, filter toggle icon between the logo and the
+// menu (opens the advanced-search panel on /experts, highlighted while open),
+// nav center/right, theme toggle below the nav on desktop and left of the
+// hamburger on mobile, orange Sign Up pill,
 // hamburger menu with slide-out panel on mobile.
-function PlayIcon() {
-  return (
-    <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor"
-      strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
-      <polygon points="6 3 20 12 6 21 6 3" />
-    </svg>
-  );
-}
-
 function FilterIcon() {
   return (
     <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor"
@@ -36,6 +30,23 @@ function FilterIcon() {
 
 export default function SiteHeader() {
   const [open, setOpen] = useState(false);
+  const pathname = usePathname();
+  const router = useRouter();
+  const {
+    open: filtersOpen,
+    toggle: toggleFilters,
+    setOpen: setFiltersOpen,
+  } = useFilterPanel();
+
+  const onFilterClick = () => {
+    if (pathname === "/experts") {
+      toggleFilters();
+    } else {
+      // From any other page: go to the directory with the panel open.
+      setFiltersOpen(true);
+      router.push("/experts");
+    }
+  };
 
   return (
     <header className="site-header">
@@ -44,13 +55,17 @@ export default function SiteHeader() {
           <LogoMark size={34} />
           <span className="brand-name">Prolorg</span>
         </Link>
-        <div className="header-icons" aria-label="Quick links">
-          <Link href="/experts" aria-label="Browse experts" title="Browse experts">
-            <PlayIcon />
-          </Link>
-          <Link href="/experts#filters" aria-label="Filter experts" title="Filter experts">
+        <div className="header-icons" aria-label="Search tools">
+          <button
+            type="button"
+            onClick={onFilterClick}
+            aria-label={filtersOpen ? "Hide search filters" : "Show search filters"}
+            title="Filter experts"
+            aria-expanded={filtersOpen}
+            className={filtersOpen ? "active" : undefined}
+          >
             <FilterIcon />
-          </Link>
+          </button>
         </div>
         <div className="header-menu-col">
           <nav className="site-nav" aria-label="Primary">

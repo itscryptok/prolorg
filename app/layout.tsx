@@ -3,6 +3,7 @@ import { SITE_NAME, SITE_TAGLINE, SITE_URL } from "@/lib/site";
 import Splash from "@/components/Splash";
 import SiteHeader from "@/components/SiteHeader";
 import SiteFooter from "@/components/SiteFooter";
+import { FilterPanelProvider } from "@/components/FilterPanelContext";
 import "./globals.css";
 
 const DESCRIPTION =
@@ -101,8 +102,10 @@ export default function RootLayout({
       </head>
       <body>
         <Splash />
-        <SiteHeader />
-        <main>{children}</main>
+        <FilterPanelProvider>
+          <SiteHeader />
+          <main>{children}</main>
+        </FilterPanelProvider>
         <SiteFooter />
       </body>
     </html>

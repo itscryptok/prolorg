@@ -1,15 +1,28 @@
 "use client";
 
 import { useRouter, useSearchParams } from "next/navigation";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { SPECIALTIES, AVAILABILITY_OPTIONS } from "@/lib/experts";
+import { useFilterPanel } from "./FilterPanelContext";
 
-// Filter controls for /experts. Updates URL search params so filtered views
-// are shareable; the server component re-queries on each change.
+// Filter controls for /experts. Hidden until the header filter icon toggles
+// the panel open. Updates URL search params so filtered views are shareable;
+// the server component re-queries on each change.
 export default function FilterBar({ total }: { total: number }) {
   const router = useRouter();
   const params = useSearchParams();
   const [q, setQ] = useState(params.get("q") ?? "");
+  const { open, setOpen } = useFilterPanel();
+
+  const hasFilters = [...params.keys()].length > 0;
+
+  // A shared/bookmarked link with filter params opens the panel on load so
+  // the active filters are visible.
+  useEffect(() => {
+    if (hasFilters) setOpen(true);
+  }, [hasFilters, setOpen]);
+
+  if (!open) return null;
 
   const set = (key: string, value: string) => {
     const next = new URLSearchParams(params.toString());
@@ -22,8 +35,6 @@ export default function FilterBar({ total }: { total: number }) {
     setQ("");
     router.push("/experts#filters", { scroll: false });
   };
-
-  const hasFilters = [...params.keys()].length > 0;
 
   return (
     <form

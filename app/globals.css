@@ -133,20 +133,34 @@ a:hover { color: #dcf77e; }
 }
 .mobile-panel a:last-child { border-bottom: none; }
 
-/* Quick icons between the logo and the menu (browse + filter). */
+/* Quick icons between the logo and the menu (filter toggle). */
 .header-icons {
   display: flex;
   align-items: center;
   gap: 1.25rem;
   margin-left: 2.5rem;
 }
-.header-icons a {
+.header-icons a,
+.header-icons button {
   display: inline-flex;
+  align-items: center;
+  justify-content: center;
   color: var(--ink);
   line-height: 0;
-  transition: color 0.12s ease, transform 0.12s ease;
+  background: none;
+  border: none;
+  padding: 0.35rem;
+  border-radius: 10px;
+  cursor: pointer;
+  font: inherit;
+  transition: color 0.12s ease, transform 0.12s ease, background 0.12s ease;
 }
-.header-icons a:hover { color: var(--orange); transform: translateY(-1px); }
+.header-icons a:hover,
+.header-icons button:hover { color: var(--orange); transform: translateY(-1px); }
+.header-icons button.active {
+  color: var(--orange);
+  background: var(--line);
+}
 
 /* ---------- Theme toggle + header placement ---------- */
 .theme-toggle {
