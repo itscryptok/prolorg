@@ -78,10 +78,9 @@ export default function FilterBar({ total }: { total: number }) {
             aria-label="Filter by maximum hourly rate"
           >
             <option value="">Any rate</option>
+            <option value="25">Up to $25/hr</option>
             <option value="50">Up to $50/hr</option>
-            <option value="100">Up to $100/hr</option>
-            <option value="200">Up to $200/hr</option>
-            <option value="500">Up to $500/hr</option>
+            <option value="75">Up to $75/hr</option>
           </select>
         </label>
         <label className="filter-field">

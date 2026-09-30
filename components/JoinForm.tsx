@@ -100,11 +100,11 @@ export default function JoinForm() {
       <div className="join-grid-3">
         <label className={input}>
           <span>Hourly rate (USD)</span>
-          <input name="hourlyRate" type="number" min={0} step={1} placeholder="150" inputMode="numeric" />
+          <input name="hourlyRate" type="number" min={0} step={1} placeholder="45" inputMode="numeric" />
         </label>
         <label className={input}>
           <span>Project rate from (USD)</span>
-          <input name="projectRate" type="number" min={0} step={1} placeholder="900" inputMode="numeric" />
+          <input name="projectRate" type="number" min={0} step={1} placeholder="350" inputMode="numeric" />
         </label>
         <label className={input}>
           <span>Years of experience</span>
