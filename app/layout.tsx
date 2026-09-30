@@ -6,7 +6,7 @@ import SiteFooter from "@/components/SiteFooter";
 import "./globals.css";
 
 const DESCRIPTION =
-  "Prolorg — the AI expert marketplace. Hire an AI expert for forensic analysis, genealogy traces, lab discovery, market advantage, a personal AI tutor, technical project development, or skilled data collection and analysis. Don't hire the AI. It burns your time and your token. Hire an expert.";
+  "Prolorg — the AI expert marketplace. Hire an AI expert for forensic analysis, genealogy traces, lab discovery, market advantage, a personal AI tutor, technical project development, or skilled data collection and analysis. Hire an expert instead. Not the AI. See why.";
 
 export const metadata: Metadata = {
   metadataBase: new URL(SITE_URL),

@@ -3,7 +3,7 @@ interface LogoMarkProps {
   title?: string;
 }
 
-// Prolorg logo mark: geometric shield in deep blue with an orange "P".
+// Prolorg logo mark: royal-blue shield with gold outline and gold "P".
 export default function LogoMark({ size = 36, title = "Prolorg logo" }: LogoMarkProps) {
   return (
     <svg
@@ -16,12 +16,12 @@ export default function LogoMark({ size = 36, title = "Prolorg logo" }: LogoMark
     >
       <path
         d="M32 3 55 12v18c0 14.5-9.8 25.4-23 31C18.8 55.4 9 44.5 9 30V12L32 3z"
-        fill="#1e3a8a"
+        fill="#1e40af"
       />
       <path
         d="M32 3 55 12v18c0 14.5-9.8 25.4-23 31C18.8 55.4 9 44.5 9 30V12L32 3z"
         fill="none"
-        stroke="#3b82f6"
+        stroke="#f5a623"
         strokeWidth="2.5"
       />
       <text
@@ -31,7 +31,7 @@ export default function LogoMark({ size = 36, title = "Prolorg logo" }: LogoMark
         fontFamily="Segoe UI, system-ui, sans-serif"
         fontWeight="900"
         fontSize="30"
-        fill="#c8f04a"
+        fill="#f5a623"
       >
         P
       </text>
