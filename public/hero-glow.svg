@@ -1,0 +1,36 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 720 320" role="img" aria-label="Prolorg shield motif with orange and blue glow">
+  <defs>
+    <radialGradient id="orangeGlow" cx="50%" cy="50%" r="50%">
+      <stop offset="0%" stop-color="#ffa500" stop-opacity="0.55"/>
+      <stop offset="60%" stop-color="#ffa500" stop-opacity="0.12"/>
+      <stop offset="100%" stop-color="#ffa500" stop-opacity="0"/>
+    </radialGradient>
+    <radialGradient id="blueGlow" cx="50%" cy="50%" r="50%">
+      <stop offset="0%" stop-color="#1e3a8a" stop-opacity="0.8"/>
+      <stop offset="70%" stop-color="#1e3a8a" stop-opacity="0.15"/>
+      <stop offset="100%" stop-color="#1e3a8a" stop-opacity="0"/>
+    </radialGradient>
+    <linearGradient id="cardEdge" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#ffa500" stop-opacity="0.5"/>
+      <stop offset="100%" stop-color="#3b82f6" stop-opacity="0.5"/>
+    </linearGradient>
+  </defs>
+  <rect width="720" height="320" fill="#0a0a0a"/>
+  <circle cx="360" cy="160" r="190" fill="url(#orangeGlow)"/>
+  <circle cx="200" cy="90" r="130" fill="url(#blueGlow)"/>
+  <circle cx="540" cy="240" r="140" fill="url(#blueGlow)"/>
+  <g transform="translate(360,160)">
+    <path d="M0 -78 L62 -52 V6 C62 52 -27 86 -62 100 C-97 86 -62 52 -62 6 V-52 Z" fill="#1e3a8a" stroke="url(#cardEdge)" stroke-width="3"/>
+    <text x="0" y="38" text-anchor="middle" font-family="Segoe UI, system-ui, sans-serif" font-weight="900" font-size="72" fill="#ffa500">P</text>
+  </g>
+  <g font-family="Segoe UI, system-ui, sans-serif" font-size="13" font-weight="700" fill="#a1a1a1">
+    <rect x="96" y="216" width="150" height="34" rx="17" fill="#161616" stroke="#ffa500" stroke-opacity="0.35"/>
+    <text x="171" y="238" text-anchor="middle" fill="#ffa500">FORENSIC AI</text>
+    <rect x="474" y="70" width="150" height="34" rx="17" fill="#161616" stroke="#ffa500" stroke-opacity="0.35"/>
+    <text x="549" y="92" text-anchor="middle" fill="#ffa500">AI TUTOR</text>
+    <rect x="474" y="216" width="170" height="34" rx="17" fill="#161616" stroke="#3b82f6" stroke-opacity="0.5"/>
+    <text x="559" y="238" text-anchor="middle" fill="#ffffff">DATA ANALYST</text>
+    <rect x="76" y="70" width="170" height="34" rx="17" fill="#161616" stroke="#3b82f6" stroke-opacity="0.5"/>
+    <text x="161" y="92" text-anchor="middle" fill="#ffffff">GENEALOGY</text>
+  </g>
+</svg>

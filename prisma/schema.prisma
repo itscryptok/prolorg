@@ -1,0 +1,127 @@
+// Prolorg — Phase 1 data model (forward-looking; Phase 1 needs no live DB).
+//
+// Conventions:
+// - Every table has a UUID primary key and createdAt.
+// - Client/expert roles are enforced in application code.
+// - Messages may be flagged by the contact-evasion detection checks;
+//   flagged messages are reviewed by admins.
+// - ContactUnlock records a paid one-time fee unlocking direct contact
+//   sharing for one client-expert Conversation.
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+enum Role {
+  CLIENT
+  EXPERT
+  ADMIN
+}
+
+enum HireStatus {
+  OPEN
+  AGREED
+  CONFIRMED
+  COMPLETED
+  CANCELLED
+}
+
+model User {
+  id           String    @id @default(uuid())
+  email        String    @unique
+  name         String
+  role         Role      @default(CLIENT)
+  passwordHash String?
+  createdAt    DateTime  @default(now())
+
+  expertProfile ExpertProfile?
+
+  clientConversations Conversation[] @relation("ClientConversations")
+  expertConversations Conversation[] @relation("ExpertConversations")
+
+  sentMessages Message[]
+  paidUnlocks  ContactUnlock[] @relation("PaidUnlocks")
+}
+
+model ExpertProfile {
+  id           String   @id @default(uuid())
+  userId       String   @unique
+  user         User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  headline     String
+  bio          String
+  city         String?
+  country      String?
+  specialties  String[]
+  portfolio    Json?
+  hourlyRate   Int?
+  availability String?
+  ratingAvg    Float    @default(0)
+  createdAt    DateTime @default(now())
+}
+
+model Conversation {
+  id              String   @id @default(uuid())
+  clientId        String
+  client          User     @relation("ClientConversations", fields: [clientId], references: [id], onDelete: Cascade)
+  expertId        String
+  expert          User     @relation("ExpertConversations", fields: [expertId], references: [id], onDelete: Cascade)
+  unlockedContact Boolean  @default(false)
+  createdAt       DateTime @default(now())
+
+  messages     Message[]
+  hireRequests HireRequest[]
+  unlocks      ContactUnlock[]
+
+  @@unique([clientId, expertId])
+}
+
+model Message {
+  id             String       @id @default(uuid())
+  conversationId String
+  conversation   Conversation @relation(fields: [conversationId], references: [id], onDelete: Cascade)
+  senderId       String
+  sender         User         @relation(fields: [senderId], references: [id], onDelete: Cascade)
+  body           String
+  flagged        Boolean      @default(false)
+  createdAt      DateTime     @default(now())
+
+  @@index([conversationId, createdAt])
+}
+
+model HireRequest {
+  id             String       @id @default(uuid())
+  conversationId String
+  conversation   Conversation @relation(fields: [conversationId], references: [id], onDelete: Cascade)
+  scope          String
+  price          Int
+  status         HireStatus   @default(OPEN)
+  createdAt      DateTime     @default(now())
+
+  reviews Review[]
+}
+
+model Review {
+  id            String      @id @default(uuid())
+  hireRequestId String
+  hireRequest   HireRequest @relation(fields: [hireRequestId], references: [id], onDelete: Cascade)
+  rating        Int
+  comment       String?
+  createdAt     DateTime    @default(now())
+}
+
+model ContactUnlock {
+  id             String       @id @default(uuid())
+  conversationId String
+  conversation   Conversation @relation(fields: [conversationId], references: [id], onDelete: Cascade)
+  paidById       String
+  paidBy         User         @relation("PaidUnlocks", fields: [paidById], references: [id], onDelete: Cascade)
+  amountCents    Int
+  createdAt      DateTime     @default(now())
+
+  @@unique([conversationId])
+}

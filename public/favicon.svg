@@ -1,0 +1,5 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64">
+  <path d="M32 3 55 12v18c0 14.5-9.8 25.4-23 31C18.8 55.4 9 44.5 9 30V12L32 3z" fill="#1e3a8a"/>
+  <path d="M32 3 55 12v18c0 14.5-9.8 25.4-23 31C18.8 55.4 9 44.5 9 30V12L32 3z" fill="none" stroke="#3b82f6" stroke-width="2.5"/>
+  <text x="32" y="43" text-anchor="middle" font-family="Segoe UI, system-ui, sans-serif" font-weight="900" font-size="30" fill="#ffa500">P</text>
+</svg>
