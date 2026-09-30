@@ -90,26 +90,6 @@ export default function HomePage() {
     <>
       {/* 1. Hero */}
       <section className="hero">
-        <div className="hero-pattern" aria-hidden="true">
-          <svg viewBox="0 0 1440 620" preserveAspectRatio="xMidYMid slice" focusable="false">
-            <path
-              className="blob"
-              d="M720 -40 C 860 -30 960 60 950 170 C 940 280 820 350 715 330 C 610 310 570 200 615 105 C 645 45 675 -45 720 -40 Z"
-            />
-            <path
-              className="blob"
-              d="M1210 90 C 1340 110 1430 220 1410 335 C 1390 450 1275 505 1185 475 C 1095 445 1065 330 1105 230 C 1130 160 1155 82 1210 90 Z"
-            />
-            <path
-              className="blob"
-              d="M105 380 C 205 360 305 430 295 525 C 285 620 180 665 100 635 C 20 605 -12 500 20 440 C 42 398 62 388 105 380 Z"
-            />
-            <path
-              className="blob-lime"
-              d="M520 470 C 600 460 660 520 655 585 C 650 650 580 680 520 665 C 460 650 435 590 450 540 C 460 508 480 475 520 470 Z"
-            />
-          </svg>
-        </div>
         <div className="container">
           <span className="eyebrow">THE AI EXPERT MARKETPLACE</span>
           <h1>
