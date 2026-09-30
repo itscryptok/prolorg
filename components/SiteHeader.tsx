@@ -23,6 +23,12 @@ export default function SiteHeader() {
 
   return (
     <header className="site-header">
+      <img
+        src="/black-fade-bars.png"
+        alt=""
+        aria-hidden="true"
+        className="brand-bars"
+      />
       <div className="container site-header-inner">
         <Link href="/" className="brand" aria-label="Prolorg home">
           <LogoMark size={34} />

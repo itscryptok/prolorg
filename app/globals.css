@@ -62,6 +62,20 @@ a:hover { color: #dcf77e; }
   align-items: center;
   gap: 1rem;
   height: 68px;
+  position: relative;
+  z-index: 1;
+}
+/* Decorative black fade bars behind the logo, top-left corner,
+   extending a little beyond the logo area. */
+.brand-bars {
+  position: absolute;
+  top: -10px;
+  left: -28px;
+  width: 300px;
+  height: auto;
+  pointer-events: none;
+  z-index: 0;
+  opacity: 0.85;
 }
 .brand {
   display: inline-flex;
