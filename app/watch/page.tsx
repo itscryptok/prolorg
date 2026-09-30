@@ -70,6 +70,7 @@ export default async function WatchPage({
     country: typeof r.country === "string" ? r.country : null,
     ratingAvg: typeof r.ratingAvg === "number" ? r.ratingAvg : 0,
     reviewCount: typeof r.reviewCount === "number" ? r.reviewCount : 0,
+    likesCount: typeof r.likesCount === "number" ? r.likesCount : 0,
   })).filter((e) => e.slug);
 
   return (

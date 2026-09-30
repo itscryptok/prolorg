@@ -133,24 +133,7 @@ a:hover { color: #dcf77e; }
 }
 .mobile-panel a:last-child { border-bottom: none; }
 
-/* Quick icons between the logo and the menu (watch feed). */
-.header-icons {
-  display: flex;
-  align-items: center;
-  gap: 1.25rem;
-  margin-left: 2.5rem;
-}
-.header-icons a {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  color: var(--ink);
-  line-height: 0;
-  transition: color 0.12s ease, transform 0.12s ease;
-}
-.header-icons a:hover { color: var(--orange); transform: translateY(-1px); }
-
-/* Experts toolbar: result count left, filter toggle far right. */
+/* Experts toolbar: result count left, quick icons far right. */
 .experts-toolbar {
   display: flex;
   align-items: center;
@@ -162,6 +145,11 @@ a:hover { color: #dcf77e; }
   color: var(--ink-dim);
   font-size: 0.92rem;
   font-weight: 600;
+}
+.experts-tools {
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
 }
 .filter-toggle {
   display: inline-flex;
@@ -175,6 +163,7 @@ a:hover { color: #dcf77e; }
   border-radius: 10px;
   cursor: pointer;
   font: inherit;
+  text-decoration: none;
   transition: color 0.12s ease, transform 0.12s ease, background 0.12s ease, border-color 0.12s ease;
 }
 .filter-toggle:hover { color: var(--orange); border-color: var(--orange); transform: translateY(-1px); }
@@ -664,6 +653,114 @@ html[data-theme="light"] .join-input textarea:focus {
   background: #000;
   border: 1px solid var(--line);
 }
+
+/* Admin (unlisted /admin, REMU-style password gate). */
+.admin-wrap { padding-top: 2.5rem; padding-bottom: 4rem; max-width: 880px; }
+.admin-gate { max-width: 420px; margin: 0 auto; }
+.admin-gate h1 { font-size: 1.9rem; margin: 0 0 0.4rem; }
+.admin-sub { color: var(--ink-dim); margin: 0 0 1.5rem; }
+.admin-form { display: flex; flex-direction: column; gap: 1rem; }
+.admin-password-wrap { position: relative; display: block; }
+.admin-password-wrap input { padding-right: 2.75rem; }
+.admin-eye {
+  position: absolute;
+  right: 0.5rem;
+  top: 50%;
+  transform: translateY(-50%);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 2rem;
+  height: 2rem;
+  color: var(--ink-dim);
+  background: none;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+}
+.admin-eye:hover { color: var(--orange); }
+.admin-top {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 1rem;
+  margin-bottom: 1.75rem;
+}
+.admin-top h1 { font-size: 1.9rem; margin: 0 0 0.4rem; }
+.admin-list { display: flex; flex-direction: column; gap: 1.5rem; }
+.admin-card {
+  display: flex;
+  gap: 1.25rem;
+  background: var(--bg-soft);
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  padding: 1.25rem;
+}
+.admin-card-media { flex: 0 0 96px; }
+.admin-card-media img {
+  width: 96px;
+  height: 96px;
+  object-fit: cover;
+  border-radius: 18px;
+  border: 1px solid var(--line);
+}
+.admin-card-avatar {
+  width: 96px;
+  height: 96px;
+  border-radius: 18px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 900;
+  font-size: 1.8rem;
+  color: #fff;
+  background: linear-gradient(135deg, var(--orange), #b3541e);
+}
+.admin-card-body { flex: 1; min-width: 0; }
+.admin-card-head { display: flex; justify-content: space-between; gap: 1rem; }
+.admin-card-head h2 { margin: 0.4rem 0 0.15rem; font-size: 1.35rem; }
+.admin-headline { color: var(--ink-dim); margin: 0; }
+.admin-date { flex: 0 0 auto; color: var(--ink-dim); font-size: 0.82rem; }
+.admin-bio { margin: 0.9rem 0; white-space: pre-wrap; }
+.admin-facts {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.4rem 1.1rem;
+  color: var(--ink-dim);
+  font-size: 0.9rem;
+  margin-bottom: 0.8rem;
+}
+.admin-card .skill-chips { margin: 0 0 0.9rem; }
+.admin-video {
+  width: 100%;
+  max-width: 420px;
+  border-radius: 12px;
+  background: #000;
+  border: 1px solid var(--line);
+  margin-bottom: 1rem;
+}
+.admin-actions { display: flex; flex-wrap: wrap; gap: 0.7rem; }
+.btn-danger {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  font: inherit;
+  font-weight: 800;
+  padding: 0.8rem 1.6rem;
+  border-radius: 999px;
+  border: 1px solid #e5484d;
+  color: #e5484d;
+  background: transparent;
+  cursor: pointer;
+  text-decoration: none;
+  transition: background 0.15s ease, color 0.15s ease, transform 0.15s ease;
+}
+.btn-danger:hover { background: #e5484d; color: #fff; transform: translateY(-1px); }
+@media (max-width: 640px) {
+  .admin-card { flex-direction: column; }
+  .admin-card-media { flex: none; }
+}
 .profile-head h1 { margin: 0.6rem 0 0.3rem; font-size: clamp(1.8rem, 4vw, 2.5rem); font-weight: 900; }
 .profile-headline { color: var(--ink-dim); font-size: 1.1rem; margin: 0 0 0.75rem; }
 .profile-facts { display: flex; flex-wrap: wrap; gap: 0.5rem 1.25rem; color: var(--ink-dim); font-size: 0.92rem; align-items: center; }
@@ -773,14 +870,16 @@ html[data-theme="light"] .form-ok { color: #15803d; }
 .watch-mute:hover { color: var(--orange); border-color: var(--orange); transform: scale(1.06); }
 .watch-photo-fallback {
   display: flex;
-  align-items: center;
+  align-items: flex-start;
   justify-content: center;
+  padding-top: 16%;
 }
 .watch-photo-fallback span {
   color: rgba(255, 255, 255, 0.92);
   font-weight: 900;
-  font-size: 6rem;
+  font-size: 5rem;
   letter-spacing: 0.02em;
+  line-height: 1;
 }
 .watch-shade {
   position: absolute;
@@ -835,6 +934,19 @@ html[data-theme="light"] .form-ok { color: #15803d; }
   display: flex;
   flex-direction: column;
   gap: 0.9rem;
+}
+.watch-like-wrap {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.15rem;
+}
+.watch-like-count {
+  color: #ffffff;
+  font-size: 0.78rem;
+  font-weight: 800;
+  text-shadow: 0 1px 6px rgba(0, 0, 0, 0.6);
+  line-height: 1;
 }
 .watch-action {
   width: 52px;
@@ -959,7 +1071,6 @@ html[data-theme="light"] .watch-stage { border-color: rgba(0, 0, 0, 0.12); }
 @media (max-width: 640px) {
   .site-nav { display: none; }
   .header-menu-col { display: none; }
-  .header-icons { margin-left: 1.25rem; gap: 1rem; }
   .header-mobile-actions {
     display: flex;
     align-items: center;

@@ -74,6 +74,7 @@ model ExpertProfile {
   ratingAvg       Float    @default(0)
   reviewCount     Int      @default(0)
   completedJobs   Int      @default(0)
+  likesCount      Int      @default(0) // hearts tapped in /watch
   status          String   @default("PENDING") // PENDING | APPROVED | REJECTED
   isSample        Boolean  @default(false)     // seed data, removable
   createdAt       DateTime @default(now())

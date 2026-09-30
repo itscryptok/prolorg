@@ -99,3 +99,25 @@
   `COUNT(*) FROM "ExpertProfile" WHERE status='APPROVED'` next.
 - `/login`, `/signup` remain stubs (Phase 3: auth + inbox + hiring).
 - Profile "Message expert" CTA points to `/signup` until accounts exist.
+
+## 2026-09-30 — Filter toolbar, onboarding uploads, video playback (0155d39)
+- Header now has only the play icon (→ /watch). Filter funnel moved to the
+  /experts toolbar (far right, above listing cards); toggles the panel, active
+  highlight, count shown left. New `components/FilterToggle.tsx`.
+- `ExpertMedia` table (migration 0002): expertId + kind (PHOTO|VIDEO) unique,
+  mime, data BYTEA, cascade delete. Media stored in Postgres so uploads survive
+  deploys without extra storage services.
+- `/join` now accepts profile photo (image/*, 5 MB) and intro video (video/*,
+  25 MB) with client previews; `POST /api/experts` switched from JSON to
+  multipart/form-data with type/size validation; profiles still PENDING.
+- `GET /api/experts/media/[expertId]/[kind]` streams bytes with Content-Type,
+  Accept-Ranges, and single-range (206) support for video seeking.
+- `/watch` plays uploaded intro videos (autoplay muted, loop, tap/speaker btn
+  to unmute); uploaded photos preferred over photoUrl; profile pages show the
+  uploaded photo + an "Intro video" section.
+- Live-verified 2026-09-30: /watch 200 (proves migration 0002 applied),
+  /experts 200 (one filter-toggle, none in header), /join 200, API 400s for
+  bad photo type and missing fields, and a 201 happy-path upload.
+- TEST ROW: PENDING profile slug "test" (name "Test", junk bio) created during
+  the live happy-path test. Invisible publicly (only APPROVED listed). Remove
+  it when the admin approval interface is built.

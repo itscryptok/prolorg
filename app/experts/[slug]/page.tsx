@@ -62,6 +62,27 @@ export default async function ExpertProfilePage({
   const legacyPhotoUrl = (expert as unknown as { photoUrl?: string | null }).photoUrl ?? null;
   const photoSrc = uploadedPhotoUrl ?? legacyPhotoUrl;
 
+  // In-progress hires: hire requests agreed/confirmed but not yet completed.
+  // (Raw SQL: local Prisma client is stale; production regenerates it.)
+  const inProgressJobs: number = db
+    ? Number(
+        (
+          await (
+            db as unknown as {
+              $queryRawUnsafe(query: string, ...params: unknown[]): Promise<{ count: number }[]>;
+            }
+          ).$queryRawUnsafe(
+            `SELECT COUNT(*)::int AS count FROM "HireRequest" h
+             JOIN "Conversation" c ON c."id" = h."conversationId"
+             JOIN "User" u ON u."id" = c."expertId"
+             JOIN "ExpertProfile" e ON e."userId" = u."id"
+             WHERE e."id" = $1 AND h."status" IN ('AGREED', 'CONFIRMED')`,
+            expert.id
+          )
+        )[0]?.count ?? 0
+      )
+    : 0;
+
   return (
     <div className="container">
       <nav className="crumbs" aria-label="Breadcrumb">
@@ -150,6 +171,8 @@ export default async function ExpertProfilePage({
               )}
               <dt>Jobs completed</dt>
               <dd>{expert.completedJobs}</dd>
+              <dt>In progress</dt>
+              <dd>{inProgressJobs}</dd>
             </dl>
             <Link href="/signup" className="btn btn-orange profile-cta">
               Message expert

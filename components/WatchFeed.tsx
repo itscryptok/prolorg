@@ -22,6 +22,7 @@ export interface WatchExpert {
   country: string | null;
   ratingAvg: number;
   reviewCount: number;
+  likesCount: number;
 }
 
 const LIKES_KEY = "prolorg-likes";
@@ -123,6 +124,9 @@ export default function WatchFeed({
     return found >= 0 ? found : 0;
   });
   const [likes, setLikes] = useState<Set<string>>(() => new Set());
+  const [likeCounts, setLikeCounts] = useState<Record<string, number>>(() =>
+    Object.fromEntries(experts.map((e) => [e.id, e.likesCount]))
+  );
   const [muted, setMuted] = useState(true);
   const touchX = useRef<number | null>(null);
 
@@ -156,22 +160,36 @@ export default function WatchFeed({
     return () => window.removeEventListener("keydown", onKey);
   }, [prev, next]);
 
-  const toggleLike = useCallback(
-    (slug: string) => {
-      setLikes((prevLikes) => {
-        const nextLikes = new Set(prevLikes);
-        if (nextLikes.has(slug)) nextLikes.delete(slug);
-        else nextLikes.add(slug);
-        try {
-          localStorage.setItem(LIKES_KEY, JSON.stringify([...nextLikes]));
-        } catch {
-          /* private mode — like just won't persist */
-        }
-        return nextLikes;
-      });
-    },
-    []
-  );
+  // Heart: toggles the local liked state and keeps the public count on the
+  // server in sync (per-browser de-dupe via localStorage).
+  const toggleLike = useCallback((slug: string, id: string) => {
+    setLikes((prevLikes) => {
+      const nextLikes = new Set(prevLikes);
+      const liking = !nextLikes.has(slug);
+      if (liking) nextLikes.add(slug);
+      else nextLikes.delete(slug);
+      try {
+        localStorage.setItem(LIKES_KEY, JSON.stringify([...nextLikes]));
+      } catch {
+        /* private mode — like just won't persist */
+      }
+      fetch(`/api/experts/${id}/like`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ delta: liking ? 1 : -1 }),
+      })
+        .then((r) => (r.ok ? r.json() : null))
+        .then((j) => {
+          if (j && typeof j.likesCount === "number") {
+            setLikeCounts((prev) => ({ ...prev, [id]: j.likesCount }));
+          }
+        })
+        .catch(() => {
+          /* count sync is best-effort; the heart state is local */
+        });
+      return nextLikes;
+    });
+  }, []);
 
   if (!experts.length) {
     return (
@@ -263,16 +281,21 @@ export default function WatchFeed({
         )}
 
         <div className="watch-rail">
-          <button
-            type="button"
-            className={`watch-action${liked ? " liked" : ""}`}
-            aria-pressed={liked}
-            aria-label={liked ? `Unlike ${expert.name}` : `Like ${expert.name}`}
-            title="Like this expert"
-            onClick={() => toggleLike(expert.slug)}
-          >
-            <HeartIcon filled={liked} />
-          </button>
+          <div className="watch-like-wrap">
+            <button
+              type="button"
+              className={`watch-action${liked ? " liked" : ""}`}
+              aria-pressed={liked}
+              aria-label={liked ? `Unlike ${expert.name}` : `Like ${expert.name}`}
+              title="Like this expert"
+              onClick={() => toggleLike(expert.slug, expert.id)}
+            >
+              <HeartIcon filled={liked} />
+            </button>
+            <span className="watch-like-count" aria-label={`${likeCounts[expert.id] ?? 0} likes`}>
+              {likeCounts[expert.id] ?? 0}
+            </span>
+          </div>
           <Link
             href={`/experts/${expert.slug}`}
             className="watch-action"

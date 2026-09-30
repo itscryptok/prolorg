@@ -7,8 +7,8 @@ export default function robots(): MetadataRoute.Robots {
       {
         userAgent: "*",
         allow: "/",
-        // Auth and stub pages should not be crawled.
-        disallow: ["/login", "/signup", "/api/"],
+        // Auth, stub, and admin pages should not be crawled.
+        disallow: ["/login", "/signup", "/admin", "/api/"],
       },
     ],
     sitemap: `${SITE_URL}/sitemap.xml`,
