@@ -15,11 +15,11 @@ export default function LogoMark({ size = 36, title = "Prolorg logo" }: LogoMark
       focusable="false"
     >
       <path
-        d="M32 3 55 12v18c0 14.5-9.8 25.4-23 31C18.8 55.4 9 44.5 9 30V12L32 3z"
+        d="M32 4 L54 13 V30 C54 44 46 53.5 33.5 58.5 Q32 59.8 30.5 58.5 C18 53.5 10 44 10 30 V13 Z"
         fill="#1e40af"
       />
       <path
-        d="M32 3 55 12v18c0 14.5-9.8 25.4-23 31C18.8 55.4 9 44.5 9 30V12L32 3z"
+        d="M32 4 L54 13 V30 C54 44 46 53.5 33.5 58.5 Q32 59.8 30.5 58.5 C18 53.5 10 44 10 30 V13 Z"
         fill="none"
         stroke="#f5a623"
         strokeWidth="2.5"

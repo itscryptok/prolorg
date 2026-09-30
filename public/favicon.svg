@@ -1,5 +1,5 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64">
-  <path d="M32 3 55 12v18c0 14.5-9.8 25.4-23 31C18.8 55.4 9 44.5 9 30V12L32 3z" fill="#1e40af"/>
-  <path d="M32 3 55 12v18c0 14.5-9.8 25.4-23 31C18.8 55.4 9 44.5 9 30V12L32 3z" fill="none" stroke="#f5a623" stroke-width="2.5"/>
+  <path d="M32 4 L54 13 V30 C54 44 46 53.5 33.5 58.5 Q32 59.8 30.5 58.5 C18 53.5 10 44 10 30 V13 Z" fill="#1e40af"/>
+  <path d="M32 4 L54 13 V30 C54 44 46 53.5 33.5 58.5 Q32 59.8 30.5 58.5 C18 53.5 10 44 10 30 V13 Z" fill="none" stroke="#f5a623" stroke-width="2.5"/>
   <text x="32" y="43" text-anchor="middle" font-family="Segoe UI, system-ui, sans-serif" font-weight="900" font-size="30" fill="#f5a623">P</text>
 </svg>
