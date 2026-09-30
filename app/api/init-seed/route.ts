@@ -216,7 +216,7 @@ export async function POST(req: NextRequest) {
           city: e.city,
           country: e.country,
           yearsExperience: e.yearsExperience,
-          ratingAvg: e.rating,
+          ratingAvg: e.ratingAvg,
           reviewCount: e.reviews,
           completedJobs: e.jobs,
           status: "APPROVED",
