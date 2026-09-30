@@ -1,7 +1,7 @@
 "use client";
 
 import Link from "next/link";
-import { useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import LogoMark from "./LogoMark";
 import ThemeToggle from "./ThemeToggle";
 import WatchLink from "./WatchLink";
@@ -20,10 +20,34 @@ const NAV_LINKS = [
 // on the /experts toolbar, above the cards.)
 export default function SiteHeader() {
   const [open, setOpen] = useState(false);
+  const barsRef = useRef<HTMLImageElement | null>(null);
+
+  // The header is sticky, but the decorative bars should scroll away with
+  // the page instead of staying pinned to the viewport. Counteract the
+  // header's stickiness by translating the bars up with the scroll offset.
+  useEffect(() => {
+    const el = barsRef.current;
+    if (!el) return;
+    let raf = 0;
+    const update = () => {
+      raf = 0;
+      el.style.transform = `translateY(${-window.scrollY}px)`;
+    };
+    const onScroll = () => {
+      if (!raf) raf = requestAnimationFrame(update);
+    };
+    update();
+    window.addEventListener("scroll", onScroll, { passive: true });
+    return () => {
+      window.removeEventListener("scroll", onScroll);
+      if (raf) cancelAnimationFrame(raf);
+    };
+  }, []);
 
   return (
     <header className="site-header">
       <img
+        ref={barsRef}
         src="/black-fade-bars.png"
         alt=""
         aria-hidden="true"
