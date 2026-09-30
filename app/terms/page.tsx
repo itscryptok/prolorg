@@ -89,7 +89,7 @@ export default function TermsPage() {
       <h2>10. Changes and contact</h2>
       <p>
         We may update these terms; continued use of AiProlice after changes
-        means you accept them. Questions: contact us at hello@prolorg.app.
+        means you accept them. Questions: contact us at support@aiprolice.com.
       </p>
     </article>
   );

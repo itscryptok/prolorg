@@ -72,7 +72,7 @@ export default function RootLayout({
         url: SITE_URL,
         description: DESCRIPTION,
         logo: `${SITE_URL}/apple-touch-icon.png`,
-        sameAs: ["https://x.com/prolorg"],
+        sameAs: ["https://x.com/aiprolice"],
       },
       {
         "@type": "WebSite",

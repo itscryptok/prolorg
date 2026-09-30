@@ -16,7 +16,7 @@ export default function PrivacyPage() {
       <h2>Who operates AiProlice</h2>
       <p>
         AiProlice is operated by Cryp Tok Solutions. Contact:
-        hello@prolorg.app.
+        support@aiprolice.com.
       </p>
 
       <h2>What we collect</h2>
@@ -43,7 +43,7 @@ export default function PrivacyPage() {
       <h2>Your rights</h2>
       <p>
         You may request access to, correction of, or deletion of your personal
-        data at any time by contacting hello@prolorg.app. You may also
+        data at any time by contacting support@aiprolice.com. You may also
         withdraw consent for data processing, subject to legal and
         contractual limits.
       </p>
