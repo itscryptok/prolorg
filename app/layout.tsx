@@ -85,6 +85,13 @@ export default function RootLayout({
   return (
     <html lang="en">
       <head>
+        {/* Apply saved day/night theme before first paint (no flash) */}
+        <script
+          dangerouslySetInnerHTML={{
+            __html:
+              "(function(){try{var t=localStorage.getItem('prolorg-theme');if(t==='light'||t==='dark'){document.documentElement.setAttribute('data-theme',t);}}catch(e){}})();",
+          }}
+        />
         {/* Hero visual preload for fastest first paint */}
         <link rel="preload" href="/hero-glow.svg" as="image" type="image/svg+xml" />
         <script

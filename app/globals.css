@@ -132,6 +132,99 @@ a:hover { color: #ffc14d; }
 }
 .mobile-panel a:last-child { border-bottom: none; }
 
+/* ---------- Theme toggle + header placement ---------- */
+.theme-toggle {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  background: transparent;
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  border-radius: 10px;
+  color: var(--ink);
+  padding: 0.5rem;
+  line-height: 0;
+  cursor: pointer;
+}
+.theme-toggle:hover { border-color: var(--orange); color: var(--orange); }
+/* Desktop: toggle sits below the nav menu, right-aligned. */
+.header-menu-col {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 0.3rem;
+  margin-left: auto;
+}
+.header-menu-col .site-nav { margin-left: 0; }
+.theme-toggle-desktop { padding: 0.35rem; }
+/* Mobile: toggle sits left of the hamburger. */
+.header-mobile-actions { display: none; }
+
+/* ---------- Day mode (light theme: white + pink-red) ---------- */
+html[data-theme="light"] {
+  --bg: #ffffff;
+  --bg-soft: #fff5f7;
+  --bg-card: #ffffff;
+  --ink: #141414;
+  --ink-dim: #5c5c5c;
+  --orange: #e11d48;
+  --orange-deep: #be123c;
+  --line: rgba(225, 29, 72, 0.25);
+}
+html[data-theme="light"] body { background: var(--bg); color: var(--ink); }
+html[data-theme="light"] a { color: var(--orange-deep); }
+html[data-theme="light"] a:hover { color: var(--orange); }
+html[data-theme="light"] :focus-visible { outline-color: var(--orange); }
+html[data-theme="light"] .site-header {
+  background: rgba(255, 255, 255, 0.94);
+  border-bottom: 1px solid rgba(0, 0, 0, 0.08);
+}
+html[data-theme="light"] .theme-toggle { border-color: rgba(0, 0, 0, 0.2); color: var(--ink); }
+html[data-theme="light"] .theme-toggle:hover { border-color: var(--orange); color: var(--orange); }
+html[data-theme="light"] .site-nav a { color: var(--ink-dim); }
+html[data-theme="light"] .site-nav a:hover { color: var(--ink); }
+html[data-theme="light"] .btn-orange { background: var(--orange); color: #ffffff; }
+html[data-theme="light"] .btn-orange:hover {
+  background: var(--orange-deep);
+  color: #ffffff;
+  box-shadow: 0 6px 24px rgba(225, 29, 72, 0.35);
+}
+html[data-theme="light"] .btn-outline { border-color: var(--orange); color: var(--orange-deep); background: transparent; }
+html[data-theme="light"] .btn-outline:hover { background: rgba(225, 29, 72, 0.08); color: var(--orange-deep); }
+html[data-theme="light"] .menu-button { border-color: rgba(0, 0, 0, 0.2); color: var(--ink); }
+html[data-theme="light"] .mobile-panel { background: #ffffff; border-top: 1px solid rgba(0, 0, 0, 0.08); }
+html[data-theme="light"] .mobile-panel a { color: var(--ink); border-bottom: 1px solid rgba(0, 0, 0, 0.06); }
+html[data-theme="light"] .eyebrow { color: var(--orange-deep); }
+html[data-theme="light"] .hero h1 .accent { color: var(--orange); }
+html[data-theme="light"] .stats-band {
+  border-top: 1px solid rgba(0, 0, 0, 0.08);
+  border-bottom: 1px solid rgba(0, 0, 0, 0.08);
+}
+html[data-theme="light"] .card,
+html[data-theme="light"] .track {
+  border: 1px solid #f3d7df;
+  box-shadow: 0 2px 12px rgba(225, 29, 72, 0.06);
+}
+html[data-theme="light"] #why .card { border-left: 2px solid var(--orange); }
+html[data-theme="light"] .card .pill { color: var(--orange-deep); }
+html[data-theme="light"] .track h3 { color: var(--orange-deep); }
+html[data-theme="light"] .step-num { background: var(--orange); color: #ffffff; }
+html[data-theme="light"] .notice {
+  border: 1px solid rgba(225, 29, 72, 0.4);
+  background: #fff1f4;
+  color: #9f1239;
+}
+html[data-theme="light"] .notice strong { color: var(--orange-deep); }
+html[data-theme="light"] .cta-band {
+  background: linear-gradient(135deg, #fff1f4 0%, #ffffff 60%);
+  border-top: 1px solid var(--line);
+  border-bottom: 1px solid var(--line);
+}
+html[data-theme="light"] .site-footer,
+html[data-theme="light"] .footer-bottom { border-top: 1px solid rgba(0, 0, 0, 0.08); }
+html[data-theme="light"] .legal h2 { color: var(--orange-deep); }
+html[data-theme="light"] .splash { background: #ffffff; }
+html[data-theme="light"] .splash-bar { background: rgba(0, 0, 0, 0.08); }
+
 /* ---------- Hero ---------- */
 .hero {
   padding: 4.5rem 0 3.5rem;
@@ -372,6 +465,14 @@ a:hover { color: #ffc14d; }
 }
 @media (max-width: 640px) {
   .site-nav { display: none; }
+  .header-menu-col { display: none; }
+  .header-mobile-actions {
+    display: flex;
+    align-items: center;
+    gap: 0.6rem;
+    margin-left: auto;
+  }
+  .header-mobile-actions .menu-button { margin-left: 0; }
   .menu-button { display: inline-block; }
   .cards { grid-template-columns: 1fr; }
   .stats-band-inner { grid-template-columns: 1fr; gap: 1.5rem; }

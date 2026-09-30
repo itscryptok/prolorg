@@ -3,6 +3,7 @@
 import Link from "next/link";
 import { useState } from "react";
 import LogoMark from "./LogoMark";
+import ThemeToggle from "./ThemeToggle";
 
 const NAV_LINKS = [
   { href: "/experts", label: "Find Experts" },
@@ -23,26 +24,32 @@ export default function SiteHeader() {
           <LogoMark size={34} />
           <span className="brand-name">Prolorg</span>
         </Link>
-        <nav className="site-nav" aria-label="Primary">
-          {NAV_LINKS.map((link) => (
-            <Link key={link.href} href={link.href}>
-              {link.label}
+        <div className="header-menu-col">
+          <nav className="site-nav" aria-label="Primary">
+            {NAV_LINKS.map((link) => (
+              <Link key={link.href} href={link.href}>
+                {link.label}
+              </Link>
+            ))}
+            <Link href="/signup" className="btn btn-orange" style={{ padding: "0.55rem 1.4rem" }}>
+              Sign Up
             </Link>
-          ))}
-          <Link href="/signup" className="btn btn-orange" style={{ padding: "0.55rem 1.4rem" }}>
-            Sign Up
-          </Link>
-        </nav>
-        <button
-          type="button"
-          className="menu-button"
-          aria-expanded={open}
-          aria-controls="mobile-menu"
-          aria-label={open ? "Close menu" : "Open menu"}
-          onClick={() => setOpen((v) => !v)}
-        >
-          {open ? "✕" : "☰"}
-        </button>
+          </nav>
+          <ThemeToggle className="theme-toggle-desktop" />
+        </div>
+        <div className="header-mobile-actions">
+          <ThemeToggle className="theme-toggle-mobile" />
+          <button
+            type="button"
+            className="menu-button"
+            aria-expanded={open}
+            aria-controls="mobile-menu"
+            aria-label={open ? "Close menu" : "Open menu"}
+            onClick={() => setOpen((v) => !v)}
+          >
+            {open ? "✕" : "☰"}
+          </button>
+        </div>
       </div>
       <nav
         id="mobile-menu"
