@@ -74,7 +74,7 @@ export default async function ExpertsPage({
         <p className="eyebrow">Expert directory</p>
         <h1>Find your AI expert</h1>
         <p className="section-lead" style={{ marginBottom: 0 }}>
-          Hire an expert instead. Not the AI. Browse
+          Hire an expert. Not the AI. Browse
           vetted experts by specialty, compare rates and availability, and hire
           through the Prolorg inbox — no bidding, no exposed emails.
         </p>

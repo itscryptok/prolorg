@@ -93,7 +93,7 @@ export default function HomePage() {
         <div className="container">
           <span className="eyebrow">THE AI EXPERT MARKETPLACE</span>
           <h1>
-            Hire an expert instead. Not the AI.{" "}
+            Hire an expert. Not the AI.{" "}
             <span className="accent">
               <a href="#why">See why.</a>
             </span>
@@ -144,7 +144,7 @@ export default function HomePage() {
         <div className="container">
           <h2 className="section-title">Why Prolorg</h2>
           <p className="section-lead">
-            Hire an expert instead. Not the AI.
+            Hire an expert. Not the AI.
           </p>
           <div className="cards">
             {WHY_POINTS.map((point) => (
