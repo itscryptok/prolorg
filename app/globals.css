@@ -17,6 +17,9 @@
   --bad: #f87171;
   --radius: 16px;
   --font: "Segoe UI", system-ui, -apple-system, Roboto, "Helvetica Neue", Arial, sans-serif;
+  /* Hero background pattern tints (subtle; keep text contrast intact). */
+  --hero-blob: rgba(255, 255, 255, 0.07);
+  --hero-blob-lime: rgba(200, 240, 74, 0.05);
 }
 
 * { box-sizing: border-box; }
@@ -233,6 +236,8 @@ html[data-theme="light"] {
   --orange: #e11d48;
   --orange-deep: #be123c;
   --line: rgba(225, 29, 72, 0.25);
+  --hero-blob: rgba(20, 20, 20, 0.05);
+  --hero-blob-lime: rgba(225, 29, 72, 0.05);
 }
 html[data-theme="light"] body { background: var(--bg); color: var(--ink); }
 html[data-theme="light"] a { color: var(--orange-deep); }
@@ -291,8 +296,28 @@ html[data-theme="light"] .splash-bar { background: rgba(0, 0, 0, 0.08); }
 
 /* ---------- Hero ---------- */
 .hero {
+  position: relative;
+  overflow: hidden;
   padding: 4.5rem 0 3.5rem;
   text-align: center;
+}
+/* Soft organic blob pattern behind the hero copy (reference-style). */
+.hero-pattern {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  filter: blur(28px);
+}
+.hero-pattern svg {
+  width: 100%;
+  height: 100%;
+  display: block;
+}
+.hero-pattern .blob { fill: var(--hero-blob); }
+.hero-pattern .blob-lime { fill: var(--hero-blob-lime); }
+.hero .container {
+  position: relative;
+  z-index: 1;
 }
 .eyebrow {
   display: inline-block;
