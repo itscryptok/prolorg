@@ -94,14 +94,22 @@ export default function SiteHeader() {
         className={`mobile-panel${open ? " open" : ""}`}
         aria-label="Mobile"
       >
-        {NAV_LINKS.map((link) => (
+        <Link href="/#why" onClick={() => setOpen(false)}>
+          Why AiProlice
+        </Link>
+        {NAV_LINKS.filter((link) => link.href !== "/login").map((link) => (
           <Link key={link.href} href={link.href} onClick={() => setOpen(false)}>
             {link.label}
           </Link>
         ))}
-        <Link href="/signup" onClick={() => setOpen(false)}>
-          Sign Up
-        </Link>
+        <div className="mobile-panel-auth">
+          <Link href="/login" onClick={() => setOpen(false)}>
+            Login
+          </Link>
+          <Link href="/signup" onClick={() => setOpen(false)}>
+            Sign Up
+          </Link>
+        </div>
       </nav>
     </header>
   );

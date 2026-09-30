@@ -182,6 +182,27 @@ html[data-theme="light"] .site-nav a.btn-orange:hover { color: #ffffff; }
   border-bottom: 1px solid rgba(255, 255, 255, 0.06);
 }
 .mobile-panel a:last-child { border-bottom: none; }
+/* Login + Sign Up share one row at the bottom of the mobile menu. */
+.mobile-panel-auth {
+  display: flex;
+  align-items: center;
+  gap: 0.9rem;
+  padding: 0.7rem 0;
+}
+.mobile-panel-auth a {
+  border-bottom: none;
+  padding: 0;
+}
+html[data-theme="light"] .mobile-panel-auth a {
+  border-bottom: none;
+}
+.mobile-panel-auth a + a {
+  border-left: 1px solid rgba(255, 255, 255, 0.25);
+  padding-left: 0.9rem;
+}
+html[data-theme="light"] .mobile-panel-auth a + a {
+  border-left-color: rgba(0, 0, 0, 0.18);
+}
 
 /* Experts toolbar: result count left, quick icons far right. */
 .experts-toolbar {
