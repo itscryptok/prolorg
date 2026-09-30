@@ -41,6 +41,24 @@ a:hover { color: #dcf77e; }
   border-radius: 4px;
 }
 
+/* Keyboard/screen-reader skip link: hidden until focused. */
+.skip-link {
+  position: absolute;
+  left: 1rem;
+  top: -4rem;
+  z-index: 100;
+  background: var(--orange);
+  color: #000;
+  font-weight: 700;
+  padding: 0.6rem 1.1rem;
+  border-radius: 999px;
+  transition: top 0.15s ease;
+}
+.skip-link:focus-visible {
+  top: 1rem;
+  outline-color: #000;
+}
+
 .container {
   width: 100%;
   max-width: 1120px;

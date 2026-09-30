@@ -62,6 +62,30 @@ export default async function ExpertProfilePage({
   const legacyPhotoUrl = (expert as unknown as { photoUrl?: string | null }).photoUrl ?? null;
   const photoSrc = uploadedPhotoUrl ?? legacyPhotoUrl;
 
+  const jsonLd = {
+    "@context": "https://schema.org",
+    "@type": "ProfilePage",
+    dateCreated: expert.createdAt?.toISOString?.() ?? undefined,
+    mainEntity: {
+      "@type": "Person",
+      name: expert.name,
+      description: expert.bio,
+      jobTitle: expert.headline,
+      knowsAbout: expert.skills,
+      ...(location ? { address: location } : {}),
+      ...(photoSrc ? { image: photoSrc } : {}),
+      ...(expert.reviewCount > 0
+        ? {
+            aggregateRating: {
+              "@type": "AggregateRating",
+              ratingValue: expert.ratingAvg,
+              reviewCount: expert.reviewCount,
+            },
+          }
+        : {}),
+    },
+  };
+
   // In-progress hires: hire requests agreed/confirmed but not yet completed.
   // (Raw SQL: local Prisma client is stale; production regenerates it.)
   const inProgressJobs: number = db
@@ -85,6 +109,10 @@ export default async function ExpertProfilePage({
 
   return (
     <div className="container">
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
+      />
       <nav className="crumbs" aria-label="Breadcrumb">
         <Link href="/experts">AI pros</Link>
         <span aria-hidden="true"> / </span>
