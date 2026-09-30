@@ -3,6 +3,7 @@
 import { useState } from "react";
 import Link from "next/link";
 import { SPECIALTIES, AVAILABILITY_OPTIONS } from "@/lib/experts";
+import CaptureField from "@/components/CaptureField";
 
 const input = "join-input";
 
@@ -14,22 +15,8 @@ type Status = { ok: boolean; message: string } | null;
 export default function JoinForm() {
   const [status, setStatus] = useState<Status>(null);
   const [busy, setBusy] = useState(false);
-  const [photoPreview, setPhotoPreview] = useState<string | null>(null);
-  const [videoName, setVideoName] = useState<string | null>(null);
-
-  function onPhotoChange(e: React.ChangeEvent<HTMLInputElement>) {
-    const file = e.target.files?.[0];
-    setPhotoPreview((prev) => {
-      if (prev) URL.revokeObjectURL(prev);
-      return null;
-    });
-    if (file) setPhotoPreview(URL.createObjectURL(file));
-  }
-
-  function onVideoChange(e: React.ChangeEvent<HTMLInputElement>) {
-    const file = e.target.files?.[0];
-    setVideoName(file ? `${file.name} (${(file.size / 1024 / 1024).toFixed(1)} MB)` : null);
-  }
+  // Bumped after a successful submit so captured media resets with the form.
+  const [formKey, setFormKey] = useState(0);
 
   async function onSubmit(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault();
@@ -48,8 +35,7 @@ export default function JoinForm() {
           "Profile received — it's now pending review. We'll list it in the directory once approved.",
       });
       (e.target as HTMLFormElement).reset();
-      setPhotoPreview(null);
-      setVideoName(null);
+      setFormKey((k) => k + 1);
     } catch (err) {
       setStatus({ ok: false, message: err instanceof Error ? err.message : "Something went wrong." });
     } finally {
@@ -135,20 +121,24 @@ export default function JoinForm() {
       </div>
 
       <div className="join-grid">
-        <label className={input}>
-          <span>Profile photo</span>
-          <input type="file" name="photo" accept="image/*" onChange={onPhotoChange} />
-          <small className="join-hint">Square works best. Max 5 MB.</small>
-          {photoPreview && (
-            <img src={photoPreview} alt="Photo preview" className="join-photo-preview" />
-          )}
-        </label>
-        <label className={input}>
-          <span>Intro video</span>
-          <input type="file" name="video" accept="video/*" onChange={onVideoChange} />
-          <small className="join-hint">Short clip introducing yourself — plays in the Watch feed. Max 25 MB.</small>
-          {videoName && <span className="join-file-name">{videoName}</span>}
-        </label>
+        <div className={input}>
+          <CaptureField
+            key={`photo-${formKey}`}
+            name="photo"
+            label="Profile photo"
+            hint="Square works best. Take one with your camera or upload a file. Max 5 MB."
+            accept="image/*"
+          />
+        </div>
+        <div className={input}>
+          <CaptureField
+            key={`video-${formKey}`}
+            name="video"
+            label="Intro video"
+            hint="Short clip introducing yourself — plays in the Watch feed. Record up to 60 seconds or upload. Max 25 MB."
+            accept="video/*"
+          />
+        </div>
       </div>
 
       <div className="notice">
