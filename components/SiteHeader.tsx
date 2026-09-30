@@ -12,8 +12,28 @@ const NAV_LINKS = [
   { href: "/login", label: "Login" },
 ];
 
-// Sticky site header: logo left, nav center/right, orange Sign Up pill,
+// Sticky site header: logo left, quick icons (browse / filter) between the
+// logo and the menu, nav center/right, theme toggle below the nav on desktop
+// and left of the hamburger on mobile, orange Sign Up pill,
 // hamburger menu with slide-out panel on mobile.
+function PlayIcon() {
+  return (
+    <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+      <polygon points="6 3 20 12 6 21 6 3" />
+    </svg>
+  );
+}
+
+function FilterIcon() {
+  return (
+    <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+      <polygon points="22 3 2 3 10 12.5 10 19 14 21 14 12.5 22 3" />
+    </svg>
+  );
+}
+
 export default function SiteHeader() {
   const [open, setOpen] = useState(false);
 
@@ -24,6 +44,14 @@ export default function SiteHeader() {
           <LogoMark size={34} />
           <span className="brand-name">Prolorg</span>
         </Link>
+        <div className="header-icons" aria-label="Quick links">
+          <Link href="/experts" aria-label="Browse experts" title="Browse experts">
+            <PlayIcon />
+          </Link>
+          <Link href="/experts#filters" aria-label="Filter experts" title="Filter experts">
+            <FilterIcon />
+          </Link>
+        </div>
         <div className="header-menu-col">
           <nav className="site-nav" aria-label="Primary">
             {NAV_LINKS.map((link) => (

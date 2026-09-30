@@ -1,8 +1,8 @@
-# Render blueprint for Prolorg (Phase 1).
+# Render blueprint for Prolorg (Phase 2).
 #
-# Hosting plan: free "sleepy" web service (sleeps after 15 min idle).
-# Phase 1 needs NO database — the Prisma schema is forward-looking for Phase 2+,
-# which will wire the shared paid Postgres (same pattern as REMU's DynaSleepy).
+# Hosting plan: free "sleepy" web service (sleeps after 15 min idle) + a
+# SEPARATE `prolorg` database on the existing paid Postgres server (emus-db).
+# Same $6/mo server, no extra cost; REMU's database is untouched.
 #
 # Nothing here is provisioned until you deploy this repo on Render.
 
@@ -11,7 +11,7 @@ services:
     name: prolorg
     runtime: node
     plan: free # sleepy: sleeps after 15 min idle; upgrade to `starter` ($7/mo) to keep awake
-    buildCommand: npm install && npx prisma generate && npm run build # npm install (not ci): no lockfile is generated in this sandbox; Render's network reaches the registry
+    buildCommand: npm install && npx prisma generate && if [ -n "$DATABASE_URL" ]; then npx prisma migrate deploy; fi && npm run build # npm install (not ci): no lockfile is generated in this sandbox; Render's network reaches the registry
     startCommand: npm start
     healthCheckPath: /
     envVars:
@@ -21,3 +21,5 @@ services:
         value: https://prolorg.onrender.com # change to your domain when you add one
       - key: NEXT_PUBLIC_SITE_URL
         value: https://prolorg.onrender.com # change to your domain when you add one
+      # DATABASE_URL is set manually in the Render dashboard (secret): the
+      # emus-db external/internal URL with the dbname swapped to `prolorg`.

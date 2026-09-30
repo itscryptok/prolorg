@@ -104,7 +104,7 @@ export default function HomePage() {
           </p>
           <div className="hero-ctas">
             <Link href="/experts" className="btn btn-orange">Browse experts</Link>
-            <Link href="/signup" className="btn btn-outline">Join as an expert</Link>
+            <Link href="/join" className="btn btn-outline">Join as an expert</Link>
           </div>
           <div className="hero-visual">
             {/* eslint-disable-next-line @next/next/no-img-element */}

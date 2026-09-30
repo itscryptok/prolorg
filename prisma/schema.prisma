@@ -1,4 +1,9 @@
-// Prolorg — Phase 1 data model (forward-looking; Phase 1 needs no live DB).
+// Prolorg — Phase 2 data model.
+//
+// Phase 2 (expert discovery) runs WITHOUT user accounts: ExpertProfile.userId
+// is optional and gets linked when authentication lands in Phase 3.
+// Conversation / Message / HireRequest / Review / ContactUnlock tables are
+// created now so the Phase 3 inbox builds on the same database.
 //
 // Conventions:
 // - Every table has a UUID primary key and createdAt.
@@ -49,19 +54,33 @@ model User {
 }
 
 model ExpertProfile {
-  id           String   @id @default(uuid())
-  userId       String   @unique
-  user         User     @relation(fields: [userId], references: [id], onDelete: Cascade)
-  headline     String
-  bio          String
-  city         String?
-  country      String?
-  specialties  String[]
-  portfolio    Json?
-  hourlyRate   Int?
-  availability String?
-  ratingAvg    Float    @default(0)
-  createdAt    DateTime @default(now())
+  id              String   @id @default(uuid())
+  userId          String?  @unique // linked in Phase 3 when accounts exist
+  user            User?    @relation(fields: [userId], references: [id], onDelete: SetNull)
+  slug            String   @unique
+  name            String
+  photoUrl        String?
+  headline        String
+  bio             String   @db.Text
+  specialty       String   // one of the 8 expert categories
+  skills          String[]
+  hourlyRate      Int?     // USD per hour
+  projectRate     Int?     // USD starting project price
+  availability    String?  // e.g. "Available now", "1–2 weeks", "Booked until Dec"
+  city            String?
+  country         String?
+  languages       String[]
+  yearsExperience Int?
+  ratingAvg       Float    @default(0)
+  reviewCount     Int      @default(0)
+  completedJobs   Int      @default(0)
+  status          String   @default("PENDING") // PENDING | APPROVED | REJECTED
+  isSample        Boolean  @default(false)     // seed data, removable
+  createdAt       DateTime @default(now())
+  updatedAt       DateTime @updatedAt
+
+  @@index([specialty, status])
+  @@index([status, ratingAvg])
 }
 
 model Conversation {
