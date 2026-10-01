@@ -378,7 +378,7 @@ function ExpertsPanel() {
                   🚩 {e.flagCount} flag{e.flagCount === 1 ? "" : "s"}
                 </span>
                 {e.flagCount >= FLAG_THRESHOLD && (
-                  <span className="pill pill-red">threshold reached</span>
+                  <span className="pill pill-red">needs your review</span>
                 )}
                 <span className="pill">{e.status}</span>
                 {e.isDeactivated && <span className="pill pill-red">Deactivated</span>}
