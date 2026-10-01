@@ -6,9 +6,13 @@
 -- Also removes the junk PENDING test profile (slug 'test').
 
 -- New hire statuses used by the Big/MVP hire flow.
-ALTER TYPE "HireStatus" ADD VALUE IF NOT EXISTS 'REQUESTED';
-ALTER TYPE "HireStatus" ADD VALUE IF NOT EXISTS 'ACCEPTED';
-ALTER TYPE "HireStatus" ADD VALUE IF NOT EXISTS 'IN_PROGRESS';
+-- NOTE: the ALTER TYPE ... ADD VALUE statements for REQUESTED / ACCEPTED /
+-- IN_PROGRESS intentionally live OUTSIDE this migration. Postgres forbids
+-- ALTER TYPE ... ADD VALUE inside a transaction block, and `prisma migrate
+-- deploy` wraps every migration in one transaction, so keeping them here
+-- fails the Render build. They are added idempotently (IF NOT EXISTS) by
+-- scripts/ensure-hire-status-values.mjs, which the Render buildCommand runs
+-- BEFORE `prisma migrate deploy` (each statement auto-commits).
 
 -- Sessions: the session token lives in an httpOnly cookie; only its
 -- SHA-256 hash is stored here.
