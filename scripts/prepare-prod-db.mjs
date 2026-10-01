@@ -43,7 +43,12 @@ async function main() {
     return;
   }
 
-  const client = new Client({ connectionString: url });
+  const client = new Client({
+    connectionString: url,
+    // Render Postgres requires TLS; Prisma enables it automatically but raw
+    // `pg` does not. rejectUnauthorized:false accepts Render's cert chain.
+    ssl: { rejectUnauthorized: false },
+  });
   await client.connect();
   let isProlorgDb = dbname === "prolorg";
   if (!isProlorgDb) {
