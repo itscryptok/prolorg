@@ -55,8 +55,10 @@ Then reveals the site. (Reference site has this — replicate the feel, not a co
    - FOR CLIENTS: 1 "Browse expert profiles" (search by specialty, skill, availability);
      2 "Open the inbox" (message the expert directly inside Prolorg);
      3 "Hire through the platform" (agree scope and price, confirm, get the work done).
-     Notice box: "Direct contact (email, phone) unlocks with a one-time fee per expert.
-     Sharing contact details to dodge the fee gets your account blocked — our checks catch
+     Notice box: "Direct contact (email, phone) unlocks with a one-time fee per
+     client/AI pro pair — either side can pay, and payment from either side unlocks
+     the pair. (Fee amount TBD by Yemi; Stripe not yet connected.) Sharing contact
+     details to dodge the fee gets your account blocked — our checks catch
      spelled-out numbers, 'at gmail dot com' tricks, and other workarounds."
    - FOR EXPERTS: 1 "Create your profile" (bio, specialties, portfolio, rates, availability);
      2 "Get discovered" (clients find you by what you do best); 3 "Get hired" (chat, agree terms, deliver).

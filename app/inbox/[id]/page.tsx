@@ -2,6 +2,7 @@
 
 import { useCallback, useEffect, useState } from "react";
 import Link from "next/link";
+import ContactUnlockPopover from "@/components/ContactUnlockPopover";
 
 type Thread = {
   id: string;
@@ -293,7 +294,6 @@ export default function ThreadPage({ params }: { params: Promise<{ id: string }>
   const [warning, setWarning] = useState<string | null>(null);
   const [error, setError] = useState<string | null>(null);
   const [loading, setLoading] = useState(true);
-  const [unlockNote, setUnlockNote] = useState(false);
 
   useEffect(() => {
     params.then((p) => setId(p.id));
@@ -389,25 +389,13 @@ export default function ThreadPage({ params }: { params: Promise<{ id: string }>
               {thread.myRole === "CLIENT" && (
                 <NewHireForm conversationId={thread.id} onDone={load} />
               )}
-              <button
-                type="button"
-                className="btn btn-outline"
-                onClick={() => setUnlockNote((v) => !v)}
-                aria-expanded={unlockNote}
-              >
-                Share direct contact
-              </button>
+              <ContactUnlockPopover
+                myName={thread.myRole === "CLIENT" ? thread.clientName : thread.expertName}
+                otherName={thread.myRole === "CLIENT" ? thread.expertName : thread.clientName}
+                unlocked={thread.unlockedContact}
+              />
             </div>
           </div>
-
-          {unlockNote && (
-            <div className="notice" role="note">
-              <strong>Paid unlock — coming soon.</strong> Direct contact sharing
-              unlocks with a one-time fee per client/AI pro pair, paid through
-              Stripe. Stripe isn&apos;t connected yet, so contact sharing stays
-              locked — keep chatting here in the meantime.
-            </div>
-          )}
 
           {hires.length > 0 && (
             <section aria-label="Hire requests" className="hire-list">
@@ -475,7 +463,8 @@ export default function ThreadPage({ params }: { params: Promise<{ id: string }>
           <p className="fine-print">
             Keep contact details out of the chat — sharing emails or phone
             numbers here can get your account blocked. Direct contact unlocks
-            with a paid one-time fee (coming soon).
+            for this client/AI pro pair with a paid one-time fee (coming
+            soon) — tap &ldquo;Share direct contact&rdquo; above for details.
           </p>
         </>
       )}

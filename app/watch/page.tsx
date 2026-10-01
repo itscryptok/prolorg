@@ -29,7 +29,7 @@ export default async function WatchPage({
   // build time); the query is valid against the real schema.
   const rows = db
     ? await db.expertProfile.findMany({
-        where: { status: "APPROVED" },
+        where: { status: "APPROVED", isDeactivated: false },
         orderBy: [{ ratingAvg: "desc" }, { reviewCount: "desc" }],
         take: 60,
       } as never)

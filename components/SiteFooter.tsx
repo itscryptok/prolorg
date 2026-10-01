@@ -24,7 +24,7 @@ export default function SiteFooter() {
               <span className="brand-name">AiProlice</span>
             </div>
             <p className="footer-tag">
-              Find your AI pro. Partner with or hire a vetted AI pro and
+              Find your AI pro. Partner with or hire an AI pro and
               get the work done through a private platform inbox.
             </p>
           </div>

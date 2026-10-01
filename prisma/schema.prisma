@@ -113,6 +113,8 @@ model ExpertProfile {
   reviewCount     Int      @default(0)
   completedJobs   Int      @default(0)
   likesCount      Int      @default(0) // hearts tapped in /watch
+  flagCount       Int      @default(0) // "Flag this pro" reports (one per browser)
+  isDeactivated   Boolean  @default(false) // hidden from /experts + /watch while true
   status          String   @default("PENDING") // PENDING | APPROVED | REJECTED
   isSample        Boolean  @default(false)     // seed data, removable
   createdAt       DateTime @default(now())

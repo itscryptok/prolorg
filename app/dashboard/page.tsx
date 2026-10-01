@@ -112,15 +112,18 @@ export default function DashboardPage() {
       {profile && (
         <>
           <p className="admin-sub">
-            Editing <strong>{profile.name}</strong> · {profile.specialty} ·{" "}
-            <span className="pill">{profile.status}</span>{" "}
-            {profile.status === "PENDING" && (
-              <span>— your profile goes public once approved.</span>
-            )}
-            {profile.status === "APPROVED" && profile.slug && (
-              <span>
-                — <Link href={`/experts/${profile.slug}`}>view public profile</Link>
-              </span>
+            Editing <strong>{profile.name}</strong> · {profile.specialty}{" "}
+            {profile.status === "PENDING" ? (
+              <span>— under review; your profile goes public once approved.</span>
+            ) : (
+              <>
+                <span className="pill">{profile.status}</span>{" "}
+                {profile.slug && (
+                  <span>
+                    — <Link href={`/experts/${profile.slug}`}>view public profile</Link>
+                  </span>
+                )}
+              </>
             )}
           </p>
           <form onSubmit={onSubmit} className="dashboard-form">

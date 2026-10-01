@@ -1,7 +1,9 @@
 import Link from "next/link";
 import { avatarHue, formatRate, initials } from "@/lib/experts";
+import FlagButton from "./FlagButton";
 
 export type ExpertCardData = {
+  id: string;
   slug: string;
   name: string;
   headline: string;
@@ -72,9 +74,12 @@ export default function ExpertCard({ expert }: { expert: ExpertCardData }) {
         {location && <span className="loc">{location}</span>}
         {expert.completedJobs > 0 && <span>{expert.completedJobs} jobs done</span>}
       </div>
-      <Link href={watchHref} className="btn btn-outline expert-cta">
-        Watch intro
-      </Link>
+      <div className="expert-card-foot">
+        <Link href={watchHref} className="btn btn-outline expert-cta">
+          Watch intro
+        </Link>
+        <FlagButton expertId={expert.id} expertName={expert.name} />
+      </div>
     </article>
   );
 }

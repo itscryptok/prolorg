@@ -2,6 +2,7 @@
 
 import { useCallback, useEffect, useState } from "react";
 import { formatRate } from "@/lib/experts";
+import { FLAG_THRESHOLD } from "@/lib/moderation";
 
 type Pending = {
   id: string;
@@ -294,6 +295,126 @@ function PendingCard({
   );
 }
 
+type ModeratedExpert = {
+  id: string;
+  slug: string;
+  name: string;
+  headline: string;
+  specialty: string;
+  status: string;
+  flagCount: number;
+  isDeactivated: boolean;
+  createdAt: string;
+};
+
+function ExpertsPanel() {
+  const [experts, setExperts] = useState<ModeratedExpert[]>([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
+  const [busy, setBusy] = useState<string | null>(null);
+
+  const load = useCallback(async () => {
+    setLoading(true);
+    setError(null);
+    try {
+      const res = await fetch("/api/admin/experts");
+      const json = await res.json();
+      if (!res.ok) throw new Error(json.error ?? "Could not load AI pros.");
+      setExperts(json.experts ?? []);
+    } catch (err) {
+      setError(err instanceof Error ? err.message : "Could not load AI pros.");
+    } finally {
+      setLoading(false);
+    }
+  }, []);
+
+  useEffect(() => {
+    load();
+  }, [load]);
+
+  async function setDeactivated(id: string, deactivated: boolean, name: string) {
+    if (
+      deactivated &&
+      !window.confirm(`Deactivate ${name}? They'll disappear from /experts and /watch.`)
+    ) {
+      return;
+    }
+    setBusy(id);
+    setError(null);
+    try {
+      const res = await fetch(`/api/admin/experts/${id}`, {
+        method: "PATCH",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ deactivated }),
+      });
+      const json = await res.json();
+      if (!res.ok) throw new Error(json.error ?? "Action failed.");
+      await load();
+    } catch (err) {
+      setError(err instanceof Error ? err.message : "Action failed.");
+    } finally {
+      setBusy(null);
+    }
+  }
+
+  return (
+    <div>
+      {loading && <p>Loading AI pros…</p>}
+      {error && (
+        <p role="alert" className="form-error">
+          {error}
+        </p>
+      )}
+      <div className="admin-list">
+        {experts.map((e) => (
+          <article key={e.id} className="admin-card">
+            <div className="admin-card-head">
+              <div>
+                <strong>{e.name}</strong>{" "}
+                <span className="admin-sub">{e.headline}</span>
+              </div>
+              <div className="admin-card-badges">
+                <span className={`flag-count${e.flagCount >= FLAG_THRESHOLD ? " at-threshold" : ""}`}>
+                  🚩 {e.flagCount} flag{e.flagCount === 1 ? "" : "s"}
+                </span>
+                {e.flagCount >= FLAG_THRESHOLD && (
+                  <span className="pill pill-red">threshold reached</span>
+                )}
+                <span className="pill">{e.status}</span>
+                {e.isDeactivated && <span className="pill pill-red">Deactivated</span>}
+              </div>
+            </div>
+            <p className="admin-sub">
+              {e.specialty} · since {new Date(e.createdAt).toLocaleDateString()}
+            </p>
+            <div className="hire-actions">
+              {e.isDeactivated ? (
+                <button
+                  type="button"
+                  className="btn btn-orange"
+                  disabled={busy === e.id}
+                  onClick={() => setDeactivated(e.id, false, e.name)}
+                >
+                  {busy === e.id ? "Working…" : "Reactivate"}
+                </button>
+              ) : (
+                <button
+                  type="button"
+                  className="btn btn-outline"
+                  disabled={busy === e.id}
+                  onClick={() => setDeactivated(e.id, true, e.name)}
+                >
+                  {busy === e.id ? "Working…" : "Deactivate"}
+                </button>
+              )}
+            </div>
+          </article>
+        ))}
+      </div>
+    </div>
+  );
+}
+
 function ApprovalsPanel({
   pending,
   loading,
@@ -329,7 +450,7 @@ function ApprovalsPanel({
 }
 
 export default function AdminDashboard() {
-  const [tab, setTab] = useState<"approvals" | "violations">("approvals");
+  const [tab, setTab] = useState<"approvals" | "violations" | "experts">("approvals");
   const [pending, setPending] = useState<Pending[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
@@ -357,11 +478,19 @@ export default function AdminDashboard() {
     <div>
       <div className="admin-top">
         <div>
-          <h1>{tab === "approvals" ? "AI pro approvals" : "Contact-evasion violations"}</h1>
+          <h1>
+            {tab === "approvals"
+              ? "AI pro approvals"
+              : tab === "violations"
+                ? "Contact-evasion violations"
+                : "AI pro moderation"}
+          </h1>
           <p className="admin-sub">
             {tab === "approvals"
               ? `${pending.length} application${pending.length === 1 ? "" : "s"} waiting for review.`
-              : "Accounts that tried to share contact details in the inbox."}
+              : tab === "violations"
+                ? "Accounts that tried to share contact details in the inbox."
+                : `Flag counts per AI pro — ${FLAG_THRESHOLD} flags auto-deactivates.`}
           </p>
         </div>
         <button type="button" className="btn btn-outline" onClick={logout}>
@@ -388,12 +517,23 @@ export default function AdminDashboard() {
         >
           Violations
         </button>
+        <button
+          type="button"
+          role="tab"
+          aria-selected={tab === "experts"}
+          className={`admin-tab${tab === "experts" ? " selected" : ""}`}
+          onClick={() => setTab("experts")}
+        >
+          AI pros
+        </button>
       </div>
 
       {tab === "approvals" ? (
         <ApprovalsPanel pending={pending} loading={loading} error={error} reload={load} />
-      ) : (
+      ) : tab === "violations" ? (
         <ViolationsPanel />
+      ) : (
+        <ExpertsPanel />
       )}
     </div>
   );

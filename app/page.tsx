@@ -17,12 +17,12 @@ async function getStats() {
       }
     ).$queryRawUnsafe.bind(db);
     const total = Number(
-      (await raw(`SELECT COUNT(*)::int AS count FROM "ExpertProfile" WHERE status='APPROVED'`))[0]?.count ?? 0
+      (await raw(`SELECT COUNT(*)::int AS count FROM "ExpertProfile" WHERE status='APPROVED' AND "isDeactivated" = FALSE`))[0]?.count ?? 0
     );
     const fresh = Number(
       (
         await raw(
-          `SELECT COUNT(*)::int AS count FROM "ExpertProfile" WHERE status='APPROVED' AND "createdAt" >= NOW() - INTERVAL '7 days'`
+          `SELECT COUNT(*)::int AS count FROM "ExpertProfile" WHERE status='APPROVED' AND "isDeactivated" = FALSE AND "createdAt" >= NOW() - INTERVAL '7 days'`
         )
       )[0]?.count ?? 0
     );
@@ -134,10 +134,9 @@ export default async function HomePage() {
             </span>
           </h1>
           <p className="hero-sub">
-            Partner with or hire a vetted AI pro for forensic work,
-            genealogy traces, lab discovery, market advantage, a personal AI
-            tutor, technical project development, skilled data collection and
-            analysis — or any other kind of AI work.
+            Partner with an AI pro for forensics, genealogy traces, lab
+            discovery, market advantage, personal AI tutoring, technical
+            projects, data analysis — or any other AI work.
           </p>
           <div className="hero-ctas">
             <Link href="/experts" className="btn btn-orange">Browse AI pros</Link>
@@ -225,10 +224,11 @@ export default async function HomePage() {
               <StepList steps={CLIENT_STEPS} />
               <div className="notice" role="note">
                 <strong>Fair-play rule:</strong> Direct contact (email, phone)
-                unlocks with a one-time fee per AI pro. Sharing contact details
-                to dodge the fee gets your account blocked — our checks catch
-                spelled-out numbers, &lsquo;at gmail dot com&rsquo; tricks, and
-                other workarounds.
+                unlocks with a one-time fee per client/AI pro pair — either
+                side can pay, and payment from either side unlocks the pair.
+                Sharing contact details to dodge the fee gets your account
+                blocked — our checks catch spelled-out numbers, &lsquo;at gmail
+                dot com&rsquo; tricks, and other workarounds.
               </div>
             </div>
             <div className="track">
@@ -247,7 +247,7 @@ export default async function HomePage() {
             AiProlice is a talent marketplace built by Cryp Tok Solutions for the
             era of authentic connection. The best AI outcomes don&rsquo;t come
             from buying more tokens — they come from the right AI pro guiding
-            the work. On AiProlice, clients find vetted AI pros and hire them
+            the work. On AiProlice, clients find AI pros and hire them
             through a private platform inbox: no exposed emails, no outside
             links, no guesswork.
           </p>

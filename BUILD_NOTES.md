@@ -51,11 +51,16 @@
 - Turbopack is the default builder; no webpack config present.
 
 ## Unsure about
-- `HireRequest.price` currency/unit and the contact unlock fee amount —
-  product decisions for Phase 4 (needs Yemi's call on who pays: client per
-  expert, expert per client, or either side).
+- `HireRequest.price` currency/unit is decided (Int, USD). The contact unlock
+  fee MODEL is decided (2026-09-30): one-time fee per client/AI pro pair,
+  payable by either side — payment from either side unlocks the pair.
+  The unlock fee AMOUNT is still TBD — Yemi must set it in
+  `lib/unlock.ts` (`CONTACT_UNLOCK_FEE_USD`, currently `null`) before
+  payments can go live.
 - Payment provider for the unlock fee (likely Stripe — needs Yemi's own
-  account setup via browser).
+  account setup via browser). `lib/unlock.ts` `STRIPE_CONNECTED` stays
+  `false` until then; the inbox "Share direct contact" popover's pay button
+  shows a "coming soon" state meanwhile.
 
 ## Phase 2 — expert discovery (2026-09-30)
 
@@ -121,3 +126,20 @@
 - TEST ROW: PENDING profile slug "test" (name "Test", junk bio) created during
   the live happy-path test. Invisible publicly (only APPROVED listed). Remove
   it when the admin approval interface is built.
+
+## Phase 4 — flag moderation (2026-09-30)
+- `ExpertProfile.flagCount` (Int, default 0) + `isDeactivated` (Boolean,
+  default false); migration `0006_flag_moderation`.
+- "Flag this pro" button on every /experts card and every /watch video:
+  POST /api/experts/[id]/flag, one flag per browser via localStorage
+  (`lib/moderation.ts` FLAG_STORAGE_KEY) — same de-dupe approach as likes.
+- **FLAG_THRESHOLD (lib/moderation.ts) = 3 — YEMI MUST CONFIRM THE NUMBER.**
+  Reaching it auto-deactivates the pro (hidden from /experts + /watch,
+  no new conversations); Yemi also needs to confirm he wants the
+  auto-deactivation behavior at all.
+- /addy "AI pros" tab: flag count per pro (prominent, threshold badge),
+  deactivate/reactivate per expert (PATCH /api/admin/experts/[id]
+  with { deactivated }), list via GET /api/admin/experts.
+- Removed the word "vetted" from all site copy; removed the user-facing
+  "pending" label (dashboard + /join success message) — /addy approval
+  workflow itself unchanged.

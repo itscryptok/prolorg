@@ -113,7 +113,7 @@ export default function JoinForm() {
       setStatus({
         ok: true,
         message:
-          "Profile received — it's now pending review. We'll list it in the directory once approved.",
+          "Profile received — we'll list it in the directory once it's approved.",
       });
       (e.target as HTMLFormElement).reset();
       setFormKey((k) => k + 1);

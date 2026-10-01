@@ -12,7 +12,7 @@ export const dynamic = "force-dynamic";
 export const metadata: Metadata = {
   title: "Find AI pros",
   description:
-    "Browse AiProlice's directory of vetted AI pros — forensic analysis, genealogy trace, lab discovery, market advantage, personal AI tutoring, technical project development, and data collection & analysis. Filter by specialty, rate, and availability, then hire through the platform inbox.",
+    "Browse AiProlice's directory of AI pros — forensic analysis, genealogy trace, lab discovery, market advantage, personal AI tutoring, technical project development, and data collection & analysis. Filter by specialty, rate, and availability, then hire through the platform inbox.",
   alternates: { canonical: "/experts" },
 };
 
@@ -36,6 +36,8 @@ export default async function ExpertsPage({
 
   const db = getDb();
   const and: Prisma.ExpertProfileWhereInput[] = [{ status: "APPROVED" }];
+  // Deactivated pros stay hidden (cast: stale local client; valid in prod).
+  and.push({ isDeactivated: false } as never);
   if (specialty) and.push({ specialty });
   if (availability) and.push({ availability });
   if (Number.isFinite(maxRate)) {
@@ -75,7 +77,7 @@ export default async function ExpertsPage({
         <h1>Find your AI pro</h1>
         <p className="section-lead" style={{ marginBottom: 0 }}>
           Hire an AI pro. Not the AI. Browse
-          vetted AI pros by specialty, compare rates and availability, and hire
+          AI pros by specialty, compare rates and availability, and hire
           through the AiProlice inbox — no bidding, no exposed emails.
         </p>
       </div>

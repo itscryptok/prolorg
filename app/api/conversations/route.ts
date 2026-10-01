@@ -91,7 +91,7 @@ export async function POST(req: Request) {
 
   const ix = inbox(db);
   const profile = await ix.expertProfile.findFirst({
-    where: { id: body.expertProfileId, status: "APPROVED" },
+    where: { id: body.expertProfileId, status: "APPROVED", isDeactivated: false },
   });
   if (!profile) {
     return NextResponse.json({ error: "AI pro not found." }, { status: 404 });

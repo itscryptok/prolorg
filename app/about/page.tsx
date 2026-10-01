@@ -4,7 +4,7 @@ import Link from "next/link";
 export const metadata: Metadata = {
   title: "About AiProlice",
   description:
-    "About AiProlice — the AI pro marketplace by Cryp Tok Solutions. Why hiring a vetted AI pro beats burning time and tokens, and how clients hire AI pros through a private platform inbox.",
+    "About AiProlice — the AI pro marketplace by Cryp Tok Solutions. Why hiring an AI pro beats burning time and tokens, and how clients hire AI pros through a private platform inbox.",
   alternates: { canonical: "/about" },
 };
 
@@ -33,7 +33,7 @@ export default function AboutPage() {
 
       <h2>The AI pro answer</h2>
       <p>
-        On AiProlice, clients find vetted AI pros — for forensic work,
+        On AiProlice, clients find AI pros — for forensic work,
         genealogy traces, lab discovery, market advantage, personal AI
         tutoring, technical project development, skilled data collection and
         analysis, or any other kind of AI work — and hire them through a

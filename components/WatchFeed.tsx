@@ -4,6 +4,7 @@ import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useCallback, useEffect, useRef, useState } from "react";
 import { avatarHue, formatRate, initials } from "@/lib/experts";
+import FlagButton from "./FlagButton";
 
 export interface WatchExpert {
   id: string;
@@ -304,6 +305,7 @@ export default function WatchFeed({
           >
             <PersonIcon />
           </Link>
+          <FlagButton expertId={expert.id} expertName={expert.name} variant="watch" />
         </div>
 
         <div className="watch-info">

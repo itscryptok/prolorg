@@ -4,7 +4,7 @@ import Link from "next/link";
 export const metadata: Metadata = {
   title: "How It Works",
   description:
-    "How AiProlice works: clients browse AI pro profiles, open the platform inbox, and hire through AiProlice. AI pros create profiles, get discovered, and get hired. Direct contact unlocks with a one-time fee per AI pro.",
+    "How AiProlice works: clients browse AI pro profiles, open the platform inbox, and hire through AiProlice. AI pros create profiles, get discovered, and get hired. Direct contact unlocks with a one-time fee per client/AI pro pair, payable by either side.",
   alternates: { canonical: "/how-it-works" },
 };
 
@@ -61,10 +61,11 @@ export default function HowItWorksPage() {
             ))}
             <div className="notice" role="note">
               <strong>Fair-play rule:</strong> Direct contact (email, phone)
-              unlocks with a one-time fee per AI pro. Sharing contact details
-              to dodge the fee gets your account blocked — our checks catch
-              spelled-out numbers, &lsquo;at gmail dot com&rsquo; tricks, and
-              other workarounds.
+              unlocks with a one-time fee per client/AI pro pair — either
+              side can pay, and payment from either side unlocks the pair.
+              Sharing contact details to dodge the fee gets your account
+              blocked — our checks catch spelled-out numbers, &lsquo;at gmail
+              dot com&rsquo; tricks, and other workarounds.
             </div>
           </div>
           <div className="track">
