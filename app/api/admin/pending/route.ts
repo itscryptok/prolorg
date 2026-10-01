@@ -20,6 +20,7 @@ type PendingRow = {
   createdAt: string;
   hasPhoto: boolean;
   hasVideo: boolean;
+  samples: { id: string; title: string; description: string; hasImage: boolean }[];
 };
 
 // Lists PENDING AI pro profiles for admin review. Admin only.
@@ -52,6 +53,25 @@ export async function GET(req: Request) {
     byExpert.set(m.expertId, set);
   }
 
+  const sampleRows = (await (
+    db as unknown as {
+      expertSample: {
+        findMany(args: unknown): Promise<
+          { id: string; expertId: string; title: string; description: string; image: Buffer | null }[]
+        >;
+      };
+    }
+  ).expertSample.findMany({
+    orderBy: { sortOrder: "asc" },
+    select: { id: true, expertId: true, title: true, description: true, image: true },
+  }));
+  const samplesByExpert = new Map<string, PendingRow["samples"]>();
+  for (const s of sampleRows) {
+    const list = samplesByExpert.get(s.expertId) ?? [];
+    list.push({ id: s.id, title: s.title, description: s.description, hasImage: !!s.image });
+    samplesByExpert.set(s.expertId, list);
+  }
+
   const pending: PendingRow[] = rows.map((r) => {
     const id = String(r.id ?? "");
     const kinds = byExpert.get(id);
@@ -73,6 +93,7 @@ export async function GET(req: Request) {
       createdAt: r.createdAt instanceof Date ? r.createdAt.toISOString() : String(r.createdAt ?? ""),
       hasPhoto: kinds?.has("PHOTO") ?? false,
       hasVideo: kinds?.has("VIDEO") ?? false,
+      samples: samplesByExpert.get(id) ?? [],
     };
   });
 

@@ -904,6 +904,109 @@ html[data-theme="light"] .join-input textarea:focus {
 
 /* ---------- Phase 2: join form ---------- */
 .join-form { max-width: 780px; margin: 0 auto; padding-bottom: 4rem; display: flex; flex-direction: column; gap: 1.25rem; }
+.join-steps {
+  list-style: none;
+  display: flex;
+  gap: 0.5rem;
+  padding: 0;
+  margin: 0 0 0.5rem;
+  flex-wrap: wrap;
+}
+.join-steps li {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.45rem;
+  font-size: 0.85rem;
+  font-weight: 700;
+  color: var(--ink-dim);
+  padding: 0.45rem 0.8rem;
+  border: 1px solid var(--line);
+  border-radius: 999px;
+}
+.join-step-num {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 1.4rem;
+  height: 1.4rem;
+  border-radius: 50%;
+  background: var(--line);
+  color: var(--ink);
+  font-size: 0.75rem;
+}
+.join-steps li.done { color: var(--ink); }
+.join-steps li.done .join-step-num { background: var(--orange); color: #000; }
+.join-steps li.current { color: var(--ink); border-color: var(--orange); }
+.join-steps li.current .join-step-num { background: var(--orange); color: #000; }
+.join-step-title { font-size: 1.35rem; margin: 0 0 0.25rem; }
+.join-step-title:focus { outline: none; }
+.join-step-title:focus-visible { outline: 3px solid var(--orange); outline-offset: 2px; }
+.join-step-lead { color: var(--ink-dim); margin: 0 0 0.5rem; }
+.join-sample {
+  border: 1px solid var(--line);
+  border-radius: 12px;
+  padding: 1rem 1.1rem 1.1rem;
+  margin: 0 0 1rem;
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+.join-sample legend { font-weight: 800; padding: 0 0.5rem; }
+.join-review { margin: 0; display: flex; flex-direction: column; gap: 0.6rem; }
+.join-review-row {
+  display: grid;
+  grid-template-columns: 11rem 1fr;
+  gap: 1rem;
+  padding: 0.6rem 0;
+  border-bottom: 1px solid var(--line);
+}
+.join-review-row dt { font-weight: 700; font-size: 0.9rem; color: var(--ink-dim); }
+.join-review-row dd { margin: 0; white-space: pre-wrap; word-break: break-word; }
+.join-nav { margin-top: 0.5rem; }
+
+/* ---------- Admin sample-work preview ---------- */
+.admin-samples { margin: 1rem 0; font-size: 0.92rem; }
+.admin-samples ul { list-style: none; margin: 0.5rem 0 0; padding: 0; display: flex; flex-direction: column; gap: 0.6rem; }
+.admin-samples li { border: 1px solid var(--line); border-radius: 10px; padding: 0.6rem 0.8rem; }
+.admin-samples li span { font-weight: 700; }
+.admin-samples li em { font-style: normal; color: var(--ink-dim); }
+.admin-samples li p { margin: 0.3rem 0 0; color: var(--ink-dim); }
+@media (max-width: 640px) {
+  .join-review-row { grid-template-columns: 1fr; gap: 0.15rem; }
+}
+
+/* ---------- Sample work on profiles ---------- */
+.sample-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 1.25rem;
+}
+.sample-card {
+  border: 1px solid var(--line);
+  border-radius: 14px;
+  overflow: hidden;
+  background: var(--bg-card);
+}
+.sample-card h3 { font-size: 1rem; margin: 0.9rem 1rem 0.4rem; }
+.sample-card p { font-size: 0.9rem; color: var(--ink-dim); margin: 0 1rem 1rem; }
+.sample-image { width: 100%; aspect-ratio: 16 / 10; object-fit: cover; display: block; }
+
+/* ---------- Reviews on profiles ---------- */
+.review-list { list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; gap: 1rem; }
+.review-card {
+  border: 1px solid var(--line);
+  border-radius: 12px;
+  padding: 1rem 1.1rem;
+  background: var(--bg-card);
+}
+.review-card p { margin: 0.5rem 0; }
+.review-date { font-size: 0.85rem; color: var(--ink-dim); }
+@media (max-width: 900px) {
+  .sample-grid { grid-template-columns: repeat(2, 1fr); }
+}
+@media (max-width: 640px) {
+  .sample-grid { grid-template-columns: 1fr; }
+}
 .join-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 1.25rem; }
 .join-grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 1.25rem; }
 .join-grid-3 { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 1.25rem; }

@@ -1,5 +1,37 @@
 import Link from "next/link";
 import { STATS } from "@/lib/site";
+import { getDb } from "@/lib/db";
+
+// Refresh the stats band every 5 minutes (ISR) — the rest of the page is static.
+export const revalidate = 300;
+
+async function getStats() {
+  const db = getDb();
+  if (!db) return STATS;
+  try {
+    const q = (
+      db as unknown as {
+        $queryRawUnsafe(query: string): Promise<{ count: number }[]>;
+      }
+    ).$queryRawUnsafe;
+    const total = Number(
+      (await q(`SELECT COUNT(*)::int AS count FROM "ExpertProfile" WHERE status='APPROVED'`))[0]?.count ?? 0
+    );
+    const fresh = Number(
+      (
+        await q(
+          `SELECT COUNT(*)::int AS count FROM "ExpertProfile" WHERE status='APPROVED' AND "createdAt" >= NOW() - INTERVAL '7 days'`
+        )
+      )[0]?.count ?? 0
+    );
+    const hires = Number(
+      (await q(`SELECT COUNT(*)::int AS count FROM "HireRequest" WHERE status='COMPLETED'`))[0]?.count ?? 0
+    );
+    return { totalExperts: total, newThisWeek: fresh, hiresCompleted: hires };
+  } catch {
+    return STATS;
+  }
+}
 
 const WHY_POINTS = [
   {
@@ -85,7 +117,8 @@ function StepList({ steps }: { steps: readonly { title: string; text: string }[]
   );
 }
 
-export default function HomePage() {
+export default async function HomePage() {
+  const stats = await getStats();
   return (
     <>
       {/* 1. Hero */}
@@ -125,15 +158,15 @@ export default function HomePage() {
       <section className="stats-band" aria-label="Platform statistics">
         <div className="container stats-band-inner">
           <div>
-            <div className="stat-num">{STATS.totalExperts}</div>
+            <div className="stat-num">{stats.totalExperts}</div>
             <div className="stat-label">Total AI pros</div>
           </div>
           <div>
-            <div className="stat-num">{STATS.newThisWeek}</div>
+            <div className="stat-num">{stats.newThisWeek}</div>
             <div className="stat-label">New this week</div>
           </div>
           <div>
-            <div className="stat-num">{STATS.hiresCompleted}</div>
+            <div className="stat-num">{stats.hiresCompleted}</div>
             <div className="stat-label">Hires completed</div>
           </div>
         </div>

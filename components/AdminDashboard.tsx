@@ -21,6 +21,7 @@ type Pending = {
   createdAt: string;
   hasPhoto: boolean;
   hasVideo: boolean;
+  samples: { id: string; title: string; description: string; hasImage: boolean }[];
 };
 
 async function logout() {
@@ -106,6 +107,20 @@ function PendingCard({
             playsInline
             preload="metadata"
           />
+        )}
+        {expert.samples.length > 0 && (
+          <div className="admin-samples">
+            <strong>Sample work ({expert.samples.length})</strong>
+            <ul>
+              {expert.samples.map((s) => (
+                <li key={s.id}>
+                  <span>{s.title}</span>
+                  {s.hasImage && <em> · has image</em>}
+                  <p>{s.description}</p>
+                </li>
+              ))}
+            </ul>
+          </div>
         )}
         {error && (
           <p role="alert" className="form-error">

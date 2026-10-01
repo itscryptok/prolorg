@@ -62,6 +62,25 @@ export default async function ExpertProfilePage({
   const legacyPhotoUrl = (expert as unknown as { photoUrl?: string | null }).photoUrl ?? null;
   const photoSrc = uploadedPhotoUrl ?? legacyPhotoUrl;
 
+  // Sample work entries (newest first by sort order).
+  const samples: { id: string; title: string; description: string; hasImage: boolean }[] = db
+    ? (
+        await (
+          db as unknown as {
+            expertSample: {
+              findMany(args: unknown): Promise<
+                { id: string; title: string; description: string; image: Buffer | null }[]
+              >;
+            };
+          }
+        ).expertSample.findMany({
+          where: { expertId: expert.id },
+          orderBy: { sortOrder: "asc" },
+          select: { id: true, title: true, description: true, image: true },
+        })
+      ).map((s) => ({ id: s.id, title: s.title, description: s.description, hasImage: !!s.image }))
+    : [];
+
   const jsonLd = {
     "@context": "https://schema.org",
     "@type": "ProfilePage",
@@ -85,6 +104,34 @@ export default async function ExpertProfilePage({
         : {}),
     },
   };
+
+  // Reviews from completed hires, newest first.
+  // (Raw SQL: local Prisma client is stale; production regenerates it.)
+  const reviews: { id: string; rating: number; comment: string | null; createdAt: string }[] = db
+    ? (
+        await (
+          db as unknown as {
+            $queryRawUnsafe(query: string, ...params: unknown[]): Promise<
+              { id: string; rating: number; comment: string | null; createdAt: Date }[]
+            >;
+          }
+        ).$queryRawUnsafe(
+          `SELECT r."id", r."rating", r."comment", r."createdAt"
+           FROM "Review" r
+           JOIN "HireRequest" h ON h."id" = r."hireRequestId"
+           JOIN "Conversation" c ON c."id" = h."conversationId"
+           JOIN "ExpertProfile" e ON e."userId" = c."expertId"
+           WHERE e."id" = $1 AND h."status" = 'COMPLETED'
+           ORDER BY r."createdAt" DESC`,
+          expert.id
+        )
+      ).map((r) => ({
+        id: r.id,
+        rating: r.rating,
+        comment: r.comment,
+        createdAt: r.createdAt instanceof Date ? r.createdAt.toISOString() : String(r.createdAt),
+      }))
+    : [];
 
   // In-progress hires: hire requests agreed/confirmed but not yet completed.
   // (Raw SQL: local Prisma client is stale; production regenerates it.)
@@ -173,14 +220,53 @@ export default async function ExpertProfilePage({
             </section>
           )}
 
+          {samples.length > 0 && (
+            <section aria-labelledby="sample-work">
+              <h2 id="sample-work">Sample work</h2>
+              <div className="sample-grid">
+                {samples.map((s) => (
+                  <article key={s.id} className="sample-card">
+                    {s.hasImage && (
+                      // eslint-disable-next-line @next/next/no-img-element
+                      <img
+                        src={`/api/experts/samples/${s.id}/image`}
+                        alt={`Sample work: ${s.title}`}
+                        className="sample-image"
+                        loading="lazy"
+                      />
+                    )}
+                    <h3>{s.title}</h3>
+                    <p>{s.description}</p>
+                  </article>
+                ))}
+              </div>
+            </section>
+          )}
+
           <section aria-labelledby="reviews">
             <h2 id="reviews">Reviews</h2>
-            <div className="empty-state" style={{ padding: "2rem 1.25rem" }}>
-              <p style={{ margin: 0 }}>
-                No reviews yet — client reviews appear here after this
-                AI pro&rsquo;s first completed hires.
-              </p>
-            </div>
+            {reviews.length > 0 ? (
+              <ul className="review-list">
+                {reviews.map((r) => (
+                  <li key={r.id} className="review-card">
+                    <span className="rating" aria-label={`Rated ${r.rating} out of 5`}>
+                      <span aria-hidden="true">{"★".repeat(r.rating)}{"☆".repeat(5 - r.rating)}</span>
+                    </span>
+                    {r.comment && <p>{r.comment}</p>}
+                    <span className="review-date">
+                      {new Date(r.createdAt).toLocaleDateString()}
+                    </span>
+                  </li>
+                ))}
+              </ul>
+            ) : (
+              <div className="empty-state" style={{ padding: "2rem 1.25rem" }}>
+                <p style={{ margin: 0 }}>
+                  No reviews yet — client reviews appear here after this
+                  AI pro&rsquo;s first completed hires.
+                </p>
+              </div>
+            )}
           </section>
         </div>
 

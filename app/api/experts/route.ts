@@ -78,6 +78,40 @@ async function checkFile(
   return { ok: true, file };
 }
 
+// Narrow typed access to the ExpertSample delegate (local generated Prisma
+// client is stale; production regenerates it at build time).
+type SampleDelegate = {
+  create(args: {
+    data: {
+      expertId: string;
+      title: string;
+      description: string;
+      image?: Buffer;
+      imageMime?: string;
+      sortOrder: number;
+    };
+  }): Promise<unknown>;
+};
+
+const MAX_SAMPLES = 3;
+
+async function checkSampleImage(
+  file: File | null
+): Promise<{ ok: true; file: File } | { ok: false; error: string } | null> {
+  if (!file || file.size === 0) return null; // not provided
+  if (!file.type.startsWith("image/")) {
+    return { ok: false, error: "Sample images must be image files." };
+  }
+  if (file.size > MAX_PHOTO_BYTES) {
+    return { ok: false, error: "Sample images must be under 5 MB." };
+  }
+  const head = new Uint8Array(await file.slice(0, 12).arrayBuffer());
+  if (!sniffMedia(head, "photo")) {
+    return { ok: false, error: "A sample image looks corrupted or isn't a real image." };
+  }
+  return { ok: true, file };
+}
+
 // Creates a PENDING AI pro profile with optional photo + intro video uploads.
 // Accepts multipart/form-data. No website/email fields are accepted — contact
 // lockdown is enforced by simply not collecting them.
@@ -162,6 +196,44 @@ export async function POST(req: Request) {
       update: { mime: file.type, data },
       create: { expertId: profile.id, kind, mime: file.type, data },
     });
+  }
+
+  // Sample work entries: up to 3, each with title + description + optional
+  // image. A sample counts only when it has a title; description is required
+  // with a title. No URLs — contact lockdown.
+  const sampleDelegate = (db as unknown as { expertSample: SampleDelegate }).expertSample;
+  let sortOrder = 0;
+  for (let i = 0; i < MAX_SAMPLES; i++) {
+    const title = str(form.get(`sample${i}_title`)).trim();
+    if (!title) continue;
+    const description = str(form.get(`sample${i}_description`)).trim();
+    if (!description) {
+      return NextResponse.json(
+        { error: `Sample work #${i + 1} needs a short description.` },
+        { status: 400 }
+      );
+    }
+    const imgEntry = form.get(`sample${i}_image`);
+    const img = await checkSampleImage(imgEntry instanceof File ? imgEntry : null);
+    if (img && !img.ok) return NextResponse.json({ error: img.error }, { status: 400 });
+    const data: {
+      expertId: string;
+      title: string;
+      description: string;
+      image?: Buffer;
+      imageMime?: string;
+      sortOrder: number;
+    } = {
+      expertId: profile.id,
+      title: title.slice(0, 120),
+      description: description.slice(0, 2000),
+      sortOrder: sortOrder++,
+    };
+    if (img && img.ok) {
+      data.image = Buffer.from(await img.file.arrayBuffer());
+      data.imageMime = img.file.type;
+    }
+    await sampleDelegate.create({ data });
   }
 
   return NextResponse.json({ slug }, { status: 201 });

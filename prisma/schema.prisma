@@ -83,6 +83,7 @@ model ExpertProfile {
   @@index([specialty, status])
   @@index([status, ratingAvg])
   media ExpertMedia[]
+  samples ExpertSample[]
 }
 
 // Uploaded expert media: profile photo and intro video, stored as binary in
@@ -98,6 +99,24 @@ model ExpertMedia {
   createdAt DateTime      @default(now())
 
   @@unique([expertId, kind])
+}
+
+// Sample work entries experts attach during onboarding. Title + description +
+// optional image only — deliberately no URL field (no external links on
+// AiProlice, per the contact lockdown). Served via
+// /api/experts/samples/[id]/image.
+model ExpertSample {
+  id          String        @id @default(uuid())
+  expertId    String
+  expert      ExpertProfile @relation(fields: [expertId], references: [id], onDelete: Cascade)
+  title       String
+  description String        @db.Text
+  image       Bytes?
+  imageMime   String?
+  sortOrder   Int           @default(0)
+  createdAt   DateTime      @default(now())
+
+  @@index([expertId, sortOrder])
 }
 
 model Conversation {
