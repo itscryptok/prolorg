@@ -6,12 +6,13 @@ import LogoMark from "./LogoMark";
 import ThemeToggle from "./ThemeToggle";
 import WatchLink from "./WatchLink";
 
-const NAV_LINKS = [
+const BASE_LINKS = [
   { href: "/experts", label: "Find AI pros" },
   { href: "/how-it-works", label: "How It Works" },
   { href: "/about", label: "About" },
-  { href: "/login", label: "Login" },
 ];
+
+type Me = { role: string } | null;
 
 // Sticky site header: logo left, nav center/right, theme toggle below the
 // nav on desktop and left of the hamburger on mobile, orange Sign Up pill,
@@ -20,7 +21,15 @@ const NAV_LINKS = [
 // on the /experts toolbar, above the cards.)
 export default function SiteHeader() {
   const [open, setOpen] = useState(false);
+  const [me, setMe] = useState<Me | undefined>(undefined);
   const barsRef = useRef<HTMLImageElement | null>(null);
+
+  useEffect(() => {
+    fetch("/api/auth/me")
+      .then((r) => r.json())
+      .then((j) => setMe(j.user ? { role: j.user.role } : null))
+      .catch(() => setMe(null));
+  }, []);
 
   // The header is sticky, but the decorative bars should scroll away with
   // the page instead of staying pinned to the viewport. Counteract the
@@ -44,6 +53,20 @@ export default function SiteHeader() {
     };
   }, []);
 
+  const signedIn = !!me;
+  const navLinks = signedIn
+    ? [
+        ...BASE_LINKS,
+        { href: "/inbox", label: "Inbox" },
+        ...(me?.role === "EXPERT" ? [{ href: "/dashboard", label: "Dashboard" }] : []),
+      ]
+    : [...BASE_LINKS, { href: "/login", label: "Login" }];
+
+  async function signOut() {
+    await fetch("/api/auth/logout", { method: "POST" });
+    window.location.href = "/";
+  }
+
   return (
     <header className="site-header">
       <img
@@ -60,14 +83,25 @@ export default function SiteHeader() {
         </Link>
         <div className="header-menu-col">
           <nav className="site-nav" aria-label="Primary">
-            {NAV_LINKS.map((link) => (
+            {navLinks.map((link) => (
               <Link key={link.href} href={link.href}>
                 {link.label}
               </Link>
             ))}
-            <Link href="/signup" className="btn btn-orange" style={{ padding: "0.55rem 1.4rem" }}>
-              Sign Up
-            </Link>
+            {signedIn ? (
+              <button
+                type="button"
+                className="btn btn-orange"
+                style={{ padding: "0.55rem 1.4rem" }}
+                onClick={signOut}
+              >
+                Sign Out
+              </button>
+            ) : (
+              <Link href="/signup" className="btn btn-orange" style={{ padding: "0.55rem 1.4rem" }}>
+                Sign Up
+              </Link>
+            )}
           </nav>
           <div className="header-icon-row">
             <WatchLink className="watch-link-desktop" />
@@ -97,18 +131,34 @@ export default function SiteHeader() {
         <Link href="/#why" onClick={() => setOpen(false)}>
           Why AiProlice
         </Link>
-        {NAV_LINKS.filter((link) => link.href !== "/login").map((link) => (
-          <Link key={link.href} href={link.href} onClick={() => setOpen(false)}>
-            {link.label}
-          </Link>
-        ))}
+        {navLinks
+          .filter((link) => link.href !== "/login")
+          .map((link) => (
+            <Link key={link.href} href={link.href} onClick={() => setOpen(false)}>
+              {link.label}
+            </Link>
+          ))}
         <div className="mobile-panel-auth">
-          <Link href="/login" onClick={() => setOpen(false)}>
-            Login
-          </Link>
-          <Link href="/signup" onClick={() => setOpen(false)}>
-            Sign Up
-          </Link>
+          {signedIn ? (
+            <button
+              type="button"
+              onClick={() => {
+                setOpen(false);
+                signOut();
+              }}
+            >
+              Sign Out
+            </button>
+          ) : (
+            <>
+              <Link href="/login" onClick={() => setOpen(false)}>
+                Login
+              </Link>
+              <Link href="/signup" onClick={() => setOpen(false)}>
+                Sign Up
+              </Link>
+            </>
+          )}
         </div>
       </nav>
     </header>

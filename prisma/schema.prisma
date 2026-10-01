@@ -1,9 +1,10 @@
-// Prolorg — Phase 2 data model.
+// Prolorg — data model (AiProlice marketplace).
 //
-// Phase 2 (expert discovery) runs WITHOUT user accounts: ExpertProfile.userId
-// is optional and gets linked when authentication lands in Phase 3.
-// Conversation / Message / HireRequest / Review / ContactUnlock tables are
-// created now so the Phase 3 inbox builds on the same database.
+// Big/MVP stage: real user accounts (CLIENT / EXPERT roles), server-side
+// sessions, inbox conversations, hire requests with status progression,
+// reviews after completed hires, contact-evasion violation logging, and a
+// paid-unlock record (payment itself lands later via Stripe).
+// ExpertProfile.userId links an approved profile to its owner's account.
 //
 // Conventions:
 // - Every table has a UUID primary key and createdAt.
@@ -34,6 +35,9 @@ enum HireStatus {
   CONFIRMED
   COMPLETED
   CANCELLED
+  REQUESTED
+  ACCEPTED
+  IN_PROGRESS
 }
 
 model User {
@@ -42,6 +46,7 @@ model User {
   name         String
   role         Role      @default(CLIENT)
   passwordHash String?
+  isBlocked    Boolean   @default(false)
   createdAt    DateTime  @default(now())
 
   expertProfile ExpertProfile?
@@ -49,8 +54,41 @@ model User {
   clientConversations Conversation[] @relation("ClientConversations")
   expertConversations Conversation[] @relation("ExpertConversations")
 
-  sentMessages Message[]
-  paidUnlocks  ContactUnlock[] @relation("PaidUnlocks")
+  sentMessages    Message[]
+  paidUnlocks     ContactUnlock[] @relation("PaidUnlocks")
+  sessions        Session[]
+  violations      Violation[]
+  authoredReviews Review[]
+}
+
+// Server-side sessions for user auth (Phase 3 / Big stage). The session
+// token lives in an httpOnly cookie; only its SHA-256 hash is stored here.
+model Session {
+  id        String   @id @default(uuid())
+  tokenHash String   @unique
+  userId    String
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  expiresAt DateTime
+  createdAt DateTime @default(now())
+
+  @@index([userId])
+}
+
+// Contact-evasion violations: every inbox message that trips the detection
+// checks is logged here so admins can review repeat offenders and block
+// them from /addy.
+model Violation {
+  id             String   @id @default(uuid())
+  userId         String
+  user           User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  conversationId String?
+  messageId      String?
+  reasons        String   // machine-readable reason codes, comma-separated
+  excerpt        String   // first ~200 chars of the offending message
+  createdAt      DateTime @default(now())
+
+  @@index([userId])
+  @@index([createdAt])
 }
 
 model ExpertProfile {
@@ -154,7 +192,8 @@ model HireRequest {
   conversation   Conversation @relation(fields: [conversationId], references: [id], onDelete: Cascade)
   scope          String
   price          Int
-  status         HireStatus   @default(OPEN)
+  agreement      String?      @db.Text // plain-language terms both sides accept
+  status         HireStatus   @default(REQUESTED)
   createdAt      DateTime     @default(now())
 
   reviews Review[]
@@ -164,9 +203,13 @@ model Review {
   id            String      @id @default(uuid())
   hireRequestId String
   hireRequest   HireRequest @relation(fields: [hireRequestId], references: [id], onDelete: Cascade)
+  authorId      String? // the client who wrote the review
+  author        User?       @relation(fields: [authorId], references: [id], onDelete: SetNull)
   rating        Int
   comment       String?
   createdAt     DateTime    @default(now())
+
+  @@unique([hireRequestId]) // one review per completed hire
 }
 
 model ContactUnlock {

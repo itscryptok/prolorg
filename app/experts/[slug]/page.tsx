@@ -4,6 +4,7 @@ import { notFound } from "next/navigation";
 import { getDb } from "@/lib/db";
 import { formatRate } from "@/lib/experts";
 import { ExpertAvatar, RatingStars } from "@/components/ExpertCard";
+import MessageExpertButton from "@/components/MessageExpertButton";
 
 export const dynamic = "force-dynamic";
 
@@ -288,12 +289,11 @@ export default async function ExpertProfilePage({
               <dt>In progress</dt>
               <dd>{inProgressJobs}</dd>
             </dl>
-            <Link href="/signup" className="btn btn-orange profile-cta">
-              Message AI pro
-            </Link>
+            <MessageExpertButton slug={expert.slug} />
             <p className="fine-print">
-              Free client accounts open soon — messaging and hiring unlock with
-              AiProlice accounts in the next release.
+              Free to message — hiring happens through hire requests in the
+              inbox, and direct contact unlocks with a paid one-time fee
+              (coming soon).
             </p>
           </div>
           <div className="notice" style={{ marginTop: "1rem" }}>

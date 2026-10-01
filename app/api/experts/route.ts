@@ -1,6 +1,7 @@
 import { NextResponse } from "next/server";
 import { getDb } from "@/lib/db";
 import { SPECIALTIES, AVAILABILITY_OPTIONS, slugify } from "@/lib/experts";
+import { getSessionUser } from "@/lib/auth";
 
 const MAX_PHOTO_BYTES = 5 * 1024 * 1024; // 5 MB
 const MAX_VIDEO_BYTES = 25 * 1024 * 1024; // 25 MB
@@ -165,11 +166,17 @@ export async function POST(req: Request) {
     slug = `${base}-${i}`;
   }
 
+  // Big/MVP: when a signed-in AI pro applies, link the new profile to
+  // their account so they own it once approved.
+  const sessionUser = await getSessionUser(req);
+  const ownerId =
+    sessionUser && sessionUser.role === "EXPERT" ? sessionUser.id : null;
+
   const profile = await db.expertProfile.create({
     data: {
       slug,
-      name: name.slice(0, 80),
-      headline: headline.slice(0, 140),
+      ...(ownerId ? { userId: ownerId } : {}),
+      name: name.slice(0, 80),      headline: headline.slice(0, 140),
       bio: bio.slice(0, 4000),
       specialty,
       skills: list(str(form.get("skills"))),

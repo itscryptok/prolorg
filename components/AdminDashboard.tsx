@@ -29,6 +29,142 @@ async function logout() {
   window.location.reload();
 }
 
+const REASON_LABELS: Record<string, string> = {
+  email: "Email address",
+  "email-obfuscated": "Obfuscated email",
+  "email-spaced": "Spaced-out email",
+  phone: "Phone number",
+  "phone-spaced": "Spaced-out phone",
+  "phone-spelled-out": "Spelled-out phone",
+  "off-platform-channel": "Off-platform channel",
+  "contact-phrase": "Contact-sharing phrase",
+};
+
+function ViolationsPanel() {
+  const [violations, setViolations] = useState<
+    {
+      id: string;
+      userId: string;
+      userEmail: string;
+      userName: string;
+      userBlocked: boolean;
+      userViolationCount: number;
+      conversationId: string | null;
+      reasons: string;
+      excerpt: string;
+      createdAt: string;
+    }[]
+  >([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
+  const [busy, setBusy] = useState<string | null>(null);
+
+  const load = useCallback(async () => {
+    setLoading(true);
+    setError(null);
+    try {
+      const res = await fetch("/api/admin/violations");
+      const json = await res.json();
+      if (!res.ok) throw new Error(json.error ?? "Could not load violations.");
+      setViolations(json.violations ?? []);
+    } catch (err) {
+      setError(err instanceof Error ? err.message : "Could not load violations.");
+    } finally {
+      setLoading(false);
+    }
+  }, []);
+
+  useEffect(() => {
+    load();
+  }, [load]);
+
+  async function setBlocked(userId: string, isBlocked: boolean) {
+    if (isBlocked && !window.confirm("Block this account? They won't be able to log in or message.")) {
+      return;
+    }
+    setBusy(userId);
+    setError(null);
+    try {
+      const res = await fetch(`/api/admin/users/${userId}`, {
+        method: "PATCH",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ isBlocked }),
+      });
+      const json = await res.json();
+      if (!res.ok) throw new Error(json.error ?? "Action failed.");
+      await load();
+    } catch (err) {
+      setError(err instanceof Error ? err.message : "Action failed.");
+    } finally {
+      setBusy(null);
+    }
+  }
+
+  return (
+    <div>
+      {loading && <p>Loading violations…</p>}
+      {error && (
+        <p role="alert" className="form-error">
+          {error}
+        </p>
+      )}
+      {!loading && !error && violations.length === 0 && (
+        <div className="empty-state">
+          <h2>No violations</h2>
+          <p>No contact-evasion attempts detected so far.</p>
+        </div>
+      )}
+      <div className="admin-list">
+        {violations.map((v) => (
+          <article key={v.id} className="admin-card">
+            <div className="admin-card-head">
+              <div>
+                <strong>{v.userName}</strong>{" "}
+                <span className="admin-sub">{v.userEmail}</span>
+              </div>
+              <div className="admin-card-badges">
+                <span className="pill">
+                  {v.userViolationCount} violation{v.userViolationCount === 1 ? "" : "s"}
+                </span>
+                {v.userBlocked && <span className="pill pill-red">Blocked</span>}
+              </div>
+            </div>
+            <p className="admin-sub">
+              {v.reasons
+                .split(",")
+                .map((r) => REASON_LABELS[r.trim()] ?? r.trim())
+                .join(", ")}{" "}
+              · {new Date(v.createdAt).toLocaleString()}
+            </p>
+            <p className="violation-excerpt">&ldquo;{v.excerpt}&rdquo;</p>
+            <div className="hire-actions">
+              {v.userBlocked ? (
+                <button
+                  type="button"
+                  className="btn btn-outline"
+                  disabled={busy === v.userId}
+                  onClick={() => setBlocked(v.userId, false)}
+                >
+                  {busy === v.userId ? "Working…" : "Unblock account"}
+                </button>
+              ) : (
+                <button
+                  type="button"
+                  className="btn btn-outline"
+                  disabled={busy === v.userId}
+                  onClick={() => setBlocked(v.userId, true)}
+                >
+                  {busy === v.userId ? "Working…" : "Block account"}
+                </button>
+              )}
+            </div>
+          </article>
+        ))}
+      </div>
+    </div>
+  );
+}
+
 function PendingCard({
   expert,
   onDone,
@@ -158,7 +294,42 @@ function PendingCard({
   );
 }
 
+function ApprovalsPanel({
+  pending,
+  loading,
+  error,
+  reload,
+}: {
+  pending: Pending[];
+  loading: boolean;
+  error: string | null;
+  reload: () => void;
+}) {
+  return (
+    <div>
+      {loading && <p>Loading applications…</p>}
+      {error && (
+        <p role="alert" className="form-error">
+          {error}
+        </p>
+      )}
+      {!loading && !error && pending.length === 0 && (
+        <div className="empty-state">
+          <h2>All caught up</h2>
+          <p>No pending AI pro applications right now.</p>
+        </div>
+      )}
+      <div className="admin-list">
+        {pending.map((e) => (
+          <PendingCard key={e.id} expert={e} onDone={reload} />
+        ))}
+      </div>
+    </div>
+  );
+}
+
 export default function AdminDashboard() {
+  const [tab, setTab] = useState<"approvals" | "violations">("approvals");
   const [pending, setPending] = useState<Pending[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
@@ -186,9 +357,11 @@ export default function AdminDashboard() {
     <div>
       <div className="admin-top">
         <div>
-          <h1>AI pro approvals</h1>
+          <h1>{tab === "approvals" ? "AI pro approvals" : "Contact-evasion violations"}</h1>
           <p className="admin-sub">
-            {pending.length} application{pending.length === 1 ? "" : "s"} waiting for review.
+            {tab === "approvals"
+              ? `${pending.length} application${pending.length === 1 ? "" : "s"} waiting for review.`
+              : "Accounts that tried to share contact details in the inbox."}
           </p>
         </div>
         <button type="button" className="btn btn-outline" onClick={logout}>
@@ -196,23 +369,32 @@ export default function AdminDashboard() {
         </button>
       </div>
 
-      {loading && <p>Loading applications…</p>}
-      {error && (
-        <p role="alert" className="form-error">
-          {error}
-        </p>
-      )}
-      {!loading && !error && pending.length === 0 && (
-        <div className="empty-state">
-          <h2>All caught up</h2>
-          <p>No pending AI pro applications right now.</p>
-        </div>
-      )}
-      <div className="admin-list">
-        {pending.map((e) => (
-          <PendingCard key={e.id} expert={e} onDone={load} />
-        ))}
+      <div className="admin-tabs" role="tablist" aria-label="Admin sections">
+        <button
+          type="button"
+          role="tab"
+          aria-selected={tab === "approvals"}
+          className={`admin-tab${tab === "approvals" ? " selected" : ""}`}
+          onClick={() => setTab("approvals")}
+        >
+          Approvals
+        </button>
+        <button
+          type="button"
+          role="tab"
+          aria-selected={tab === "violations"}
+          className={`admin-tab${tab === "violations" ? " selected" : ""}`}
+          onClick={() => setTab("violations")}
+        >
+          Violations
+        </button>
       </div>
+
+      {tab === "approvals" ? (
+        <ApprovalsPanel pending={pending} loading={loading} error={error} reload={load} />
+      ) : (
+        <ViolationsPanel />
+      )}
     </div>
   );
 }

@@ -1332,3 +1332,69 @@ html[data-theme="light"] .watch-stage { border-color: rgba(0, 0, 0, 0.12); }
   letter-spacing: 0.04em;
 }
 .capture-done { display: flex; flex-direction: column; gap: 0.4rem; align-items: flex-start; }
+
+/* Big/MVP: auth, inbox, hiring, dashboard */
+
+/* Auth pages */
+.auth-wrap { display: flex; justify-content: center; padding: 3rem 1rem; }
+.auth-card { width: 100%; max-width: 460px; border: 1px solid var(--line); border-radius: 18px; padding: 2rem; background: var(--card, #fff); display: flex; flex-direction: column; gap: 1rem; align-items: center; text-align: center; }
+.auth-card h1 { margin: 0; font-size: 1.7rem; }
+.auth-sub { margin: 0; color: var(--muted, #666); }
+.auth-form { width: 100%; display: flex; flex-direction: column; gap: 0.9rem; text-align: left; }
+.auth-label { display: flex; flex-direction: column; gap: 0.35rem; font-weight: 700; font-size: 0.92rem; }
+.auth-input { font: inherit; padding: 0.65rem 0.8rem; border: 1px solid var(--line); border-radius: 10px; background: transparent; color: inherit; width: 100%; box-sizing: border-box; }
+.auth-input:focus { outline: 2px solid var(--accent, #c8f04a); outline-offset: 1px; }
+.role-pick { display: grid; grid-template-columns: 1fr 1fr; gap: 0.6rem; }
+.role-option { border: 1px solid var(--line); border-radius: 12px; padding: 0.8rem; background: transparent; color: inherit; font: inherit; cursor: pointer; display: flex; flex-direction: column; gap: 0.2rem; text-align: left; }
+.role-option span { font-weight: 400; font-size: 0.85rem; color: var(--muted, #666); }
+.role-option.selected { border-color: var(--accent, #c8f04a); box-shadow: 0 0 0 1px var(--accent, #c8f04a); }
+.auth-submit { width: 100%; justify-content: center; }
+.auth-switch { margin: 0; }
+.form-ok { color: var(--ok, #1a7f37); font-weight: 600; margin: 0; }
+.sr-only { position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; border: 0; }
+
+/* Inbox */
+.inbox-list { display: flex; flex-direction: column; gap: 0.6rem; margin-top: 1rem; }
+.inbox-row { display: flex; justify-content: space-between; gap: 1rem; border: 1px solid var(--line); border-radius: 14px; padding: 1rem 1.2rem; text-decoration: none; color: inherit; }
+.inbox-row:hover { border-color: var(--accent, #c8f04a); }
+.inbox-row-main { display: flex; flex-direction: column; gap: 0.2rem; min-width: 0; }
+.inbox-headline { color: var(--muted, #666); font-size: 0.92rem; }
+.inbox-preview { color: var(--muted, #666); font-size: 0.9rem; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.inbox-row-meta { display: flex; flex-direction: column; align-items: flex-end; gap: 0.35rem; font-size: 0.85rem; color: var(--muted, #666); flex-shrink: 0; }
+.thread-head { display: flex; justify-content: space-between; align-items: flex-start; gap: 1rem; flex-wrap: wrap; margin-bottom: 1rem; }
+.thread-head h1 { margin: 0; }
+.thread-sub { margin: 0.25rem 0 0; color: var(--muted, #666); }
+.thread-head-actions { display: flex; gap: 0.6rem; flex-wrap: wrap; }
+.message-list { display: flex; flex-direction: column; gap: 0.7rem; margin: 1.25rem 0; }
+.message { max-width: 75%; border: 1px solid var(--line); border-radius: 14px; padding: 0.7rem 1rem; }
+.message.mine { align-self: flex-end; background: var(--bubble, rgba(0, 0, 0, 0.04)); }
+.message p { margin: 0 0 0.3rem; white-space: pre-wrap; overflow-wrap: anywhere; }
+.message-meta { font-size: 0.78rem; color: var(--muted, #666); }
+.message-meta em { font-style: italic; }
+.composer { display: flex; gap: 0.6rem; align-items: flex-end; margin-top: 0.5rem; }
+.composer .auth-input { flex: 1; resize: vertical; }
+.composer .btn { flex-shrink: 0; }
+.warning-banner { border: 1px solid var(--warn, #b7791f); background: var(--warn-bg, #fff8e6); color: inherit; border-radius: 12px; padding: 0.9rem 1.1rem; margin: 0.75rem 0; }
+
+/* Hires */
+.hire-list { display: flex; flex-direction: column; gap: 0.9rem; margin-bottom: 1.25rem; }
+.hire-card { border: 1px solid var(--line); border-radius: 14px; padding: 1.1rem 1.2rem; display: flex; flex-direction: column; gap: 0.6rem; }
+.hire-card-head { display: flex; justify-content: space-between; align-items: center; gap: 0.8rem; }
+.hire-scope { margin: 0; white-space: pre-wrap; overflow-wrap: anywhere; }
+.hire-agreement { margin: 0; font-size: 0.92rem; white-space: pre-wrap; overflow-wrap: anywhere; }
+.hire-actions { display: flex; gap: 0.6rem; flex-wrap: wrap; align-items: center; }
+.hire-form { border: 1px solid var(--line); border-radius: 14px; padding: 1.1rem 1.2rem; display: flex; flex-direction: column; gap: 0.8rem; margin-bottom: 1rem; max-width: 560px; }
+.review-form { border-top: 1px dashed var(--line); padding-top: 0.8rem; display: flex; flex-direction: column; gap: 0.7rem; max-width: 460px; }
+
+/* Expert dashboard */
+.dashboard-form { display: flex; flex-direction: column; gap: 0.9rem; max-width: 640px; margin-top: 1rem; }
+.form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 0.9rem; }
+@media (max-width: 560px) { .form-row { grid-template-columns: 1fr; } }
+
+/* Admin tabs */
+.admin-tabs { display: flex; gap: 0.4rem; margin: 0 0 1.25rem; }
+.admin-tab { border: 1px solid var(--line); background: transparent; color: inherit; font: inherit; font-weight: 600; padding: 0.55rem 1.2rem; border-radius: 999px; cursor: pointer; }
+.admin-tab.selected { background: var(--accent, #c8f04a); border-color: var(--accent, #c8f04a); color: #111; }
+.pill-red { background: #fde2e2; color: #a02020; border-color: #f3b4b4; }
+.violation-excerpt { font-style: italic; margin: 0; white-space: pre-wrap; overflow-wrap: anywhere; }
+.admin-card-badges { display: flex; gap: 0.4rem; flex-wrap: wrap; align-items: center; }
