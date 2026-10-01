@@ -9,23 +9,25 @@ async function getStats() {
   const db = getDb();
   if (!db) return STATS;
   try {
-    const q = (
+    // Called directly on the client (not destructured) so the method keeps
+    // its `this` binding.
+    const raw = (
       db as unknown as {
         $queryRawUnsafe(query: string): Promise<{ count: number }[]>;
       }
-    ).$queryRawUnsafe;
+    ).$queryRawUnsafe.bind(db);
     const total = Number(
-      (await q(`SELECT COUNT(*)::int AS count FROM "ExpertProfile" WHERE status='APPROVED'`))[0]?.count ?? 0
+      (await raw(`SELECT COUNT(*)::int AS count FROM "ExpertProfile" WHERE status='APPROVED'`))[0]?.count ?? 0
     );
     const fresh = Number(
       (
-        await q(
+        await raw(
           `SELECT COUNT(*)::int AS count FROM "ExpertProfile" WHERE status='APPROVED' AND "createdAt" >= NOW() - INTERVAL '7 days'`
         )
       )[0]?.count ?? 0
     );
     const hires = Number(
-      (await q(`SELECT COUNT(*)::int AS count FROM "HireRequest" WHERE status='COMPLETED'`))[0]?.count ?? 0
+      (await raw(`SELECT COUNT(*)::int AS count FROM "HireRequest" WHERE status='COMPLETED'`))[0]?.count ?? 0
     );
     return { totalExperts: total, newThisWeek: fresh, hiresCompleted: hires };
   } catch {

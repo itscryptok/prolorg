@@ -1,2 +1,3 @@
 *.tsbuildinfo
 .next/
+public/media-generation-last-upload-handles.json
