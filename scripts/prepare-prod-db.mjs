@@ -14,8 +14,14 @@
 //    which Postgres validates against the enum, so the values must exist
 //    BEFORE migrate deploy runs.
 //
-// Guarded to the `prolorg` database only. Exits non-zero on real failure so
+// Guarded to Prolorg's database only. Exits non-zero on real failure so
 // the build log shows what happened.
+//
+// Detection: Prolorg may live in a dedicated `prolorg` database OR in the
+// shared database (it shares the paid Postgres server with REMU). We treat
+// it as Prolorg's database if the dbname is `prolorg` OR if Prolorg's
+// `ExpertProfile` table already exists there. Prints PROCEED or SKIP as the
+// last line so the build script knows whether to run `migrate deploy`.
 import pg from "pg";
 
 const { Client } = pg;
@@ -25,6 +31,7 @@ async function main() {
   const url = process.env.DATABASE_URL;
   if (!url) {
     console.log("prepare-prod-db: no DATABASE_URL, skipping.");
+    console.log("prepare-prod-db: SKIP");
     return;
   }
   let dbname = "";
@@ -32,15 +39,32 @@ async function main() {
     dbname = new URL(url).pathname.replace(/^\//, "").split("?")[0];
   } catch {
     console.log("prepare-prod-db: could not parse DATABASE_URL, skipping.");
-    return;
-  }
-  if (dbname !== "prolorg") {
-    console.log(`prepare-prod-db: dbname is '${dbname}', not 'prolorg' — skipping.`);
+    console.log("prepare-prod-db: SKIP");
     return;
   }
 
   const client = new Client({ connectionString: url });
   await client.connect();
+  let isProlorgDb = dbname === "prolorg";
+  if (!isProlorgDb) {
+    try {
+      const tbl = await client.query(
+        "SELECT 1 FROM information_schema.tables WHERE table_name = 'ExpertProfile' LIMIT 1"
+      );
+      isProlorgDb = (tbl.rowCount ?? 0) > 0;
+    } catch {
+      isProlorgDb = false;
+    }
+  }
+  if (!isProlorgDb) {
+    console.log(
+      `prepare-prod-db: not Prolorg's database (dbname='${dbname}', no ExpertProfile table) — skipping.`
+    );
+    console.log("prepare-prod-db: SKIP");
+    await client.end();
+    return;
+  }
+  console.log(`prepare-prod-db: confirmed Prolorg's database (dbname='${dbname}').`);
   try {
     const failed = await client.query(
       `SELECT migration_name, started_at FROM "_prisma_migrations"
@@ -64,6 +88,7 @@ async function main() {
       console.log(`prepare-prod-db: ensured HireStatus '${v}'.`);
     }
     console.log("prepare-prod-db: done.");
+    console.log("prepare-prod-db: PROCEED");
   } finally {
     await client.end();
   }

@@ -9,11 +9,18 @@ npm install
 npx prisma generate
 
 if [ -n "${DATABASE_URL:-}" ]; then
-  dbname=$(printf '%s' "$DATABASE_URL" | sed -E 's#^[a-zA-Z][a-zA-Z0-9+.-]*://[^/]*/([^/?]+).*#\1#')
-  if [ "$dbname" = "prolorg" ]; then
-    node scripts/prepare-prod-db.mjs && npx prisma migrate deploy
+  # prepare-prod-db detects Prolorg's database (dedicated `prolorg` db OR the
+  # shared db containing Prolorg's tables) and prints PROCEED as its last
+  # line when migrations should run.
+  set +e
+  node scripts/prepare-prod-db.mjs > /tmp/prepare-prod-db.log 2>&1
+  prep_status=$?
+  set -e
+  cat /tmp/prepare-prod-db.log
+  if [ "$prep_status" -eq 0 ] && grep -q "prepare-prod-db: PROCEED" /tmp/prepare-prod-db.log; then
+    npx prisma migrate deploy
   else
-    echo "skipping migrate: DATABASE_URL dbname is '$dbname', not 'prolorg'"
+    echo "skipping migrate deploy (prepare-prod-db status=$prep_status; see log above)"
   fi
 fi
 
