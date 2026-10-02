@@ -1409,10 +1409,15 @@ html[data-theme="light"] .watch-stage { border-color: rgba(0, 0, 0, 0.12); }
      (position: relative); the open mobile panel covers it. */
   .header-mobile-actions .theme-toggle-mobile {
     position: absolute;
-    top: calc(100% + 0.6rem);
-    right: 1rem;
+    top: calc(100% + 0.9rem);
+    right: 0.25rem;
+    padding: 0.35rem;
     background: var(--bg-card);
     box-shadow: 0 4px 14px rgba(0, 0, 0, 0.28);
+  }
+  .header-mobile-actions .theme-toggle-mobile svg {
+    width: 16px;
+    height: 16px;
   }
   .header-mobile-actions .menu-button { margin-left: 0; }
   .menu-button { display: inline-block; }
