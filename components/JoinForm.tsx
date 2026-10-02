@@ -2,7 +2,7 @@
 
 import { useRef, useState } from "react";
 import Link from "next/link";
-import { SPECIALTIES, AVAILABILITY_OPTIONS } from "@/lib/experts";
+import { AVAILABILITY_OPTIONS } from "@/lib/experts";
 import CaptureField from "@/components/CaptureField";
 
 const input = "join-input";
@@ -152,12 +152,7 @@ export default function JoinForm() {
           </label>
           <label className={input}>
             <span>Specialty *</span>
-            <select name="specialty" required defaultValue="">
-              <option value="" disabled>Choose your specialty</option>
-              {SPECIALTIES.map((s) => (
-                <option key={s} value={s}>{s}</option>
-              ))}
-            </select>
+            <input name="specialty" required maxLength={80} placeholder="e.g. Forensic analysis, AI tutoring, market research" autoComplete="off" />
           </label>
         </div>
 

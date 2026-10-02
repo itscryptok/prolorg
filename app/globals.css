@@ -168,8 +168,8 @@ html[data-theme="light"] .mobile-panel a {
 .site-nav a.btn-orange:hover { color: #0a0a0a; }
 html[data-theme="light"] .site-nav a.btn-orange,
 html[data-theme="light"] .site-nav a.btn-orange:hover { color: #ffffff; }
-.btn-outline { border-color: var(--orange); color: var(--orange); background: transparent; }
-.btn-outline:hover { background: rgba(200, 240, 74, 0.14); color: var(--orange); }
+.btn-outline { border-color: var(--orange); color: #ffffff; background: transparent; }
+.btn-outline:hover { background: rgba(200, 240, 74, 0.14); color: #ffffff; border-color: #ffffff; }
 
 .menu-button {
   display: none;
@@ -1249,6 +1249,7 @@ html[data-theme="light"] .form-ok { color: #15803d; }
   display: flex;
   flex-direction: column;
   gap: 0.9rem;
+  z-index: 3; /* above .watch-info so the rail buttons receive taps (Yemi 2026-10-02) */
 }
 .watch-like-wrap {
   display: flex;
@@ -1453,8 +1454,10 @@ html[data-theme="light"] .watch-stage { border-color: rgba(0, 0, 0, 0.12); }
 .auth-input:focus { outline: 2px solid var(--accent, #c8f04a); outline-offset: 1px; }
 /* Day mode: visible gray borders on white (Yemi 2026-10-02). */
 html[data-theme="light"] .auth-input { border-color: #9aa0a6; }
-/* The flag modal card is white in both themes, so its fields always get the gray border. */
+/* White cards keep dark text and dark links in both themes (Yemi 2026-10-02). */
 .modal-card .auth-input { border-color: #9aa0a6; }
+.auth-card a, .modal-card a, .unlock-popover a { color: #9f1239; }
+html[data-theme="light"] .auth-card a, html[data-theme="light"] .modal-card a, html[data-theme="light"] .unlock-popover a { color: #9f1239; }
 .role-pick { display: grid; grid-template-columns: 1fr 1fr; gap: 0.6rem; }
 .role-option { border: 1px solid rgba(255, 255, 255, 0.35); border-radius: 12px; padding: 0.8rem; background: transparent; color: inherit; font: inherit; cursor: pointer; display: flex; flex-direction: column; gap: 0.2rem; text-align: left; }
 html[data-theme="light"] .role-option { border-color: #9aa0a6; }

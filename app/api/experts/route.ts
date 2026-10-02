@@ -1,6 +1,6 @@
 import { NextResponse } from "next/server";
 import { getDb } from "@/lib/db";
-import { SPECIALTIES, AVAILABILITY_OPTIONS, slugify } from "@/lib/experts";
+import { AVAILABILITY_OPTIONS, slugify } from "@/lib/experts";
 import { getSessionUser } from "@/lib/auth";
 
 const MAX_PHOTO_BYTES = 5 * 1024 * 1024; // 5 MB
@@ -144,8 +144,8 @@ export async function POST(req: Request) {
       { status: 400 }
     );
   }
-  if (!(SPECIALTIES as readonly string[]).includes(specialty)) {
-    return NextResponse.json({ error: "Choose a valid specialty." }, { status: 400 });
+  if (!specialty || specialty.length > 80) {
+    return NextResponse.json({ error: "Tell us your specialty." }, { status: 400 });
   }
   if (availability && !(AVAILABILITY_OPTIONS as readonly string[]).includes(availability)) {
     return NextResponse.json({ error: "Choose a valid availability." }, { status: 400 });
