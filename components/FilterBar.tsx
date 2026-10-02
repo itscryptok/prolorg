@@ -71,19 +71,6 @@ export default function FilterBar({ total }: { total: number }) {
           </select>
         </label>
         <label className="filter-field">
-          <span>Max hourly rate</span>
-          <select
-            value={params.get("maxRate") ?? ""}
-            onChange={(e) => set("maxRate", e.target.value)}
-            aria-label="Filter by maximum hourly rate"
-          >
-            <option value="">Any rate</option>
-            <option value="25">Up to $25/hr</option>
-            <option value="50">Up to $50/hr</option>
-            <option value="75">Up to $75/hr</option>
-          </select>
-        </label>
-        <label className="filter-field">
           <span>Availability</span>
           <select
             value={params.get("availability") ?? ""}
