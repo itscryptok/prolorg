@@ -1543,6 +1543,56 @@ html[data-theme="light"] .back-btn { border-color: #9aa0a6; }
 .admin-tabs { display: flex; gap: 0.4rem; margin: 0 0 1.25rem; }
 .admin-tab { border: 1px solid var(--line); background: transparent; color: inherit; font: inherit; font-weight: 600; padding: 0.55rem 1.2rem; border-radius: 999px; cursor: pointer; }
 .admin-tab.selected { background: var(--accent, #c8f04a); border-color: var(--accent, #c8f04a); color: #111; }
+
+/* Admin members table: one row per member, status + actions in columns.
+   The wrapper scrolls horizontally on narrow screens so the page itself
+   never overflows the device width (Yemi 2026-10-02). */
+.admin-table-wrap {
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+  border: 1px solid var(--line);
+  border-radius: 14px;
+}
+.admin-table {
+  width: 100%;
+  min-width: 780px;
+  border-collapse: collapse;
+  font-size: 0.92rem;
+}
+.admin-table th,
+.admin-table td {
+  text-align: left;
+  padding: 0.7rem 0.9rem;
+  border-bottom: 1px solid var(--line);
+  vertical-align: middle;
+}
+.admin-table thead th {
+  font-size: 0.75rem;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  color: var(--ink-dim);
+  white-space: nowrap;
+}
+.admin-table tbody tr:last-child th,
+.admin-table tbody tr:last-child td {
+  border-bottom: none;
+}
+.admin-table .sticky-col {
+  position: sticky;
+  left: 0;
+  background: var(--bg);
+  z-index: 1;
+  box-shadow: 1px 0 0 var(--line);
+}
+.admin-table .nowrap { white-space: nowrap; }
+.admin-pager {
+  display: flex;
+  align-items: center;
+  gap: 0.8rem;
+  margin-top: 1rem;
+  flex-wrap: wrap;
+}
+.admin-pager .admin-sub { margin: 0; }
 .pill-red { background: #fde2e2; color: #a02020; border-color: #f3b4b4; }
 .violation-excerpt { font-style: italic; margin: 0; white-space: pre-wrap; overflow-wrap: anywhere; }
 .admin-card-badges { display: flex; gap: 0.4rem; flex-wrap: wrap; align-items: center; }

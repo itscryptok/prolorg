@@ -579,6 +579,211 @@ function ExpertsPanel() {
   );
 }
 
+type MemberRow = {
+  id: string;
+  name: string;
+  email: string;
+  role: string;
+  isBlocked: boolean;
+  createdAt: string;
+  violationCount: number;
+  profileId: string | null;
+  profileSlug: string | null;
+  profileStatus: string | null;
+  profileDeactivated: boolean | null;
+  profileSeed: boolean | null;
+};
+
+const MEMBERS_PAGE_SIZE = 25;
+
+function MembersPanel() {
+  const [members, setMembers] = useState<MemberRow[]>([]);
+  const [total, setTotal] = useState(0);
+  const [page, setPage] = useState(1);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
+  const [busy, setBusy] = useState<string | null>(null);
+
+  const load = useCallback(
+    async (p: number) => {
+      setLoading(true);
+      setError(null);
+      try {
+        const res = await fetch(
+          `/api/admin/users?page=${p}&pageSize=${MEMBERS_PAGE_SIZE}`
+        );
+        const json = await res.json();
+        if (!res.ok) throw new Error(json.error ?? "Could not load members.");
+        setMembers(json.users ?? []);
+        setTotal(json.total ?? 0);
+        setPage(json.page ?? p);
+      } catch (err) {
+        setError(err instanceof Error ? err.message : "Could not load members.");
+      } finally {
+        setLoading(false);
+      }
+    },
+    []
+  );
+
+  useEffect(() => {
+    load(1);
+  }, [load]);
+
+  async function setBlocked(id: string, name: string, isBlocked: boolean) {
+    if (
+      isBlocked &&
+      !window.confirm(`Block ${name}? They won't be able to log in or message.`)
+    ) {
+      return;
+    }
+    setBusy(id);
+    setError(null);
+    try {
+      const res = await fetch(`/api/admin/users/${id}`, {
+        method: "PATCH",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ isBlocked }),
+      });
+      const json = await res.json();
+      if (!res.ok) throw new Error(json.error ?? "Action failed.");
+      setMembers((prev) =>
+        prev.map((m) => (m.id === id ? { ...m, isBlocked } : m))
+      );
+    } catch (err) {
+      setError(err instanceof Error ? err.message : "Action failed.");
+    } finally {
+      setBusy(null);
+    }
+  }
+
+  const totalPages = Math.max(1, Math.ceil(total / MEMBERS_PAGE_SIZE));
+
+  return (
+    <div>
+      {loading && <p>Loading members…</p>}
+      {error && (
+        <p role="alert" className="form-error">
+          {error}
+        </p>
+      )}
+      {!loading && !error && (
+        <>
+          <div className="admin-table-wrap">
+            <table className="admin-table">
+              <thead>
+                <tr>
+                  <th scope="col" className="sticky-col">
+                    Member
+                  </th>
+                  <th scope="col">Role</th>
+                  <th scope="col">Status</th>
+                  <th scope="col">AI pro profile</th>
+                  <th scope="col">Joined</th>
+                  <th scope="col">Violations</th>
+                  <th scope="col">Actions</th>
+                </tr>
+              </thead>
+              <tbody>
+                {members.map((m) => (
+                  <tr key={m.id}>
+                    <th scope="row" className="sticky-col">
+                      <strong>{m.name}</strong>
+                      <br />
+                      <span className="admin-sub">{m.email}</span>
+                    </th>
+                    <td>
+                      <span className="pill">
+                        {m.role === "EXPERT" ? "AI pro" : "Client"}
+                      </span>
+                    </td>
+                    <td>
+                      {m.isBlocked ? (
+                        <span className="pill pill-red">Blocked</span>
+                      ) : (
+                        <span className="pill pill-ok">Active</span>
+                      )}
+                    </td>
+                    <td>
+                      {m.profileId ? (
+                        <>
+                          <span className="pill">{m.profileStatus}</span>{" "}
+                          {m.profileDeactivated && (
+                            <span className="pill pill-red">Deactivated</span>
+                          )}{" "}
+                          {m.profileSeed && <span className="pill">Seed</span>}
+                        </>
+                      ) : (
+                        <span className="admin-sub">—</span>
+                      )}
+                    </td>
+                    <td className="nowrap">
+                      {m.createdAt
+                        ? new Date(m.createdAt).toLocaleDateString()
+                        : "—"}
+                    </td>
+                    <td>{m.violationCount}</td>
+                    <td className="nowrap">
+                      {m.isBlocked ? (
+                        <button
+                          type="button"
+                          className="btn btn-outline btn-sm"
+                          disabled={busy === m.id}
+                          onClick={() => setBlocked(m.id, m.name, false)}
+                        >
+                          {busy === m.id ? "Working…" : "Unblock"}
+                        </button>
+                      ) : (
+                        <button
+                          type="button"
+                          className="btn btn-outline btn-sm"
+                          disabled={busy === m.id}
+                          onClick={() => setBlocked(m.id, m.name, true)}
+                        >
+                          {busy === m.id ? "Working…" : "Block"}
+                        </button>
+                      )}
+                    </td>
+                  </tr>
+                ))}
+                {members.length === 0 && (
+                  <tr>
+                    <td colSpan={7} className="admin-sub">
+                      No members yet.
+                    </td>
+                  </tr>
+                )}
+              </tbody>
+            </table>
+          </div>
+          <div className="admin-pager">
+            <button
+              type="button"
+              className="btn btn-outline btn-sm"
+              disabled={page <= 1 || loading}
+              onClick={() => load(page - 1)}
+            >
+              ← Prev
+            </button>
+            <span className="admin-sub">
+              Page {page} of {totalPages} · {total} member
+              {total === 1 ? "" : "s"}
+            </span>
+            <button
+              type="button"
+              className="btn btn-outline btn-sm"
+              disabled={page >= totalPages || loading}
+              onClick={() => load(page + 1)}
+            >
+              Next →
+            </button>
+          </div>
+        </>
+      )}
+    </div>
+  );
+}
+
 function ApprovalsPanel({
   pending,
   loading,
@@ -614,7 +819,9 @@ function ApprovalsPanel({
 }
 
 export default function AdminDashboard() {
-  const [tab, setTab] = useState<"approvals" | "violations" | "experts">("approvals");
+  const [tab, setTab] = useState<"approvals" | "members" | "violations" | "experts">(
+    "approvals"
+  );
   const [pending, setPending] = useState<Pending[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
@@ -645,16 +852,20 @@ export default function AdminDashboard() {
           <h1>
             {tab === "approvals"
               ? "AI pro approvals"
-              : tab === "violations"
-                ? "Contact-evasion violations"
-                : "AI pro moderation"}
+              : tab === "members"
+                ? "Members"
+                : tab === "violations"
+                  ? "Contact-evasion violations"
+                  : "AI pro moderation"}
           </h1>
           <p className="admin-sub">
             {tab === "approvals"
               ? `${pending.length} application${pending.length === 1 ? "" : "s"} waiting for review.`
-              : tab === "violations"
-                ? "Accounts that tried to share contact details in the inbox."
-                : `Flag counts per AI pro — ${FLAG_THRESHOLD} member flags or ${PAYMENT_FLAG_THRESHOLD} payment flags mark a pro as needing your review. Never auto-deactivates.`}
+              : tab === "members"
+                ? "Every registered account — block or unblock from the Actions column."
+                : tab === "violations"
+                  ? "Accounts that tried to share contact details in the inbox."
+                  : `Flag counts per AI pro — ${FLAG_THRESHOLD} member flags or ${PAYMENT_FLAG_THRESHOLD} payment flags mark a pro as needing your review. Never auto-deactivates.`}
           </p>
         </div>
         <button type="button" className="btn btn-outline" onClick={logout}>
@@ -671,6 +882,15 @@ export default function AdminDashboard() {
           onClick={() => setTab("approvals")}
         >
           Approvals
+        </button>
+        <button
+          type="button"
+          role="tab"
+          aria-selected={tab === "members"}
+          className={`admin-tab${tab === "members" ? " selected" : ""}`}
+          onClick={() => setTab("members")}
+        >
+          Members
         </button>
         <button
           type="button"
@@ -694,6 +914,8 @@ export default function AdminDashboard() {
 
       {tab === "approvals" ? (
         <ApprovalsPanel pending={pending} loading={loading} error={error} reload={load} />
+      ) : tab === "members" ? (
+        <MembersPanel />
       ) : tab === "violations" ? (
         <ViolationsPanel />
       ) : (
