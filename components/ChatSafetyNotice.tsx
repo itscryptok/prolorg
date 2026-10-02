@@ -23,7 +23,7 @@ export default function ChatSafetyNotice() {
           chat, but never share <em>payment details</em> here — no card numbers,
           bank account details, wallet addresses, or payment links. Our automated
           checks flag them, and violators will be banned. To exchange contact
-          details, pay the $1 one-time unlock fee (either side can pay) — then
+          details, pay the $1.50 one-time unlock fee (either side can pay) — then
           exchange payment details <em>outside</em> the app.{" "}
           <button
             type="button"
@@ -45,7 +45,7 @@ export default function ChatSafetyNotice() {
             is delivered.
           </li>
           <li>Never share card, bank, ID, or login details in the chat.</li>
-          <li>Be wary of payment links or anyone rushing you off the app before the $1 contact unlock.</li>
+          <li>Be wary of payment links or anyone rushing you off the app before the $1.50 contact unlock.</li>
           <li>If a deal seems too good to be true, it probably is.</li>
           <li>
             Spotted something suspicious? Use the <strong>Flag</strong> button on

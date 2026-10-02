@@ -9,8 +9,9 @@
 // YEMI — SET THE PRICE HERE. Payments cannot go live until this is
 // a number AND Stripe is connected.
 // Yemi's decision 2026-10-01: $1 USD one-time fee.
+// Yemi's decision 2026-10-02: raised to $1.50 USD one-time fee.
 // ================================================================
-export const CONTACT_UNLOCK_FEE_USD: number | null = 1;
+export const CONTACT_UNLOCK_FEE_USD: number | null = 1.5;
 
 // Payments are NOT wired up yet. Flip to true only after:
 //   1. CONTACT_UNLOCK_FEE_USD above is set to the decided price, and

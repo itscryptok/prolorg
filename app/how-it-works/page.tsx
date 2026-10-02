@@ -107,7 +107,7 @@ export default function HowItWorksPage() {
             </li>
             <li>
               <strong>Unlock direct contact</strong> — either side pays a
-              one-time $1 fee, which unlocks contact exchange for your
+              one-time $1.50 fee, which unlocks contact exchange for your
               client/AI pro pair only.
             </li>
             <li>

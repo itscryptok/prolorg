@@ -475,7 +475,7 @@ export default function ThreadPage({ params }: { params: Promise<{ id: string }>
             Never share payment details in this chat — card numbers, bank
             details, wallet addresses, or payment links. Violators will be
             banned. Discuss payment here; exchange payment details only outside
-            the app after the $1 contact unlock. Beware of scams and report
+            the app after the $1.50 contact unlock. Beware of scams and report
             anything suspicious.
           </p>
         </>
