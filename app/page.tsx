@@ -121,7 +121,7 @@ export default async function HomePage() {
             <h1>
               Hire an AI pro. Not the AI.{" "}
               <span className="accent">
-                <a href="#why">Here's why.</a>
+                <a href="#why">Get things done faster than your competitors.</a>
               </span>
             </h1>
             <p className="hero-sub">
