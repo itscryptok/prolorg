@@ -20,9 +20,9 @@ export async function PATCH(
     return NextResponse.json({ error: "Not authorized." }, { status: 401 });
   }
   const { id } = await params;
-  let body: { status?: unknown; deactivated?: unknown };
+  let body: { status?: unknown; deactivated?: unknown; seed?: unknown };
   try {
-    body = (await req.json()) as { status?: unknown; deactivated?: unknown };
+    body = (await req.json()) as { status?: unknown; deactivated?: unknown; seed?: unknown };
   } catch {
     return NextResponse.json({ error: "Invalid request." }, { status: 400 });
   }
@@ -30,6 +30,18 @@ export async function PATCH(
   const db = getDb();
   if (!db) return NextResponse.json({ error: "Database unavailable." }, { status: 503 });
   const rawDb = db as unknown as Raw;
+
+  // Mark / unmark as a seed (test) profile. Seed profiles stay visible as
+  // demo content until 10 human signups, then hide from /experts + /watch.
+  if (typeof body.seed === "boolean") {
+    const updated = await rawDb.$executeRawUnsafe(
+      'UPDATE "ExpertProfile" SET "isSeed" = $2 WHERE "id" = $1',
+      id,
+      body.seed
+    );
+    if (!updated) return NextResponse.json({ error: "AI pro not found." }, { status: 404 });
+    return NextResponse.json({ ok: true, seed: body.seed });
+  }
 
   // Deactivate / reactivate.
   if (typeof body.deactivated === "boolean") {

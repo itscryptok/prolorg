@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import { getDb } from "@/lib/db";
+import { hideSeedProfiles } from "@/lib/seed";
 import WatchFeed, { type WatchExpert } from "@/components/WatchFeed";
 
 export const dynamic = "force-dynamic";
@@ -27,9 +28,12 @@ export default async function WatchPage({
   const db = getDb();
   // Cast: the local generated client is stale (production regenerates it at
   // build time); the query is valid against the real schema.
+  const where: Record<string, unknown> = { status: "APPROVED", isDeactivated: false };
+  // Seed/test profiles hide from /watch once 10 humans sign up (Yemi 2026-10-02).
+  if (await hideSeedProfiles()) where.isSeed = false;
   const rows = db
     ? await db.expertProfile.findMany({
-        where: { status: "APPROVED", isDeactivated: false },
+        where,
         orderBy: [{ ratingAvg: "desc" }, { reviewCount: "desc" }],
         take: 60,
       } as never)

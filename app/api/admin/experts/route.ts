@@ -13,6 +13,7 @@ type ExpertAdminRow = {
   flagCount: number;
   paymentFlagCount: number;
   isDeactivated: boolean;
+  isSeed: boolean;
   createdAt: Date;
 };
 
@@ -41,7 +42,7 @@ export async function GET(req: Request) {
   const rows = await raw<ExpertAdminRow>(
     db,
     `SELECT "id", "slug", "name", "headline", "specialty", "status",
-            "flagCount", "paymentFlagCount", "isDeactivated", "createdAt"
+            "flagCount", "paymentFlagCount", "isDeactivated", "isSeed", "createdAt"
      FROM "ExpertProfile"
      ORDER BY "paymentFlagCount" DESC, "flagCount" DESC, "createdAt" DESC`
   );
@@ -81,6 +82,7 @@ export async function GET(req: Request) {
       flagCount: r.flagCount,
       paymentFlagCount: r.paymentFlagCount,
       isDeactivated: r.isDeactivated,
+      isSeed: r.isSeed,
       createdAt:
         r.createdAt instanceof Date ? r.createdAt.toISOString() : String(r.createdAt),
       flagReports: (byExpert.get(r.id) ?? []).map(toReport),

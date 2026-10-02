@@ -3,6 +3,7 @@ import Link from "next/link";
 import { Suspense } from "react";
 import type { Prisma } from "@prisma/client";
 import { getDb } from "@/lib/db";
+import { hideSeedProfiles } from "@/lib/seed";
 import FilterBar from "@/components/FilterBar";
 import BackButton from "@/components/BackButton";
 import FilterToggle from "@/components/FilterToggle";
@@ -39,6 +40,8 @@ export default async function ExpertsPage({
   const and: Prisma.ExpertProfileWhereInput[] = [{ status: "APPROVED" }];
   // Deactivated pros stay hidden (cast: stale local client; valid in prod).
   and.push({ isDeactivated: false } as never);
+  // Seed/test profiles hide from the public directory once 10 humans sign up.
+  if (await hideSeedProfiles()) and.push({ isSeed: false } as never);
   if (specialty) and.push({ specialty });
   if (availability) and.push({ availability });
   if (Number.isFinite(maxRate)) {

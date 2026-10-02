@@ -317,6 +317,7 @@ type ModeratedExpert = {
   flagCount: number;
   paymentFlagCount: number;
   isDeactivated: boolean;
+  isSeed: boolean;
   createdAt: string;
   flagReports: FlagReport[];
 };
@@ -325,11 +326,13 @@ function ModeratedExpertCard({
   expert: e,
   busy,
   onToggleDeactivate,
+  onToggleSeed,
   onDismissFlag,
 }: {
   expert: ModeratedExpert;
   busy: string | null;
   onToggleDeactivate: (id: string, deactivated: boolean, name: string) => void;
+  onToggleSeed: (id: string, seed: boolean, name: string) => void;
   onDismissFlag: (expertId: string, reportId: string) => void;
 }) {
   const [showFlags, setShowFlags] = useState(false);
@@ -356,6 +359,7 @@ function ModeratedExpertCard({
           )}
           <span className="pill">{e.status}</span>
           {e.isDeactivated && <span className="pill pill-red">Deactivated</span>}
+          {e.isSeed && <span className="pill">Seed</span>}
         </div>
       </div>
       <p className="admin-sub">
@@ -431,6 +435,15 @@ function ModeratedExpertCard({
             {busy === e.id ? "Working&hellip;" : "Deactivate"}
           </button>
         )}
+        <button
+          type="button"
+          className="btn btn-outline"
+          disabled={busy === e.id}
+          onClick={() => onToggleSeed(e.id, !e.isSeed, e.name)}
+          title="Seed profiles stay visible as demo content until 10 humans sign up, then hide from /experts and /watch."
+        >
+          {busy === e.id ? "Working&hellip;" : e.isSeed ? "Unmark seed" : "Mark seed"}
+        </button>
       </div>
     </article>
   );
@@ -475,6 +488,25 @@ function ExpertsPanel() {
         method: "PATCH",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ deactivated }),
+      });
+      const json = await res.json();
+      if (!res.ok) throw new Error(json.error ?? "Action failed.");
+      await load();
+    } catch (err) {
+      setError(err instanceof Error ? err.message : "Action failed.");
+    } finally {
+      setBusy(null);
+    }
+  }
+
+  async function setSeed(id: string, seed: boolean, name: string) {
+    setBusy(id);
+    setError(null);
+    try {
+      const res = await fetch(`/api/admin/experts/${id}`, {
+        method: "PATCH",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ seed }),
       });
       const json = await res.json();
       if (!res.ok) throw new Error(json.error ?? "Action failed.");
@@ -538,6 +570,7 @@ function ExpertsPanel() {
             expert={e}
             busy={busy}
             onToggleDeactivate={setDeactivated}
+            onToggleSeed={setSeed}
             onDismissFlag={dismissFlag}
           />
         ))}

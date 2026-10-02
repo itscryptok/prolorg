@@ -100,7 +100,7 @@ model ExpertProfile {
   photoUrl        String?
   headline        String
   bio             String   @db.Text
-  specialty       String   // one of the 8 expert categories
+  specialty       String   // free text (Yemi 2026-10-02: the category list was non-exhaustive)
   skills          String[]
   hourlyRate      Int?     // USD per hour
   projectRate     Int?     // USD starting project price
@@ -116,6 +116,7 @@ model ExpertProfile {
   flagCount       Int      @default(0) // "Flag this pro" member reports (one per browser)
   paymentFlagCount Int     @default(0) // auto-detected payment-detail violations by this pro
   isDeactivated   Boolean  @default(false) // hidden from /experts + /watch while true
+  isSeed          Boolean  @default(false) // test/seed profile: stays visible as demo content until 10 human signups, then hidden from /experts + /watch (Yemi 2026-10-02)
   status          String   @default("PENDING") // PENDING | APPROVED | REJECTED
   isSample        Boolean  @default(false)     // seed data, removable
   createdAt       DateTime @default(now())
