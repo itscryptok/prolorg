@@ -2,7 +2,7 @@
    Revert commit to restore the previous near-black + orange night theme. */
 
 :root {
-  --bg: #6f747a;
+  --bg: #686d74;
   --bg-soft: #656b72;
   --bg-card: #7c828a;
   --ink: #ffffff;
