@@ -15,8 +15,11 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   // Approved expert profiles get their own URLs for discovery.
   const db = getDb();
   if (db) {
+    const { hideSeedProfiles } = await import("@/lib/seed");
+    const where: Record<string, unknown> = { status: "APPROVED" };
+    if (await hideSeedProfiles()) where.isSeed = false;
     const profiles = await db.expertProfile.findMany({
-      where: { status: "APPROVED" },
+      where: where as never,
       select: { slug: true, updatedAt: true },
     });
     for (const p of profiles) {
