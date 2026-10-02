@@ -408,7 +408,7 @@ html[data-theme="light"] .splash-bar { background: rgba(0, 0, 0, 0.08); }
   margin-right: auto;
 }
 .hero h1 .accent { color: var(--orange); font-size: 0.56em; font-weight: 700; }
-.hero-ctas { display: flex; gap: 1rem; justify-content: center; flex-wrap: wrap; }
+.hero-ctas { display: flex; gap: 1rem; justify-content: center; flex-wrap: wrap; margin-top: 0.8rem; }
 
 /* ---------- Hero: split layout + product-preview artwork ---------- */
 .hero-split { text-align: left; }
