@@ -313,7 +313,7 @@ html[data-theme="light"] .mobile-panel-auth a + a {
 .home-link:focus-visible { outline: 3px solid var(--orange); outline-offset: 2px; }
 .watch-link-desktop,
 .home-link-desktop { padding: 0.35rem; }
-/* Mobile: toggle sits left of the hamburger. */
+/* Mobile: toggle floats below the hamburger (see media query). */
 .header-mobile-actions { display: none; }
 
 /* ---------- Day mode (light theme: white + pink-red) ---------- */
@@ -1402,6 +1402,16 @@ html[data-theme="light"] .watch-stage { border-color: rgba(0, 0, 0, 0.12); }
     align-items: center;
     gap: 0.6rem;
     margin-left: auto;
+  }
+  /* Yemi 2026-10-02: on phones the mode icon floats below the hamburger,
+     right-aligned, instead of crowding the header row. Anchored to the
+     header inner (position: relative); the open mobile panel covers it. */
+  .header-mobile-actions .theme-toggle-mobile {
+    position: absolute;
+    top: calc(100% + 0.6rem);
+    right: 1rem;
+    background: var(--bg-card);
+    box-shadow: 0 4px 14px rgba(0, 0, 0, 0.28);
   }
   .header-mobile-actions .menu-button { margin-left: 0; }
   .menu-button { display: inline-block; }

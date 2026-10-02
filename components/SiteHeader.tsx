@@ -16,8 +16,8 @@ const BASE_LINKS = [
 type Me = { role: string } | null;
 
 // Sticky site header: logo left, nav center/right, theme toggle below the
-// nav on desktop and left of the hamburger on mobile, orange Sign Up pill,
-// hamburger menu with slide-out panel on mobile.
+// nav on desktop and floating below the hamburger on mobile, orange Sign Up
+// pill, hamburger menu with slide-out panel on mobile.
 // (Watch play button sits beside the theme toggle; the filter toggle lives
 // on the /experts toolbar, above the cards.)
 export default function SiteHeader() {
