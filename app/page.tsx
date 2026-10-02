@@ -63,17 +63,6 @@ const WHY_POINTS = [
   },
 ] as const;
 
-const CATEGORIES = [
-  { title: "Forensic analysis", text: "AI-assisted forensic investigation and evidence analysis." },
-  { title: "Genealogy trace", text: "Trace family lines and ancestry with AI pro-guided AI research." },
-  { title: "Lab discovery", text: "Accelerate lab research and discovery with AI workflows." },
-  { title: "Market advantage", text: "Turn AI into a market advantage with AI pro strategy." },
-  { title: "Personal AI tutor", text: "One-on-one tutoring to master AI tools and techniques." },
-  { title: "Technical project developer", text: "End-to-end development of your technical AI project." },
-  { title: "Data collector & analyst", text: "Skilled collection, cleaning, and analysis of your data." },
-  { title: "Other AI work", text: "Any other kind of AI work — ask an AI pro what\u2019s possible." },
-] as const;
-
 const CLIENT_STEPS = [
   {
     title: "Browse AI pro profiles",
@@ -185,26 +174,7 @@ export default async function HomePage() {
         </div>
       </section>
 
-      {/* 4. AI pro categories */}
-      <section className="section" id="categories" style={{ paddingTop: 0 }}>
-        <div className="container">
-          <h2 className="section-title">AI pro categories</h2>
-          <p className="section-lead">
-            Whatever the AI work, there is an AI pro for it.
-          </p>
-          <div className="cards">
-            {CATEGORIES.map((cat) => (
-              <article className="card" key={cat.title}>
-                <span className="pill">SPECIALTY</span>
-                <h3>{cat.title}</h3>
-                <p>{cat.text}</p>
-              </article>
-            ))}
-          </div>
-        </div>
-      </section>
-
-      {/* 5. How It Works */}
+      {/* 4. How It Works */}
       <section className="section" id="how-it-works" style={{ paddingTop: 0 }}>
         <div className="container">
           <h2 className="section-title">How It Works</h2>
