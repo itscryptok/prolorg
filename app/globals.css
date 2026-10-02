@@ -1456,6 +1456,10 @@ html[data-theme="light"] .watch-stage { border-color: rgba(0, 0, 0, 0.12); }
 html[data-theme="light"] .auth-input { border-color: #9aa0a6; }
 /* White cards keep dark text and dark links in both themes (Yemi 2026-10-02). */
 .modal-card .auth-input { border-color: #9aa0a6; }
+/* The auth card is white in BOTH themes, so its fields need the gray border
+   even in dark mode, where the base white border would be invisible. */
+.auth-card .auth-input,
+.auth-card .role-option { border-color: #9aa0a6; }
 .auth-card a, .modal-card a, .unlock-popover a { color: #9f1239; }
 html[data-theme="light"] .auth-card a, html[data-theme="light"] .modal-card a, html[data-theme="light"] .unlock-popover a { color: #9f1239; }
 .role-pick { display: grid; grid-template-columns: 1fr 1fr; gap: 0.6rem; }
