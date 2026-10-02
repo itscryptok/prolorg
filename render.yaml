@@ -8,7 +8,7 @@
 
 services:
   - type: web
-    name: prolorg
+    name: aiprolice
     runtime: node
     plan: free # sleepy: sleeps after 15 min idle; upgrade to `starter` ($7/mo) to keep awake
     buildCommand: bash scripts/render-build.sh
@@ -19,8 +19,8 @@ services:
       - key: NODE_VERSION
         value: "24"
       - key: SITE_URL
-        value: https://prolorg.onrender.com # change to your domain when you add one
+        value: https://aiprolice.onrender.com # change to your domain when you add one
       - key: NEXT_PUBLIC_SITE_URL
-        value: https://prolorg.onrender.com # change to your domain when you add one
+        value: https://aiprolice.onrender.com # change to your domain when you add one
       # DATABASE_URL is set manually in the Render dashboard (secret): the
       # emus-db external/internal URL with the dbname swapped to `prolorg`.
