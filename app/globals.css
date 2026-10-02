@@ -1394,7 +1394,8 @@ html[data-theme="light"] .watch-stage { border-color: rgba(0, 0, 0, 0.12); }
   .hero-split .hero-ctas { justify-content: center; }
   .hero-art { max-width: 420px; }
 }
-@media (max-width: 640px) {
+/* Yemi 2026-10-02: the phone header (hamburger menu) applies below 760px. */
+@media (max-width: 760px) {
   .site-nav { display: none; }
   .header-menu-col { display: none; }
   .header-mobile-actions {
@@ -1403,9 +1404,9 @@ html[data-theme="light"] .watch-stage { border-color: rgba(0, 0, 0, 0.12); }
     gap: 0.6rem;
     margin-left: auto;
   }
-  /* Yemi 2026-10-02: on phones the mode icon floats below the hamburger,
-     right-aligned, instead of crowding the header row. Anchored to the
-     header inner (position: relative); the open mobile panel covers it. */
+  /* On phones the mode icon floats below the hamburger, right-aligned,
+     instead of crowding the header row. Anchored to the header inner
+     (position: relative); the open mobile panel covers it. */
   .header-mobile-actions .theme-toggle-mobile {
     position: absolute;
     top: calc(100% + 0.6rem);
@@ -1415,6 +1416,8 @@ html[data-theme="light"] .watch-stage { border-color: rgba(0, 0, 0, 0.12); }
   }
   .header-mobile-actions .menu-button { margin-left: 0; }
   .menu-button { display: inline-block; }
+}
+@media (max-width: 640px) {
   .cards { grid-template-columns: 1fr; }
   .expert-grid { grid-template-columns: 1fr; }
   .join-grid, .join-grid-2, .join-grid-3 { grid-template-columns: 1fr; }
