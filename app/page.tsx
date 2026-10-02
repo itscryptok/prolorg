@@ -124,11 +124,6 @@ export default async function HomePage() {
                 <a href="#why">Here's why.</a>
               </span>
             </h1>
-            <p className="hero-sub">
-              Partner with an AI pro for forensics, genealogy traces, lab
-              discovery, market advantage, personal AI tutoring, technical
-              projects, data analysis — or any other AI work.
-            </p>
             <div className="hero-ctas">
               <Link href="/experts" className="btn btn-orange">Browse AI pros</Link>
               <Link href="/join" className="btn btn-outline">Join as an AI pro</Link>
@@ -136,6 +131,11 @@ export default async function HomePage() {
           </div>
           <HeroVisual />
         </div>
+        <p className="hero-lead">
+          Partner with an AI pro for forensics, genealogy traces, lab
+          discovery, market advantage, personal AI tutoring, technical
+          projects, data analysis — or any other AI work.
+        </p>
       </section>
 
       {/* 2. Live stats band */}
