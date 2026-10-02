@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import BackButton from "@/components/BackButton";
 
 export const metadata: Metadata = {
   title: "Privacy Policy",
@@ -10,6 +11,7 @@ export const metadata: Metadata = {
 export default function PrivacyPage() {
   return (
     <article className="legal">
+      <div className="page-back"><BackButton fallback="/" /></div>
       <h1>Privacy Policy</h1>
       <p className="updated">Last updated: September 2026</p>
 

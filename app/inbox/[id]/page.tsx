@@ -4,6 +4,7 @@ import { useCallback, useEffect, useState } from "react";
 import Link from "next/link";
 import ContactUnlockPopover from "@/components/ContactUnlockPopover";
 import ChatSafetyNotice from "@/components/ChatSafetyNotice";
+import BackButton from "@/components/BackButton";
 
 type Thread = {
   id: string;
@@ -374,6 +375,7 @@ export default function ThreadPage({ params }: { params: Promise<{ id: string }>
       {thread && (
         <>
           <div className="thread-head">
+            <BackButton fallback="/inbox" label="Back to inbox" />
             <div>
               <h1>{thread.myRole === "CLIENT" ? thread.expertName : thread.clientName}</h1>
               {thread.myRole === "CLIENT" && thread.expertHeadline && (

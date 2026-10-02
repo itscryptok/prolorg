@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import Link from "next/link";
+import BackButton from "@/components/BackButton";
 
 export const metadata: Metadata = {
   title: "How It Works",
@@ -42,6 +43,7 @@ export default function HowItWorksPage() {
   return (
     <div className="section">
       <div className="container">
+        <div className="page-back"><BackButton fallback="/" /></div>
         <h1 className="section-title">How It Works</h1>
         <p className="section-lead">
           Clients find AI pros. AI pros get hired. Everything happens inside

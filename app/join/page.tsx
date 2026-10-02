@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import JoinForm from "@/components/JoinForm";
+import BackButton from "@/components/BackButton";
 
 export const metadata: Metadata = {
   title: "Join as an AI pro",
@@ -11,6 +12,7 @@ export const metadata: Metadata = {
 export default function JoinPage() {
   return (
     <div className="container">
+      <div className="page-back"><BackButton fallback="/" /></div>
       <div className="page-head">
         <p className="eyebrow">For AI pros</p>
         <h1>Join AiProlice as an AI pro</h1>

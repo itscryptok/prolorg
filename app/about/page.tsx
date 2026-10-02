@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import Link from "next/link";
+import BackButton from "@/components/BackButton";
 
 export const metadata: Metadata = {
   title: "About AiProlice",
@@ -11,6 +12,7 @@ export const metadata: Metadata = {
 export default function AboutPage() {
   return (
     <article className="legal">
+      <div className="page-back"><BackButton fallback="/" /></div>
       <h1>About AiProlice</h1>
       <p className="updated">The AI pro marketplace by Cryp Tok Solutions.</p>
 

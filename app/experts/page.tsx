@@ -4,6 +4,7 @@ import { Suspense } from "react";
 import type { Prisma } from "@prisma/client";
 import { getDb } from "@/lib/db";
 import FilterBar from "@/components/FilterBar";
+import BackButton from "@/components/BackButton";
 import FilterToggle from "@/components/FilterToggle";
 import ExpertCard from "@/components/ExpertCard";
 
@@ -72,6 +73,7 @@ export default async function ExpertsPage({
 
   return (
     <div className="container">
+      <div className="page-back"><BackButton fallback="/" /></div>
       <div className="page-head">
         <p className="eyebrow">AI pro directory</p>
         <h1>Find your AI pro</h1>

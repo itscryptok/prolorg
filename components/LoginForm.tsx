@@ -3,6 +3,7 @@
 import { useState } from "react";
 import Link from "next/link";
 import LogoMark from "./LogoMark";
+import BackButton from "./BackButton";
 
 type Status = { ok: boolean; message: string } | null;
 
@@ -37,6 +38,7 @@ export default function LoginForm() {
   return (
     <div className="auth-wrap">
       <div className="auth-card">
+        <BackButton fallback="/" className="back-btn-corner" />
         <LogoMark size={48} />
         <h1>Log in</h1>
         <p className="auth-sub">Welcome back to AiProlice.</p>
