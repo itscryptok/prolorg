@@ -4,6 +4,7 @@ import Link from "next/link";
 import { useEffect, useRef, useState } from "react";
 import LogoMark from "./LogoMark";
 import ThemeToggle from "./ThemeToggle";
+import HomeLink from "./HomeLink";
 import WatchLink from "./WatchLink";
 
 const BASE_LINKS = [
@@ -104,11 +105,13 @@ export default function SiteHeader() {
             )}
           </nav>
           <div className="header-icon-row">
+            <HomeLink className="home-link-desktop" />
             <WatchLink className="watch-link-desktop" />
             <ThemeToggle className="theme-toggle-desktop" />
           </div>
         </div>
         <div className="header-mobile-actions">
+          <HomeLink />
           <WatchLink />
           <ThemeToggle className="theme-toggle-mobile" />
           <button

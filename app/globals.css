@@ -293,7 +293,8 @@ html[data-theme="light"] .mobile-panel-auth a + a {
   align-items: center;
   gap: 0.5rem;
 }
-.watch-link {
+.watch-link,
+.home-link {
   display: inline-flex;
   align-items: center;
   justify-content: center;
@@ -306,9 +307,12 @@ html[data-theme="light"] .mobile-panel-auth a + a {
   text-decoration: none;
   transition: color 0.12s ease, border-color 0.12s ease, transform 0.12s ease;
 }
-.watch-link:hover { color: var(--orange); border-color: var(--orange); transform: translateY(-1px); }
-.watch-link:focus-visible { outline: 3px solid var(--orange); outline-offset: 2px; }
-.watch-link-desktop { padding: 0.35rem; }
+.watch-link:hover,
+.home-link:hover { color: var(--orange); border-color: var(--orange); transform: translateY(-1px); }
+.watch-link:focus-visible,
+.home-link:focus-visible { outline: 3px solid var(--orange); outline-offset: 2px; }
+.watch-link-desktop,
+.home-link-desktop { padding: 0.35rem; }
 /* Mobile: toggle sits left of the hamburger. */
 .header-mobile-actions { display: none; }
 
