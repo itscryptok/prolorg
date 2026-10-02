@@ -1,9 +1,26 @@
-// AiProlice contact-evasion detection (Big/MVP stage).
+// AiProlice contact-evasion detection (Big/MVP stage, extended 2026-10-02).
 //
 // All communication must stay inside the AiProlice inbox until the paid
 // contact unlock. These checks catch direct-contact attempts in inbox
 // messages, including obfuscated variants:
 //
+// - plain emails: john@gmail.com
+// - "at / dot" word obfuscation: "john at gmail dot com"
+// - bracketed separators: "john [at] gmail [dot] com",
+//   "john(at)gmail(dot)com", "john{at}gmail{dot}com"
+// - dot variants: "john at gmail d0t com", "john a.t gmail d.o.t com"
+// - host-only forms (no @ at all): "johnsmith, gmail dot com",
+//   "gmail: johnsmith", "johnsmith at gmaildotcom"
+// - unicode lookalikes: fullwidth ＠ ． and digits (NFKC-normalized),
+//   zero-width characters stripped
+// - interleaved separators in trigger words: "g.m.a.i.l", "g-m-a-i-l",
+//   "g m a i l", "w.h.a.t.s.a.p.p" (single-letter runs only, so normal
+//   sentences never match)
+// - leetspeak in trigger words: "gmai1", "yah00", "h0tmail", "whats4pp"
+// - phone digit runs: 555-123-4567, (555) 123 4567, 5 5 5 1 2 3 4 5 6 7
+// - spelled-out numbers: "five five five one two three four"
+// - mixed words+digits: "two 4 zero 643 0840", "2four0six...",
+//   "two-four-zero", "plus one 240 643 0840", "(two four zero) 643-0840"
 // - payment links: paypal.me/name, cash.app/$name, venmo/zelle mentions
 // - crypto wallet addresses: bitcoin (1…/3…/bc1…), ethereum (0x…),
 //   solana / base58 (32–44 base58 chars)
@@ -14,7 +31,7 @@
 
 export type EvasionFinding = {
   flagged: boolean;
-  reasons: string[]; // e.g. ["email", "phone-spaced"]
+  reasons: string[]; // e.g. ["email", "phone-mixed", "channel-interleaved"]
 };
 
 const EMAIL_RE = /[A-Z0-9._%+-]{1,64}@[A-Z0-9.-]{1,253}\.[A-Z]{2,}/i;
@@ -26,6 +43,60 @@ const OBFUSCATED_EMAIL_RE =
 // "john @ gmail . com" with stray spaces around the symbols
 const SPACED_EMAIL_RE =
   /[A-Z0-9._%+-]{1,64}\s*@\s*[A-Z0-9.-]{1,253}\s*\.\s*[A-Z]{2,}/i;
+
+// Bracketed / paren / brace separators and dot-variants:
+// "john [at] gmail [dot] com", "john(at)gmail(dot)com",
+// "john{at}gmail{dot}com", "john at gmail d0t com",
+// "john a.t gmail d.o.t com". Plain "at"/"dot" words are covered by
+// OBFUSCATED_EMAIL_RE above; "email-bracketed" only fires when the
+// match actually contains a bracket, paren, brace, d0t, or dotted form.
+const BRACKETED_AT = String.raw`(?:\[at\]|\(at\)|\{at\}|a\.[.\s]*t)`;
+const BRACKETED_DOT = String.raw`(?:\[dot\]|\(dot\)|\{dot\}|d0t|d\.[.\s]*o[.\s]*t)`;
+const BRACKETED_EMAIL_RE = new RegExp(
+  String.raw`[\w.+-]{1,64}\s*(?:@|${BRACKETED_AT}|\bat\b)\s*[\w-]{1,63}` +
+    String.raw`(?:\s*(?:\.|${BRACKETED_DOT}|\bdot\b)\s*[\w-]{1,63})+`,
+  "i"
+);
+// Marker that proves the matched address used a non-plain separator.
+const BRACKETED_MARKER_RE = /[[({]|d0t|a\s*\.\s*t|d\s*\.\s*o/i;
+
+// Email hosts people reach for when dodging the @ sign.
+const EMAIL_HOSTS = [
+  "gmail",
+  "yahoo",
+  "hotmail",
+  "outlook",
+  "live",
+  "icloud",
+  "protonmail",
+  "proton",
+  "aol",
+  "gmx",
+  "zoho",
+  "yandex",
+];
+const HOST_ALT = `(?:${EMAIL_HOSTS.join("|")})`;
+const TLDS = "com|net|org|io|co|edu|gov|me|us|uk|ca|au|de|fr|biz|info";
+
+// Host/TLD split with no @ at all:
+// "my email is johnsmith, gmail dot com" (comma form — the comma keeps
+// false positives low).
+const HOST_ONLY_COMMA_RE = new RegExp(
+  String.raw`[\w.+-]{1,64}\s*,\s*${HOST_ALT}\s+dot\s+(?:${TLDS})\b`,
+  "i"
+);
+// "gmail: johnsmith" — the token after the colon must be a single
+// username-like token so "gmail: it's great" does not match.
+const HOST_COLON_RE = new RegExp(
+  String.raw`${HOST_ALT}\s*[:=]\s*[\w.+-]{1,64}(?=$|[\s.,;:!?])`,
+  "i"
+);
+// "johnsmith at gmaildotcom" / "johnsmith at gmailcom" — the local part
+// may not itself be "at" (that belongs to the plain obfuscated form).
+const AT_HOSTGLUED_RE = new RegExp(
+  String.raw`(?!at\b)[\w.+-]{1,64}\s+at\s+${HOST_ALT}(?:dot)?(?:${TLDS})\b`,
+  "i"
+);
 
 // 7+ digits with optional separators between them (catches
 // 555-123-4567, (555) 123 4567, 5 5 5 1 2 3 4 5 6 7, 555.123.4567).
@@ -81,7 +152,67 @@ const NUMBER_WORDS: Record<string, string> = {
   eight: "8",
   ate: "8",
   nine: "9",
+  double: "00",
+  triple: "000",
+  plus: "", // country-code marker: "plus one" == "+1"
 };
+
+// A "number token" is a digit run or a number word bounded by non-letters
+// (so "tone" never yields "one", but "two4zero" yields two/4/zero).
+const NUMWORD_SRC =
+  "zero|oh|o|one|two|to|too|three|four|for|five|six|seven|eight|ate|nine|double|triple|plus";
+const NUM_TOKEN = String.raw`(?:\d+|(?<![a-z])(?:${NUMWORD_SRC})(?![a-z]))`;
+// Runs of 2+ number tokens joined by light separators:
+// "two 4 zero 643 0840", "2four0six4three0eight40", "plus one 240 643 0840",
+// "(two four zero) 643-0840", "two-four-zero-six…".
+const MIXED_RUN_RE = new RegExp(
+  String.raw`\+?(?:${NUM_TOKEN}[\s\-./()]*){2,}`,
+  "gi"
+);
+const NUM_TOKEN_RE = new RegExp(NUM_TOKEN, "gi");
+
+// Trigger words for interleaved-separator and leetspeak detection.
+const EMAIL_KEYWORDS = [
+  "gmail",
+  "yahoo",
+  "hotmail",
+  "outlook",
+  "live",
+  "icloud",
+  "protonmail",
+  "proton",
+  "aol",
+];
+const CHANNEL_KEYWORDS = [
+  "whatsapp",
+  "telegram",
+  "signal",
+  "messenger",
+  "instagram",
+  "facebook",
+  "snapchat",
+];
+// Runs of SINGLE letters joined by separators: "g.m.a.i.l", "g-m-a-i-l",
+// "g m a i l", "w.h.a.t.s.a.p.p". Requiring single letters (not whole
+// words) is what keeps normal sentences safe — "going mad about
+// interesting llamas" can never match.
+const SINGLE_LETTER_RUN_RE =
+  /(?:(?<![a-z])[a-z](?![a-z])[\s.\-*/_|·•:;]+)+(?<![a-z])[a-z](?![a-z])/gi;
+const RUN_SEP_RE = /[\s.\-*/_|·•:;]+/g;
+
+// Leetspeak normalization (single-char → single-char, so string indices
+// stay aligned with the original text).
+function deleet(text: string): string {
+  return text
+    .replace(/1/g, "l")
+    .replace(/0/g, "o")
+    .replace(/4/g, "a")
+    .replace(/3/g, "e")
+    .replace(/5/g, "s")
+    .replace(/7/g, "t")
+    .replace(/8/g, "b")
+    .replace(/@/g, "a");
+}
 
 const CONTACT_PHRASES = [
   "call me",
@@ -102,7 +233,11 @@ const CONTACT_PHRASES = [
 
 export function detectContactEvasion(body: string): EvasionFinding {
   const reasons: string[] = [];
-  const text = body ?? "";
+  // NFKC folds fullwidth lookalikes (＠ → @, ． → ., ０-９ → 0-9);
+  // zero-width characters are stripped outright.
+  const text = (body ?? "")
+    .normalize("NFKC")
+    .replace(/[\u200B-\u200D\u2060\uFEFF]/g, "");
 
   if (EMAIL_RE.test(text)) reasons.push("email");
 
@@ -112,6 +247,56 @@ export function detectContactEvasion(body: string): EvasionFinding {
 
   if (OBFUSCATED_EMAIL_RE.test(withoutEmails)) reasons.push("email-obfuscated");
   if (SPACED_EMAIL_RE.test(withoutEmails)) reasons.push("email-spaced");
+
+  const bracketed = withoutEmails.match(BRACKETED_EMAIL_RE);
+  if (bracketed && BRACKETED_MARKER_RE.test(bracketed[0])) {
+    reasons.push("email-bracketed");
+  }
+
+  if (
+    HOST_ONLY_COMMA_RE.test(withoutEmails) ||
+    HOST_COLON_RE.test(withoutEmails) ||
+    AT_HOSTGLUED_RE.test(withoutEmails)
+  ) {
+    reasons.push("email-host-only");
+  }
+
+  // Interleaved separators in trigger words ("g.m.a.i.l",
+  // "w h a t s a p p") — single-letter runs joined back and compared
+  // against the keyword lists.
+  const runs = withoutEmails.match(SINGLE_LETTER_RUN_RE) ?? [];
+  for (const run of runs) {
+    const joined = run.replace(RUN_SEP_RE, "").toLowerCase();
+    if (EMAIL_KEYWORDS.includes(joined)) {
+      if (!reasons.includes("email-interleaved")) reasons.push("email-interleaved");
+    } else if (CHANNEL_KEYWORDS.includes(joined)) {
+      if (!reasons.includes("channel-interleaved")) reasons.push("channel-interleaved");
+    }
+  }
+
+  // Leetspeak in trigger words ("gmai1", "yah00", "whats4pp"). A keyword
+  // only counts when the matched span in the ORIGINAL text actually
+  // contained a digit or @ — plain "gmail" in "I use gmail" must not flag.
+  const lowered = withoutEmails.toLowerCase();
+  const leet = deleet(lowered);
+  if (leet !== lowered) {
+    const kwRe = new RegExp(
+      `\\b(${[...EMAIL_KEYWORDS, ...CHANNEL_KEYWORDS].join("|")})\\b`,
+      "gi"
+    );
+    let m: RegExpExecArray | null;
+    while ((m = kwRe.exec(leet)) !== null) {
+      const rawSlice = lowered.slice(m.index, m.index + m[0].length);
+      if (!/[0-9@]/.test(rawSlice)) continue;
+      const kw = m[1].toLowerCase();
+      if (EMAIL_KEYWORDS.includes(kw)) {
+        if (!reasons.includes("email-interleaved")) reasons.push("email-interleaved");
+      } else {
+        if (!reasons.includes("channel-interleaved")) reasons.push("channel-interleaved");
+      }
+      break;
+    }
+  }
 
   // Payment links (paypal.me, cash.app, venmo, zelle…) — payment details
   // by themselves.
@@ -165,10 +350,32 @@ export function detectContactEvasion(body: string): EvasionFinding {
   maxRun = Math.max(maxRun, spelledDigits.length);
   if (maxRun >= 7) reasons.push("phone-spelled-out");
 
+  // Mixed words+digits: token runs like "two 4 zero 643 0840" or
+  // "2four0six…" map to 7+ digits. Only counts when the run genuinely
+  // mixes word tokens and digit tokens (pure runs are covered above).
+  for (const run of withoutEmails.match(MIXED_RUN_RE) ?? []) {
+    const tokens = run.match(NUM_TOKEN_RE) ?? [];
+    let digits = "";
+    let hasWord = false;
+    let hasDigit = false;
+    for (const t of tokens) {
+      if (/^\d+$/.test(t)) {
+        digits += t;
+        hasDigit = true;
+      } else {
+        digits += NUMBER_WORDS[t.toLowerCase()] ?? "";
+        hasWord = true;
+      }
+    }
+    if (digits.length >= 7 && hasWord && hasDigit) {
+      reasons.push("phone-mixed");
+      break;
+    }
+  }
+
   // Contact-intent phrases only count when they appear near an actual
   // payload, EXCEPT whatsapp/telegram which are off-platform channels by
   // themselves.
-  const lowered = withoutEmails.toLowerCase();
   const hasPayload = reasons.length > 0;
   const mentionsOffPlatformChannel = /whatsapp|telegram|signal/i.test(lowered);
   if (mentionsOffPlatformChannel && !reasons.includes("off-platform-channel")) {
@@ -194,7 +401,12 @@ export function evasionWarning(reasons: string[]): string {
   if (reasons.includes("payment-link")) bits.push("a payment link");
   if (reasons.includes("wallet-address")) bits.push("a wallet address");
   if (reasons.includes("payment-phrase")) bits.push("payment details");
-  if (reasons.includes("off-platform-channel")) bits.push("an off-platform channel");
+  if (
+    reasons.includes("off-platform-channel") ||
+    reasons.includes("channel-interleaved")
+  ) {
+    bits.push("an off-platform channel");
+  }
   const what = bits.length > 0 ? bits.join(" or ") : "contact information";
   return (
     `Heads up: your message looks like it contains ${what}. ` +
