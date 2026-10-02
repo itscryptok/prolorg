@@ -351,7 +351,7 @@ html[data-theme="light"] .menu-button { border-color: rgba(0, 0, 0, 0.2); color:
 html[data-theme="light"] .mobile-panel { background: #ffffff; border-top: 1px solid rgba(0, 0, 0, 0.08); }
 html[data-theme="light"] .mobile-panel a { color: var(--ink); border-bottom: 1px solid rgba(0, 0, 0, 0.06); }
 html[data-theme="light"] .eyebrow { color: var(--orange-deep); }
-html[data-theme="light"] .hero h1 .accent { color: var(--orange); font-size: 0.48em; font-weight: 700; }
+html[data-theme="light"] .hero h1 .accent { color: var(--orange); font-size: 0.52em; font-weight: 700; }
 html[data-theme="light"] .stats-band {
   border-top: 1px solid rgba(0, 0, 0, 0.08);
   border-bottom: 1px solid rgba(0, 0, 0, 0.08);
@@ -407,7 +407,7 @@ html[data-theme="light"] .splash-bar { background: rgba(0, 0, 0, 0.08); }
   margin-left: auto;
   margin-right: auto;
 }
-.hero h1 .accent { color: var(--orange); font-size: 0.48em; font-weight: 700; }
+.hero h1 .accent { color: var(--orange); font-size: 0.52em; font-weight: 700; }
 .hero-sub {
   color: var(--ink-dim);
   font-size: 1.12rem;
