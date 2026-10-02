@@ -436,6 +436,14 @@ export default function ThreadPage({ params }: { params: Promise<{ id: string }>
             {messages.map((m) => (
               <div key={m.id} className={`message${m.mine ? " mine" : ""}`}>
                 <p>{m.body}</p>
+                {m.flagged && (
+                  <p className="message-warning" role="alert">
+                    <strong>Flagged:</strong> this message looks like it
+                    contains contact or payment details. These don&apos;t
+                    belong in the chat — sharing them can get your account
+                    blocked.
+                  </p>
+                )}
                 <span className="message-meta">
                   <time dateTime={m.createdAt}>
                     {new Date(m.createdAt).toLocaleString()}

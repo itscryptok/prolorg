@@ -1376,6 +1376,9 @@ html[data-theme="light"] .watch-stage { border-color: rgba(0, 0, 0, 0.12); }
 .composer .btn { flex-shrink: 0; }
 .warning-banner { border: 1px solid var(--warn, #b7791f); background: var(--warn-bg, #fff8e6); color: inherit; border-radius: 12px; padding: 0.9rem 1.1rem; margin: 0.75rem 0; }
 
+/* Inline warning shown under a flagged message, inside the thread. */
+.message-warning { margin: 0.5rem 0 0; font-size: 0.85rem; line-height: 1.45; border-left: 3px solid var(--warn, #b7791f); background: var(--warn-bg, #fff8e6); border-radius: 0 8px 8px 0; padding: 0.55rem 0.8rem; }
+
 /* Hires */
 .hire-list { display: flex; flex-direction: column; gap: 0.9rem; margin-bottom: 1.25rem; }
 .hire-card { border: 1px solid var(--line); border-radius: 14px; padding: 1.1rem 1.2rem; display: flex; flex-direction: column; gap: 0.6rem; }
