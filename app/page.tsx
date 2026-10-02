@@ -1,6 +1,7 @@
 import Link from "next/link";
 import { STATS } from "@/lib/site";
 import { getDb } from "@/lib/db";
+import HeroVisual from "@/components/HeroVisual";
 
 // Refresh the stats band every 5 minutes (ISR) — the rest of the page is static.
 export const revalidate = 300;
@@ -124,34 +125,27 @@ export default async function HomePage() {
   return (
     <>
       {/* 1. Hero */}
-      <section className="hero">
-        <div className="container">
-          <span className="eyebrow">THE AI PRO MARKETPLACE</span>
-          <h1>
-            Hire an AI pro. Not the AI.{" "}
-            <span className="accent">
-              <a href="#why">Here's why.</a>
-            </span>
-          </h1>
-          <p className="hero-sub">
-            Partner with an AI pro for forensics, genealogy traces, lab
-            discovery, market advantage, personal AI tutoring, technical
-            projects, data analysis — or any other AI work.
-          </p>
-          <div className="hero-ctas">
-            <Link href="/experts" className="btn btn-orange">Browse AI pros</Link>
-            <Link href="/join" className="btn btn-outline">Join as an AI pro</Link>
+      <section className="hero hero-split">
+        <div className="container hero-grid">
+          <div className="hero-copy">
+            <span className="eyebrow">THE AI PRO MARKETPLACE</span>
+            <h1>
+              Hire an AI pro. Not the AI.{" "}
+              <span className="accent">
+                <a href="#why">Here's why.</a>
+              </span>
+            </h1>
+            <p className="hero-sub">
+              Partner with an AI pro for forensics, genealogy traces, lab
+              discovery, market advantage, personal AI tutoring, technical
+              projects, data analysis — or any other AI work.
+            </p>
+            <div className="hero-ctas">
+              <Link href="/experts" className="btn btn-orange">Browse AI pros</Link>
+              <Link href="/join" className="btn btn-outline">Join as an AI pro</Link>
+            </div>
           </div>
-          <div className="hero-visual">
-            {/* eslint-disable-next-line @next/next/no-img-element */}
-            <img
-              src="/hero-glow.svg"
-              alt="AiProlice badge emblem glowing in orange and blue"
-              width={720}
-              height={320}
-              fetchPriority="high"
-            />
-          </div>
+          <HeroVisual />
         </div>
       </section>
 
