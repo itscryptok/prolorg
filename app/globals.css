@@ -1504,3 +1504,20 @@ html[data-theme="light"] .watch-stage { border-color: rgba(0, 0, 0, 0.12); }
 .safety-steps li { margin: 0.55rem 0; }
 .scam-list { line-height: 1.7; margin: 1rem 0; padding-left: 1.4rem; list-style: disc; }
 .scam-list li { margin: 0.6rem 0; }
+
+/* Flag popup (public "Flag this pro" reports) */
+.modal-overlay { position: fixed; inset: 0; z-index: 60; background: rgba(10, 10, 10, 0.55); display: flex; align-items: center; justify-content: center; padding: 1rem; }
+.modal-card { background: var(--surface, #fff); color: inherit; border-radius: 16px; max-width: 26rem; width: 100%; padding: 1.4rem 1.4rem 1.2rem; box-shadow: 0 18px 50px rgba(0, 0, 0, 0.25); }
+.modal-card h2 { margin: 0 0 0.4rem; font-size: 1.15rem; }
+.modal-sub { margin: 0 0 1rem; font-size: 0.9rem; opacity: 0.85; line-height: 1.5; }
+.modal-card .auth-input { width: 100%; margin: 0.3rem 0 0.9rem; }
+.modal-actions { display: flex; justify-content: flex-end; gap: 0.6rem; margin-top: 0.4rem; }
+.form-label { display: block; font-weight: 700; font-size: 0.9rem; }
+
+/* Flag details in /addy moderation */
+.flag-details { margin: 0.6rem 0; }
+.btn-sm { padding: 0.35rem 0.7rem; font-size: 0.85rem; }
+.flag-report-list { list-style: none; margin: 0.7rem 0 0; padding: 0; display: flex; flex-direction: column; gap: 0.6rem; }
+.flag-report { border: 1px solid var(--line); border-radius: 10px; padding: 0.7rem 0.9rem; background: var(--surface-raised, transparent); }
+.flag-report-head { display: flex; align-items: center; gap: 0.6rem; flex-wrap: wrap; margin-bottom: 0.3rem; }
+.flag-report-details { margin: 0.3rem 0 0; font-size: 0.92rem; line-height: 1.5; }

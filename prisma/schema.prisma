@@ -113,7 +113,8 @@ model ExpertProfile {
   reviewCount     Int      @default(0)
   completedJobs   Int      @default(0)
   likesCount      Int      @default(0) // hearts tapped in /watch
-  flagCount       Int      @default(0) // "Flag this pro" reports (one per browser)
+  flagCount       Int      @default(0) // "Flag this pro" member reports (one per browser)
+  paymentFlagCount Int     @default(0) // auto-detected payment-detail violations by this pro
   isDeactivated   Boolean  @default(false) // hidden from /experts + /watch while true
   status          String   @default("PENDING") // PENDING | APPROVED | REJECTED
   isSample        Boolean  @default(false)     // seed data, removable
@@ -124,6 +125,29 @@ model ExpertProfile {
   @@index([status, ratingAvg])
   media ExpertMedia[]
   samples ExpertSample[]
+  flagReports FlagReport[]
+}
+
+// Flag reports on an AI pro, kept strictly separate by kind:
+// - USER: a member flagged the pro from the public view (via the popup that
+//   collects their username + details). Threshold FLAG_THRESHOLD.
+// - PAYMENT: the pro's own inbox messages tripped payment-detail detection
+//   (payment links, wallet addresses, "my paypal"-style phrases). Threshold
+//   PAYMENT_FLAG_THRESHOLD (lower — payment violations escalate faster).
+// Reaching a threshold only marks the pro "needs your review" in /addy;
+// it NEVER auto-deactivates.
+model FlagReport {
+  id           String        @id @default(uuid())
+  expertId     String
+  expert       ExpertProfile @relation(fields: [expertId], references: [id], onDelete: Cascade)
+  kind         String        // USER | PAYMENT
+  reporterName String?       // username of the member who flagged (USER kind)
+  reporterId   String?       // signed-in user id, when available
+  details      String?       @db.Text // popup details (USER) or message excerpt (PAYMENT)
+  reasons      String?       // machine-readable detection codes (PAYMENT kind)
+  createdAt    DateTime      @default(now())
+
+  @@index([expertId, createdAt])
 }
 
 // Uploaded expert media: profile photo and intro video, stored as binary in

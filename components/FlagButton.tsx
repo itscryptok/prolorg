@@ -24,6 +24,11 @@ function FlagIcon() {
 
 // "Flag this pro" button: one flag per browser (localStorage de-dupe, same
 // approach as /watch likes). Used on /experts cards and /watch videos.
+//
+// Tapping it opens a popup asking for the reporter's username and details —
+// the flag must come from another member, and Yemi reviews every report in
+// /addy with the username + details attached. Signed-in members get their
+// username prefilled from /api/auth/me.
 export default function FlagButton({
   expertId,
   expertName,
@@ -35,17 +40,49 @@ export default function FlagButton({
 }) {
   const [flagged, setFlagged] = useState(false);
   const [busy, setBusy] = useState(false);
+  const [open, setOpen] = useState(false);
+  const [reporterName, setReporterName] = useState("");
+  const [details, setDetails] = useState("");
+  const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
     setFlagged(loadFlagged().has(expertId));
   }, [expertId]);
 
-  async function flag() {
-    if (flagged || busy) return;
+  // Prefill the reporter's username when they're signed in.
+  useEffect(() => {
+    if (!open) return;
+    let cancelled = false;
+    fetch("/api/auth/me")
+      .then((res) => (res.ok ? res.json() : null))
+      .then((json) => {
+        if (!cancelled && json?.user?.name) setReporterName(json.user.name);
+      })
+      .catch(() => {
+        /* anonymous — they type their username */
+      });
+    return () => {
+      cancelled = true;
+    };
+  }, [open ]);
+
+  async function submit() {
+    const name = reporterName.trim();
+    const what = details.trim();
+    if (!name || !what) {
+      setError("Please add your username and a few details about what happened.");
+      return;
+    }
     setBusy(true);
+    setError(null);
     try {
-      const res = await fetch(`/api/experts/${expertId}/flag`, { method: "POST" });
-      if (!res.ok) throw new Error("flag failed");
+      const res = await fetch(`/api/experts/${expertId}/flag`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ reporterName: name, details: what }),
+      });
+      const json = await res.json().catch(() => ({}));
+      if (!res.ok) throw new Error(json.error ?? "Flag failed — please try again.");
       const next = loadFlagged();
       next.add(expertId);
       try {
@@ -54,41 +91,110 @@ export default function FlagButton({
         /* private mode — flag just won't persist locally */
       }
       setFlagged(true);
-    } catch {
-      /* best-effort; user can retry */
+      setOpen(false);
+      setDetails("");
+    } catch (err) {
+      setError(err instanceof Error ? err.message : "Flag failed — please try again.");
     } finally {
       setBusy(false);
     }
   }
 
-  if (variant === "watch") {
-    return (
-      <button
-        type="button"
-        className={`watch-action${flagged ? " flagged" : ""}`}
-        aria-pressed={flagged}
-        aria-label={flagged ? `You flagged ${expertName} for review` : `Flag ${expertName} for review`}
-        title={flagged ? "Flagged — thanks, we'll review this pro" : "Flag this pro"}
-        onClick={flag}
-        disabled={flagged || busy}
-      >
-        <FlagIcon />
-      </button>
-    );
+  function openPopup() {
+    if (flagged || busy) return;
+    setError(null);
+    setOpen(true);
   }
 
+  const buttonProps = {
+    type: "button" as const,
+    "aria-pressed": flagged,
+    "aria-label": flagged ? `You flagged ${expertName} for review` : `Flag ${expertName} for review`,
+    title: flagged ? "Flagged — thanks, we'll review this pro" : "Flag this pro",
+    onClick: openPopup,
+    disabled: flagged || busy,
+  };
+
   return (
-    <button
-      type="button"
-      className={`flag-btn${flagged ? " flagged" : ""}`}
-      aria-pressed={flagged}
-      aria-label={flagged ? `You flagged ${expertName} for review` : `Flag ${expertName} for review`}
-      title={flagged ? "Flagged — thanks, we'll review this pro" : "Flag this pro"}
-      onClick={flag}
-      disabled={flagged || busy}
-    >
-      <FlagIcon />
-      <span>{flagged ? "Flagged" : busy ? "Flagging…" : "Flag this pro"}</span>
-    </button>
+    <>
+      {variant === "watch" ? (
+        <button {...buttonProps} className={`watch-action${flagged ? " flagged" : ""}`}>
+          <FlagIcon />
+        </button>
+      ) : (
+        <button {...buttonProps} className={`flag-btn${flagged ? " flagged" : ""}`}>
+          <FlagIcon />
+          <span>{flagged ? "Flagged" : busy ? "Flagging…" : "Flag this pro"}</span>
+        </button>
+      )}
+
+      {open && (
+        <div
+          className="modal-overlay"
+          role="dialog"
+          aria-modal="true"
+          aria-labelledby="flag-popup-title"
+          onClick={(e) => {
+            if (e.target === e.currentTarget) setOpen(false);
+          }}
+        >
+          <div className="modal-card">
+            <h2 id="flag-popup-title">Flag {expertName} for review</h2>
+            <p className="modal-sub">
+              Flags come from members like you — never from the pro themselves.
+              Our team reviews every report. Flag counts are never shown publicly.
+            </p>
+            <label className="form-label" htmlFor="flag-reporter">
+              Your username
+            </label>
+            <input
+              id="flag-reporter"
+              className="auth-input"
+              type="text"
+              maxLength={80}
+              value={reporterName}
+              onChange={(e) => setReporterName(e.target.value)}
+              placeholder="e.g. yemi_g"
+              autoComplete="username"
+            />
+            <label className="form-label" htmlFor="flag-details">
+              What happened?
+            </label>
+            <textarea
+              id="flag-details"
+              className="auth-input"
+              rows={4}
+              maxLength={2000}
+              value={details}
+              onChange={(e) => setDetails(e.target.value)}
+              placeholder="Describe what the pro did — messages, payment requests, links, anything relevant."
+            />
+            {error && (
+              <p role="alert" className="form-error">
+                {error}
+              </p>
+            )}
+            <div className="modal-actions">
+              <button
+                type="button"
+                className="btn btn-outline"
+                onClick={() => setOpen(false)}
+                disabled={busy}
+              >
+                Cancel
+              </button>
+              <button
+                type="button"
+                className="btn btn-orange"
+                onClick={submit}
+                disabled={busy}
+              >
+                {busy ? "Sending…" : "Send flag"}
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
+    </>
   );
 }

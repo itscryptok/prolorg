@@ -40,7 +40,7 @@ export default function ChatSafetyNotice() {
           <li>Never pay anyone a fee just to start work or to apply.</li>
           <li>
             Clients: hold your payment until the work is actually delivered.
-            Experts: agree an incremental delivery schedule with your client
+            Experts: agree on an incremental delivery schedule with your client
             before you start, and collect payment at every stage as each one
             is delivered.
           </li>

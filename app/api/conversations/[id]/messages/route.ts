@@ -3,6 +3,7 @@ import { getDb } from "@/lib/db";
 import { getSessionUser } from "@/lib/auth";
 import { inbox, raw } from "@/lib/inbox";
 import { detectContactEvasion, evasionWarning } from "@/lib/evasion";
+import { PAYMENT_REASONS } from "@/lib/moderation";
 import { rateLimit, clientKey } from "@/lib/ratelimit";
 
 type ThreadRow = {
@@ -130,6 +131,45 @@ export async function POST(req: Request, { params }: { params: Promise<{ id: str
         excerpt: text.slice(0, 200),
       },
     });
+
+    // Payment-practice flag: when the AI pro's own message trips
+    // payment-detail detection, record it against their profile separately
+    // from member "Flag this pro" reports. A client's own violations stay
+    // in the Violation log only — they never ding the pro's record.
+    const isPaymentViolation = finding.reasons.some((r) =>
+      PAYMENT_REASONS.includes(r)
+    );
+    if (isPaymentViolation && user.id === thread.expertId) {
+      const profileRows = await raw<{ id: string }>(
+        db,
+        'SELECT "id" FROM "ExpertProfile" WHERE "userId" = $1 LIMIT 1',
+        user.id
+      );
+      const profileId = profileRows[0]?.id;
+      if (profileId) {
+        const reportId =
+          typeof crypto !== "undefined" && "randomUUID" in crypto
+            ? crypto.randomUUID()
+            : `${Date.now()}-${Math.random().toString(36).slice(2)}`;
+        await raw(
+          db,
+          `INSERT INTO "FlagReport"
+             ("id", "expertId", "kind", "details", "reasons", "createdAt")
+           VALUES ($1, $2, 'PAYMENT', $3, $4, NOW())`,
+          reportId,
+          profileId,
+          text.slice(0, 200),
+          finding.reasons.join(",")
+        );
+        await raw(
+          db,
+          `UPDATE "ExpertProfile"
+           SET "paymentFlagCount" = "paymentFlagCount" + 1
+           WHERE "id" = $1`,
+          profileId
+        );
+      }
+    }
   }
 
   return NextResponse.json(

@@ -101,7 +101,7 @@ export default function HowItWorksPage() {
             </li>
             <li>
               <strong>Pay as work is delivered</strong> — clients, hold your
-              payment until the work actually lands. Experts, agree an
+              payment until the work actually lands. Experts, agree on an
               incremental delivery schedule with your client before starting,
               and collect payment at every stage as each one is delivered.
             </li>

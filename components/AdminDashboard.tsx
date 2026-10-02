@@ -2,7 +2,7 @@
 
 import { useCallback, useEffect, useState } from "react";
 import { formatRate } from "@/lib/experts";
-import { FLAG_THRESHOLD } from "@/lib/moderation";
+import { FLAG_THRESHOLD, PAYMENT_FLAG_THRESHOLD } from "@/lib/moderation";
 
 type Pending = {
   id: string;
@@ -39,6 +39,9 @@ const REASON_LABELS: Record<string, string> = {
   "phone-spelled-out": "Spelled-out phone",
   "off-platform-channel": "Off-platform channel",
   "contact-phrase": "Contact-sharing phrase",
+  "payment-link": "Payment link",
+  "wallet-address": "Wallet address",
+  "payment-phrase": "Payment details phrase",
 };
 
 function ViolationsPanel() {
@@ -295,6 +298,15 @@ function PendingCard({
   );
 }
 
+type FlagReport = {
+  id: string;
+  kind: string;
+  reporterName: string | null;
+  details: string | null;
+  reasons: string | null;
+  createdAt: string;
+};
+
 type ModeratedExpert = {
   id: string;
   slug: string;
@@ -303,9 +315,116 @@ type ModeratedExpert = {
   specialty: string;
   status: string;
   flagCount: number;
+  paymentFlagCount: number;
   isDeactivated: boolean;
   createdAt: string;
+  flagReports: FlagReport[];
 };
+
+function ModeratedExpertCard({
+  expert: e,
+  busy,
+  onToggleDeactivate,
+}: {
+  expert: ModeratedExpert;
+  busy: string | null;
+  onToggleDeactivate: (id: string, deactivated: boolean, name: string) => void;
+}) {
+  const [showFlags, setShowFlags] = useState(false);
+  const needsReview =
+    e.flagCount >= FLAG_THRESHOLD ||
+    e.paymentFlagCount >= PAYMENT_FLAG_THRESHOLD;
+
+  return (
+    <article className="admin-card">
+      <div className="admin-card-head">
+        <div>
+          <strong>{e.name}</strong>{" "}
+          <span className="admin-sub">{e.headline}</span>
+        </div>
+        <div className="admin-card-badges">
+          <span className={`flag-count${e.flagCount >= FLAG_THRESHOLD ? " at-threshold" : ""}`}>
+            &#128681; {e.flagCount}/{FLAG_THRESHOLD} member
+          </span>
+          <span className={`flag-count${e.paymentFlagCount >= PAYMENT_FLAG_THRESHOLD ? " at-threshold" : ""}`}>
+            &#128179; {e.paymentFlagCount}/{PAYMENT_FLAG_THRESHOLD} payment
+          </span>
+          {needsReview && (
+            <span className="pill pill-red">needs your review</span>
+          )}
+          <span className="pill">{e.status}</span>
+          {e.isDeactivated && <span className="pill pill-red">Deactivated</span>}
+        </div>
+      </div>
+      <p className="admin-sub">
+        {e.specialty} &middot; since {new Date(e.createdAt).toLocaleDateString()}
+      </p>
+      {e.flagReports.length > 0 && (
+        <div className="flag-details">
+          <button
+            type="button"
+            className="btn btn-outline btn-sm"
+            aria-expanded={showFlags}
+            onClick={() => setShowFlags((v) => !v)}
+          >
+            {showFlags ? "Hide" : "Show"} flag details ({e.flagReports.length})
+          </button>
+          {showFlags && (
+            <ul className="flag-report-list">
+              {e.flagReports.map((r) => (
+                <li key={r.id} className="flag-report">
+                  <div className="flag-report-head">
+                    <span className={`pill${r.kind === "PAYMENT" ? " pill-red" : ""}`}>
+                      {r.kind === "PAYMENT" ? "Payment flag" : "Member flag"}
+                    </span>
+                    {r.reporterName && (
+                      <strong>by {r.reporterName}</strong>
+                    )}
+                    <span className="admin-sub">
+                      {new Date(r.createdAt).toLocaleString()}
+                    </span>
+                  </div>
+                  {r.reasons && (
+                    <p className="admin-sub">
+                      {r.reasons
+                        .split(",")
+                        .map((x) => REASON_LABELS[x.trim()] ?? x.trim())
+                        .join(", ")}
+                    </p>
+                  )}
+                  {r.details && (
+                    <p className="flag-report-details">&ldquo;{r.details}&rdquo;</p>
+                  )}
+                </li>
+              ))}
+            </ul>
+          )}
+        </div>
+      )}
+      <div className="hire-actions">
+        {e.isDeactivated ? (
+          <button
+            type="button"
+            className="btn btn-orange"
+            disabled={busy === e.id}
+            onClick={() => onToggleDeactivate(e.id, false, e.name)}
+          >
+            {busy === e.id ? "Working&hellip;" : "Reactivate"}
+          </button>
+        ) : (
+          <button
+            type="button"
+            className="btn btn-outline"
+            disabled={busy === e.id}
+            onClick={() => onToggleDeactivate(e.id, true, e.name)}
+          >
+            {busy === e.id ? "Working&hellip;" : "Deactivate"}
+          </button>
+        )}
+      </div>
+    </article>
+  );
+}
 
 function ExpertsPanel() {
   const [experts, setExperts] = useState<ModeratedExpert[]>([]);
@@ -367,48 +486,12 @@ function ExpertsPanel() {
       )}
       <div className="admin-list">
         {experts.map((e) => (
-          <article key={e.id} className="admin-card">
-            <div className="admin-card-head">
-              <div>
-                <strong>{e.name}</strong>{" "}
-                <span className="admin-sub">{e.headline}</span>
-              </div>
-              <div className="admin-card-badges">
-                <span className={`flag-count${e.flagCount >= FLAG_THRESHOLD ? " at-threshold" : ""}`}>
-                  🚩 {e.flagCount} flag{e.flagCount === 1 ? "" : "s"}
-                </span>
-                {e.flagCount >= FLAG_THRESHOLD && (
-                  <span className="pill pill-red">needs your review</span>
-                )}
-                <span className="pill">{e.status}</span>
-                {e.isDeactivated && <span className="pill pill-red">Deactivated</span>}
-              </div>
-            </div>
-            <p className="admin-sub">
-              {e.specialty} · since {new Date(e.createdAt).toLocaleDateString()}
-            </p>
-            <div className="hire-actions">
-              {e.isDeactivated ? (
-                <button
-                  type="button"
-                  className="btn btn-orange"
-                  disabled={busy === e.id}
-                  onClick={() => setDeactivated(e.id, false, e.name)}
-                >
-                  {busy === e.id ? "Working…" : "Reactivate"}
-                </button>
-              ) : (
-                <button
-                  type="button"
-                  className="btn btn-outline"
-                  disabled={busy === e.id}
-                  onClick={() => setDeactivated(e.id, true, e.name)}
-                >
-                  {busy === e.id ? "Working…" : "Deactivate"}
-                </button>
-              )}
-            </div>
-          </article>
+          <ModeratedExpertCard
+            key={e.id}
+            expert={e}
+            busy={busy}
+            onToggleDeactivate={setDeactivated}
+          />
         ))}
       </div>
     </div>
@@ -490,7 +573,7 @@ export default function AdminDashboard() {
               ? `${pending.length} application${pending.length === 1 ? "" : "s"} waiting for review.`
               : tab === "violations"
                 ? "Accounts that tried to share contact details in the inbox."
-                : `Flag counts per AI pro — ${FLAG_THRESHOLD} flags auto-deactivates.`}
+                : `Flag counts per AI pro — ${FLAG_THRESHOLD} member flags or ${PAYMENT_FLAG_THRESHOLD} payment flags mark a pro as needing your review. Never auto-deactivates.`}
           </p>
         </div>
         <button type="button" className="btn btn-outline" onClick={logout}>
