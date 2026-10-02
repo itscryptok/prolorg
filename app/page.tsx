@@ -39,7 +39,7 @@ async function getStats() {
 const WHY_POINTS = [
   {
     title: "Faster and cheaper than tokens",
-    text: "Hiring or partnering with an individual AI pro is faster and cheaper than repeatedly buying AI tokens or hiring an expensive consulting firm.",
+    text: "Hiring or partnering with an individual AI pro is faster and cheaper than repeatedly buying AI tokens or hiring an expensive consulting firm. Get things done faster than your competitors.",
   },
   {
     title: "The right model for each job",
@@ -121,7 +121,7 @@ export default async function HomePage() {
             <h1>
               Hire an AI pro. Not the AI.{" "}
               <span className="accent">
-                <a href="#why">Get things done faster than your competitors.</a>
+                <a href="#why">Here's why.</a>
               </span>
             </h1>
             <p className="hero-sub">
