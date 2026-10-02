@@ -13,9 +13,11 @@ type Raw = {
 
 // POST /api/experts/[id]/flag — records one "Flag this pro" member report.
 // Body: { reporterName: string, details: string } — both required, collected
-// via the popup on the public view. The reporter must be a member other than
-// the pro (the popup asks for their username; signed-in users are prefilled
-// and linked by id).
+// via the popup on the public view. The reporter MUST be a signed-in member
+// (Yemi 2026-10-02): anonymous flags are rejected with 401, so the popup's
+// login gate can't be bypassed by posting directly. The reporter must be a
+// member other than the pro (the popup asks for their username; signed-in
+// users are prefilled and linked by id).
 //
 // The client de-dupes per browser via localStorage (one flag per browser,
 // same approach as /watch likes). Reaching FLAG_THRESHOLD (lib/moderation.ts)
@@ -50,13 +52,16 @@ export async function POST(
     );
   }
 
-  // Link the signed-in reporter when available (prefill source for the popup).
+  // Flags require a signed-in member — no anonymous reports.
   let reporterId: string | null = null;
   try {
     const user = await getSessionUser(req);
     reporterId = user?.id ?? null;
   } catch {
-    /* anonymous flag — username still recorded */
+    /* treated as anonymous below */
+  }
+  if (!reporterId) {
+    return NextResponse.json({ error: "Log in to send a flag." }, { status: 401 });
   }
 
   const raw = db as unknown as Raw;

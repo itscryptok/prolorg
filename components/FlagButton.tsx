@@ -44,29 +44,52 @@ export default function FlagButton({
   const [reporterName, setReporterName] = useState("");
   const [details, setDetails] = useState("");
   const [error, setError] = useState<string | null>(null);
+  // null = still checking, true/false = signed-in state from /api/auth/me.
+  const [signedIn, setSignedIn] = useState<boolean | null>(null);
+  // Shown to logged-out visitors the moment they tap into any field.
+  const [loginGate, setLoginGate] = useState(false);
 
   useEffect(() => {
     setFlagged(loadFlagged().has(expertId));
   }, [expertId]);
 
-  // Prefill the reporter's username when they're signed in.
+  // Check sign-in state when the popup opens; prefill the reporter's
+  // username when they're signed in.
   useEffect(() => {
     if (!open) return;
     let cancelled = false;
+    setSignedIn(null);
+    setLoginGate(false);
     fetch("/api/auth/me")
       .then((res) => (res.ok ? res.json() : null))
       .then((json) => {
-        if (!cancelled && json?.user?.name) setReporterName(json.user.name);
+        if (cancelled) return;
+        if (json?.user) {
+          setSignedIn(true);
+          if (json.user.name) setReporterName(json.user.name);
+        } else {
+          setSignedIn(false);
+        }
       })
       .catch(() => {
-        /* anonymous — they type their username */
+        if (!cancelled) setSignedIn(false);
       });
     return () => {
       cancelled = true;
     };
   }, [open ]);
 
+  // Logged-out visitors may see the form, but tapping into any field asks
+  // them to log in first — flags can't be sent anonymously.
+  function requireLoginOnFocus() {
+    if (signedIn === false) setLoginGate(true);
+  }
+
   async function submit() {
+    if (signedIn === false) {
+      setLoginGate(true);
+      return;
+    }
     const name = reporterName.trim();
     const what = details.trim();
     if (!name || !what) {
@@ -140,6 +163,27 @@ export default function FlagButton({
         >
           <div className="modal-card">
             <h2 id="flag-popup-title">Flag {expertName} for review</h2>
+            {loginGate ? (
+              <>
+                <p className="modal-sub">
+                  Log in first to send a flag — flags come from members, so we
+                  need to know who&apos;s reporting.
+                </p>
+                <div className="modal-actions">
+                  <button
+                    type="button"
+                    className="btn btn-outline"
+                    onClick={() => setOpen(false)}
+                  >
+                    Cancel
+                  </button>
+                  <a className="btn btn-orange" href="/login">
+                    Log in
+                  </a>
+                </div>
+              </>
+            ) : (
+              <>
             <p className="modal-sub">
               Flags come from members like you — never from the pro themselves.
               Our team reviews every report. Flag counts are never shown publicly.
@@ -154,6 +198,7 @@ export default function FlagButton({
               maxLength={80}
               value={reporterName}
               onChange={(e) => setReporterName(e.target.value)}
+              onFocus={requireLoginOnFocus}
               placeholder="e.g. yemi_g"
               autoComplete="username"
             />
@@ -167,6 +212,7 @@ export default function FlagButton({
               maxLength={2000}
               value={details}
               onChange={(e) => setDetails(e.target.value)}
+              onFocus={requireLoginOnFocus}
               placeholder="Describe what the pro did — messages, payment requests, links, anything relevant."
             />
             {error && (
@@ -192,6 +238,8 @@ export default function FlagButton({
                 {busy ? "Sending…" : "Send flag"}
               </button>
             </div>
+              </>
+            )}
           </div>
         </div>
       )}
