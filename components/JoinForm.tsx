@@ -28,7 +28,8 @@ const REVIEW_LABELS: Record<string, string> = {
   country: "Country",
 };
 
-// AI pro onboarding wizard: creates a PENDING profile for review. Phase 3
+// AI pro onboarding wizard: creates a live (APPROVED) profile instantly — no
+// manual review (Yemi 2026-10-02).
 // links it to an AI pro account. No website/email fields — contact lockdown.
 // AI pros can attach a profile photo and an intro video (played in /watch).
 // All steps stay mounted (hidden) so staged media survives step changes.
@@ -113,7 +114,7 @@ export default function JoinForm() {
       setStatus({
         ok: true,
         message:
-          "Profile received — we'll list it in the directory once it's approved.",
+          "You're live — your profile is in the directory now.",
       });
       (e.target as HTMLFormElement).reset();
       setFormKey((k) => k + 1);

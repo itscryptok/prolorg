@@ -113,7 +113,9 @@ async function checkSampleImage(
   return { ok: true, file };
 }
 
-// Creates a PENDING AI pro profile with optional photo + intro video uploads.
+// Creates an APPROVED AI pro profile with optional photo + intro video uploads.
+// Yemi 2026-10-02: no manual approval — new pros go live instantly at scale;
+// moderation is via member flags + the admin deactivate control in /addy.
 // Accepts multipart/form-data. No website/email fields are accepted — contact
 // lockdown is enforced by simply not collecting them.
 export async function POST(req: Request) {
@@ -187,7 +189,7 @@ export async function POST(req: Request) {
       country: str(form.get("country")).trim().slice(0, 80) || null,
       languages: list(str(form.get("languages"))),
       yearsExperience: num(str(form.get("yearsExperience"))),
-      status: "PENDING",
+      status: "APPROVED",
     },
     select: { id: true },
   });
