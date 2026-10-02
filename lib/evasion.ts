@@ -4,11 +4,10 @@
 // contact unlock. These checks catch direct-contact attempts in inbox
 // messages, including obfuscated variants:
 //
-// - plain emails: name@example.com
-// - obfuscated emails: "name at gmail dot com", "name @ gmail . com"
-// - phone numbers: 555-123-4567, (555) 123 4567, +1 5551234567
-// - spaced-out digits: "5 5 5 1 2 3 4 5 6 7"
-// - spelled-out numbers: "five five five one two three four"
+// - payment links: paypal.me/name, cash.app/$name, venmo/zelle mentions
+// - crypto wallet addresses: bitcoin (1…/3…/bc1…), ethereum (0x…),
+//   solana / base58 (32–44 base58 chars)
+// - payment-detail phrases: "my paypal", "wallet address", "send crypto"…
 //
 // Detection returns machine-readable reason codes so the UI can show a
 // clear warning and the Violation log can record exactly what tripped.
@@ -31,6 +30,39 @@ const SPACED_EMAIL_RE =
 // 7+ digits with optional separators between them (catches
 // 555-123-4567, (555) 123 4567, 5 5 5 1 2 3 4 5 6 7, 555.123.4567).
 const DIGIT_RUN_RE = /(?:\+?\d[\s\-().]*){7,}/;
+
+// Payment links: paypal.me/name, cash.app/$name, venmo / zelle mentions,
+// buy-me-a-coffee / ko-fi pages.
+const PAYMENT_LINK_RE =
+  /\b(paypal\.me|cash\.app|venmo|zelle(pay)?|buymeacoffee|ko-?fi\.com)\b/i;
+
+// Crypto wallet addresses:
+// - Bitcoin: 1…, 3…, bc1…
+// - Ethereum: 0x + 40 hex chars
+// - Solana / generic base58: 32–44 base58 chars (no 0/O/I/l)
+const BTC_RE = /\b(bc1|[13])[a-zA-HJ-NP-Z0-9]{25,59}\b/;
+const ETH_RE = /\b0x[a-fA-F0-9]{40}\b/;
+const SOL_RE = /\b[1-9A-HJ-NP-Za-km-z]{32,44}\b/;
+
+// Phrases that signal payment details are about to be (or were) shared.
+const PAYMENT_PHRASES = [
+  "my paypal",
+  "my cashapp",
+  "my cash app",
+  "my venmo",
+  "my zelle",
+  "wallet address",
+  "my wallet",
+  "crypto wallet",
+  "bitcoin address",
+  "my btc",
+  "usdt address",
+  "send crypto",
+  "pay in crypto",
+  "pay me in crypto",
+  "payment link",
+  "pay me at",
+];
 
 const NUMBER_WORDS: Record<string, string> = {
   zero: "0",
@@ -80,6 +112,28 @@ export function detectContactEvasion(body: string): EvasionFinding {
 
   if (OBFUSCATED_EMAIL_RE.test(withoutEmails)) reasons.push("email-obfuscated");
   if (SPACED_EMAIL_RE.test(withoutEmails)) reasons.push("email-spaced");
+
+  // Payment links (paypal.me, cash.app, venmo, zelle…) — payment details
+  // by themselves.
+  if (PAYMENT_LINK_RE.test(withoutEmails)) reasons.push("payment-link");
+
+  // Crypto wallet addresses (bitcoin, ethereum, solana/base58).
+  if (
+    BTC_RE.test(withoutEmails) ||
+    ETH_RE.test(withoutEmails) ||
+    SOL_RE.test(withoutEmails)
+  ) {
+    reasons.push("wallet-address");
+  }
+
+  // Payment-detail phrases ("my paypal", "wallet address", "send crypto"…).
+  const loweredPhrases = withoutEmails.toLowerCase();
+  for (const phrase of PAYMENT_PHRASES) {
+    if (loweredPhrases.includes(phrase)) {
+      reasons.push("payment-phrase");
+      break;
+    }
+  }
 
   // Digit runs: require at least 7 actual digits (a bare "$500" or
   // "chapter 3" must not trip it). Also ignore runs that are clearly
@@ -137,11 +191,14 @@ export function evasionWarning(reasons: string[]): string {
   const bits: string[] = [];
   if (reasons.some((r) => r.startsWith("email"))) bits.push("an email address");
   if (reasons.some((r) => r.startsWith("phone"))) bits.push("a phone number");
+  if (reasons.includes("payment-link")) bits.push("a payment link");
+  if (reasons.includes("wallet-address")) bits.push("a wallet address");
+  if (reasons.includes("payment-phrase")) bits.push("payment details");
   if (reasons.includes("off-platform-channel")) bits.push("an off-platform channel");
   const what = bits.length > 0 ? bits.join(" or ") : "contact information";
   return (
     `Heads up: your message looks like it contains ${what}. ` +
-    `Contact details stay hidden until the paid contact unlock — ` +
+    `Contact details and payment details don't belong in the chat — ` +
     `sharing them here can get your account blocked.`
   );
 }

@@ -143,3 +143,21 @@
 - Removed the word "vetted" from all site copy; removed the user-facing
   "pending" label (dashboard + /join success message) — /addy approval
   workflow itself unchanged.
+
+## 2026-10-02 — Payment-safety messaging + scam warnings (Yemi's order, not yet deployed)
+- New `components/ChatSafetyNotice.tsx`: info-icon + bare-text safety notice at the top
+  of every inbox thread, with expandable "Beware of scams" tips (upfront-fee scams,
+  rushed off-app moves, payment links, too-good-to-be-true, sensitive-data requests,
+  how to flag/report).
+- `app/inbox/[id]/page.tsx`: notice inserted above the message list; composer
+  fine-print rewritten to the payment-details rule (discuss OK, details never, ban).
+- `components/ContactUnlockPopover.tsx`: added the payment rule — after the $1 unlock,
+  payment details are exchanged OUTSIDE the app; sharing them in chat = ban.
+- `lib/evasion.ts`: flagged-message warning now covers payment details too
+  (card numbers trip the 7+ digit-run check).
+- `app/how-it-works/page.tsx`: client step 2 mentions the rule; new "Payment safety"
+  section (discuss in inbox → $1 unlock → details outside app) and "Beware of scams"
+  section with red-flag list + flag/report CTA.
+- Research brief: `~/workspace/research_notes/aiprolice-payment-safety/report.md`
+  (Upwork/Rover/Airbnb wording, 10 scam patterns, placement guidance).
+- AWAITING YEMI'S APPROVAL before push/deploy (user-facing policy copy).

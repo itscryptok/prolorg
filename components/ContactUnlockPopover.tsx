@@ -111,6 +111,14 @@ export default function ContactUnlockPopover({
             </li>
           </ul>
 
+          <p className="unlock-pay-note" role="note">
+            <strong>Payment rule:</strong> you can <em>discuss</em> payment in
+            the AiProlice chat, but <em>payment details</em> — card numbers,
+            bank account details, wallet addresses, payment links — must be
+            exchanged <em>outside</em> the app, only after unlocking. Sharing
+            payment details in the chat will get your account banned.
+          </p>
+
           <button
             type="button"
             className="btn btn-orange unlock-pay"

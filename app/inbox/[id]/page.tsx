@@ -3,6 +3,7 @@
 import { useCallback, useEffect, useState } from "react";
 import Link from "next/link";
 import ContactUnlockPopover from "@/components/ContactUnlockPopover";
+import ChatSafetyNotice from "@/components/ChatSafetyNotice";
 
 type Thread = {
   id: string;
@@ -397,6 +398,8 @@ export default function ThreadPage({ params }: { params: Promise<{ id: string }>
             </div>
           </div>
 
+          <ChatSafetyNotice />
+
           {hires.length > 0 && (
             <section aria-label="Hire requests" className="hire-list">
               {hires.map((h) => (
@@ -461,10 +464,11 @@ export default function ThreadPage({ params }: { params: Promise<{ id: string }>
             </button>
           </form>
           <p className="fine-print">
-            Keep contact details out of the chat — sharing emails or phone
-            numbers here can get your account blocked. Direct contact unlocks
-            for this client/AI pro pair with a paid one-time fee (coming
-            soon) — tap &ldquo;Share direct contact&rdquo; above for details.
+            Never share payment details in this chat — card numbers, bank
+            details, wallet addresses, or payment links. Violators will be
+            banned. Discuss payment here; exchange payment details only outside
+            the app after the $1 contact unlock. Beware of scams and report
+            anything suspicious.
           </p>
         </>
       )}

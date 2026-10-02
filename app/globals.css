@@ -1452,3 +1452,52 @@ html[data-theme="light"] .watch-stage { border-color: rgba(0, 0, 0, 0.12); }
 .flag-count.at-threshold {
   background: #fde2e2; color: #a02020; border-color: #f3b4b4;
 }
+
+/* ---------- chat safety notice (inbox) ---------- */
+.safety-notice {
+  border: 1px solid #e3c98f;
+  background: #fff8e6;
+  color: inherit;
+  border-radius: 12px;
+  padding: 0.85rem 1rem;
+  margin: 0.75rem 0;
+  font-size: 0.92rem;
+}
+.safety-notice-head { display: flex; gap: 0.65rem; align-items: flex-start; }
+.safety-notice-head p { margin: 0; line-height: 1.55; }
+.safety-info-icon {
+  flex-shrink: 0;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 26px;
+  height: 26px;
+  border-radius: 50%;
+  background: #b7791f;
+  color: #fff;
+  margin-top: 1px;
+}
+.safety-toggle {
+  background: none;
+  border: none;
+  padding: 0;
+  color: #8a5a00;
+  font-size: 0.88rem;
+  font-weight: 600;
+  text-decoration: underline;
+  cursor: pointer;
+  font-family: inherit;
+}
+.safety-tips {
+  margin: 0.7rem 0 0.1rem 2.1rem;
+  padding-left: 1.1rem;
+  line-height: 1.6;
+}
+.safety-tips li { margin: 0.35rem 0; }
+
+/* ---------- how-it-works safety sections ---------- */
+.safety-section { margin-top: 3rem; }
+.safety-steps { line-height: 1.7; margin: 1rem 0; padding-left: 1.4rem; }
+.safety-steps li { margin: 0.55rem 0; }
+.scam-list { line-height: 1.7; margin: 1rem 0; padding-left: 1.4rem; list-style: disc; }
+.scam-list li { margin: 0.6rem 0; }
