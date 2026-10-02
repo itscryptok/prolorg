@@ -325,10 +325,12 @@ function ModeratedExpertCard({
   expert: e,
   busy,
   onToggleDeactivate,
+  onDismissFlag,
 }: {
   expert: ModeratedExpert;
   busy: string | null;
   onToggleDeactivate: (id: string, deactivated: boolean, name: string) => void;
+  onDismissFlag: (expertId: string, reportId: string) => void;
 }) {
   const [showFlags, setShowFlags] = useState(false);
   const needsReview =
@@ -395,6 +397,14 @@ function ModeratedExpertCard({
                   {r.details && (
                     <p className="flag-report-details">&ldquo;{r.details}&rdquo;</p>
                   )}
+                  <button
+                    type="button"
+                    className="btn btn-outline btn-sm"
+                    disabled={busy === r.id}
+                    onClick={() => onDismissFlag(e.id, r.id)}
+                  >
+                    {busy === r.id ? "Dismissing…" : "Dismiss flag"}
+                  </button>
                 </li>
               ))}
             </ul>
@@ -476,6 +486,43 @@ function ExpertsPanel() {
     }
   }
 
+  async function dismissFlag(expertId: string, reportId: string) {
+    if (!window.confirm("Dismiss this flag report? The flag count goes down by one.")) {
+      return;
+    }
+    setBusy(reportId);
+    setError(null);
+    try {
+      const res = await fetch(`/api/admin/flags/${reportId}`, {
+        method: "DELETE",
+      });
+      const json = await res.json();
+      if (!res.ok) throw new Error(json.error ?? "Action failed.");
+      setExperts((prev) =>
+        prev.map((e) => {
+          if (e.id !== expertId) return e;
+          const report = e.flagReports.find((r) => r.id === reportId);
+          return {
+            ...e,
+            flagReports: e.flagReports.filter((r) => r.id !== reportId),
+            flagCount:
+              report?.kind === "PAYMENT"
+                ? e.flagCount
+                : Math.max(0, e.flagCount - 1),
+            paymentFlagCount:
+              report?.kind === "PAYMENT"
+                ? Math.max(0, e.paymentFlagCount - 1)
+                : e.paymentFlagCount,
+          };
+        })
+      );
+    } catch (err) {
+      setError(err instanceof Error ? err.message : "Action failed.");
+    } finally {
+      setBusy(null);
+    }
+  }
+
   return (
     <div>
       {loading && <p>Loading AI pros…</p>}
@@ -491,6 +538,7 @@ function ExpertsPanel() {
             expert={e}
             busy={busy}
             onToggleDeactivate={setDeactivated}
+            onDismissFlag={dismissFlag}
           />
         ))}
       </div>
