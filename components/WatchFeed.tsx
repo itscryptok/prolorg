@@ -261,7 +261,7 @@ export default function WatchFeed({
         <div className="watch-top">
           <Link href="/experts" className="watch-back" aria-label="Back to AI pro list">
             <BackIcon />
-            <span>Pros directory</span>
+            <span>Experts Directory</span>
           </Link>
           <span className="watch-count" aria-live="polite">
             {index + 1} / {experts.length}
