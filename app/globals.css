@@ -697,6 +697,19 @@ html[data-theme="light"] .hero-art-chip { box-shadow: 0 10px 28px rgba(0, 0, 0, 
   transition: opacity 0.4s ease;
 }
 .splash.hidden { opacity: 0; pointer-events: none; }
+/* Brand bars above the splash logo: the artwork sits on black, so screen
+   blend drops the black out and the silver bars float on the gray splash.
+   In day mode the splash is white, so invert + multiply instead. */
+.splash-bars {
+  width: 210px;
+  height: auto;
+  mix-blend-mode: screen;
+  pointer-events: none;
+}
+html[data-theme="light"] .splash-bars {
+  mix-blend-mode: multiply;
+  filter: invert(1);
+}
 .splash-name { color: var(--orange); font-size: 2.4rem; font-weight: 900; letter-spacing: 0.02em; }
 .splash-tag { color: var(--ink-dim); font-size: 1.05rem; }
 .splash-bar { width: 200px; height: 4px; border-radius: 999px; background: rgba(255, 255, 255, 0.12); overflow: hidden; }
