@@ -393,6 +393,7 @@ export default function ThreadPage({ params }: { params: Promise<{ id: string }>
                 <NewHireForm conversationId={thread.id} onDone={load} />
               )}
               <ContactUnlockPopover
+                conversationId={thread.id}
                 myName={thread.myRole === "CLIENT" ? thread.clientName : thread.expertName}
                 otherName={thread.myRole === "CLIENT" ? thread.expertName : thread.clientName}
                 unlocked={thread.unlockedContact}

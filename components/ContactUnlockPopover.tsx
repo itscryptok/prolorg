@@ -1,23 +1,31 @@
 "use client";
 
 import { useEffect, useRef, useState } from "react";
-import { paymentsEnabled, unlockFeeLabel, STRIPE_CONNECTED, CONTACT_UNLOCK_FEE_USD } from "@/lib/unlock";
+import { unlockFeeLabel } from "@/lib/unlock";
 
 // "Share direct contact" popover in the inbox chat.
 // Clicking the button opens an explainer first — what the unlock is, what
 // it costs, and that it covers exactly one client/AI pro pair — with the
-// pay action inside. The pay button stays in a "coming soon" state until
-// Yemi sets the price and connects Stripe (see lib/unlock.ts).
+// pay action inside. The pay button redirects to Stripe Checkout
+// (Yemi 2026-10-02); canPay comes from GET /api/unlocks/status because
+// client components cannot read the server's STRIPE_SECRET_KEY.
 export default function ContactUnlockPopover({
+  conversationId,
   myName,
   otherName,
-  unlocked,
+  unlocked: unlockedProp,
 }: {
+  conversationId: string;
   myName: string;
   otherName: string;
   unlocked: boolean;
 }) {
   const [open, setOpen] = useState(false);
+  const [canPay, setCanPay] = useState(false);
+  const [feeLabel, setFeeLabel] = useState(unlockFeeLabel());
+  const [unlocked, setUnlocked] = useState(unlockedProp);
+  const [paying, setPaying] = useState(false);
+  const [payError, setPayError] = useState<string | null>(null);
   const buttonRef = useRef<HTMLButtonElement>(null);
   const popRef = useRef<HTMLDivElement>(null);
 
@@ -40,7 +48,50 @@ export default function ContactUnlockPopover({
       document.removeEventListener("mousedown", onDown);
       buttonRef.current?.focus();
     };
-  }, [open ]);
+  }, [open]);
+
+  // Ask the server whether this pair is unlocked and whether the $1.50
+  // payment flow is live (Stripe connected).
+  useEffect(() => {
+    let alive = true;
+    fetch(`/api/unlocks/status?conversationId=${encodeURIComponent(conversationId)}`)
+      .then((r) => (r.ok ? r.json() : null))
+      .then((s) => {
+        if (!alive || !s) return;
+        setCanPay(!!s.canPay);
+        if (s.feeLabel) setFeeLabel(s.feeLabel);
+        if (s.unlocked) setUnlocked(true);
+      })
+      .catch(() => {});
+    return () => {
+      alive = false;
+    };
+  }, [conversationId]);
+
+  async function startCheckout() {
+    setPaying(true);
+    setPayError(null);
+    try {
+      const res = await fetch("/api/unlocks/checkout", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ conversationId }),
+      });
+      const data = await res.json().catch(() => null);
+      if (res.ok && data?.url) {
+        window.location.href = data.url;
+        return;
+      }
+      setPayError(
+        data?.error === "This pair is already unlocked."
+          ? "This pair is already unlocked."
+          : "Couldn't start checkout. Please try again."
+      );
+    } catch {
+      setPayError("Couldn't start checkout. Please try again.");
+    }
+    setPaying(false);
+  }
 
   if (unlocked) {
     return (
@@ -49,10 +100,6 @@ export default function ContactUnlockPopover({
       </span>
     );
   }
-
-  const canPay = paymentsEnabled();
-  const feeLabel = unlockFeeLabel();
-  const priceMissing = CONTACT_UNLOCK_FEE_USD == null;
 
   return (
     <span className="unlock-wrap">
@@ -122,19 +169,25 @@ export default function ContactUnlockPopover({
           <button
             type="button"
             className="btn btn-orange unlock-pay"
-            disabled={!canPay}
-            aria-disabled={!canPay}
+            disabled={!canPay || paying}
+            aria-disabled={!canPay || paying}
+            onClick={startCheckout}
           >
-            {canPay ? `Pay ${feeLabel} to unlock this pair` : "Pay to unlock — coming soon"}
+            {paying
+              ? "Opening checkout…"
+              : canPay
+                ? `Pay ${feeLabel} to unlock this pair`
+                : "Pay to unlock — coming soon"}
           </button>
+          {payError && (
+            <p className="unlock-pay-note" role="alert">
+              {payError}
+            </p>
+          )}
           {!canPay && (
             <p className="unlock-pay-note" role="note">
-              {priceMissing && !STRIPE_CONNECTED
-                ? "Payments aren't enabled yet — the unlock price hasn't been set and Stripe isn't connected."
-                : priceMissing
-                  ? "Payments aren't enabled yet — the unlock price hasn't been set."
-                  : "Payments aren't enabled yet — Stripe isn't connected."}{" "}
-              We'll announce it when it's live.
+              Payments aren't enabled yet — Stripe isn't connected. We'll
+              announce it when it's live.
             </p>
           )}
         </div>
