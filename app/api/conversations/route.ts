@@ -132,7 +132,10 @@ async function createConversation(req: Request) {
     return NextResponse.json({ error: "You can't message yourself." }, { status: 400 });
   }
 
-  let convo = await ix.conversation.findFirst({
+  // One conversation per client/expert pair (compound unique — use
+  // findUnique; Prisma rejects compound-unique keys in findFirst's
+  // WhereInput with a PrismaClientValidationError).
+  let convo = await ix.conversation.findUnique({
     where: { clientId_expertId: { clientId: user.id, expertId: expertUser.id } },
   });
   if (!convo) {
