@@ -141,7 +141,9 @@ export default function ContactUnlockPopover({
           </p>
           <p>
             A one-time unlock fee lets you and {otherName} share direct
-            contact details with each other.
+            contact details with each other. Either client or expert can pay
+            to unlock limitless conversation so as to be able to exchange
+            external communication details and payment details.
           </p>
 
           <ul className="unlock-facts">

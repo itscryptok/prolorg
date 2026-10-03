@@ -48,6 +48,22 @@ export async function POST(req: Request) {
   let url: string | null;
   try {
     const session = await getStripe().checkout.sessions.create({
+      // fixed_by_ui — configured by Yemi in Checkout Studio (2026-10-02).
+      // Scenario A: only these params are updated; the sample_only params
+      // below keep their existing real values.
+      ui_mode: "hosted_page", // stripe SDK ^23.0.0 ≥ 21.0.0 (ui_mode versioning rule)
+      billing_address_collection: "auto",
+      phone_number_collection: { enabled: false },
+      automatic_tax: { enabled: false },
+      allow_promotion_codes: false,
+      submit_type: "auto",
+      integration_identifier: "hosted_web_0001",
+      origin_context: "web",
+      // NOTE: payment_method_collection is fixed_by_ui "always", but per
+      // rule 8 it is only included when mode is "subscription".
+      // Ours is a one-time "payment", so it is intentionally omitted.
+      //
+      // sample_only — real values already in use, preserved per Scenario A.
       mode: "payment",
       line_items: [
         {
@@ -55,7 +71,7 @@ export async function POST(req: Request) {
             currency: "usd",
             unit_amount: unlockFeeCents(), // from CONTACT_UNLOCK_FEE_USD ($1.50)
             product_data: {
-              name: "AiProlice contact unlock — one client/AI pro pair",
+              name: "Prolice trade unlock - Either client or expert can pay to unlock limitless conversation so as to be able to exchange external communication details and payment details",
             },
           },
           quantity: 1,
@@ -63,6 +79,10 @@ export async function POST(req: Request) {
       ],
       success_url: `${origin}/unlock/success?session_id={CHECKOUT_SESSION_ID}`,
       cancel_url: `${origin}/inbox/${conversationId}`,
+      // Kept intentionally: NOT a Checkout Studio parameter. This is the
+      // application link the webhook uses to unlock the correct pair after
+      // payment — removing it would break fulfillment (user pays, pair
+      // never unlocks).
       metadata: { conversationId, paidById: user.id },
     });
     url = session.url;

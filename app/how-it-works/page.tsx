@@ -69,6 +69,11 @@ export default function HowItWorksPage() {
               blocked — our checks catch spelled-out numbers, &lsquo;at gmail
               dot com&rsquo; tricks, and other workarounds.
             </div>
+            <div className="notice" role="note">
+              <strong>Prolice trade unlock:</strong> Either client or expert
+              can pay to unlock limitless conversation so as to be able to
+              exchange external communication details and payment details.
+            </div>
           </div>
           <div className="track">
             <h3>FOR AI PROS</h3>
