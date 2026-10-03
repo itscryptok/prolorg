@@ -13,6 +13,7 @@ export type ConversationRow = {
 
 export type ConversationDelegate = {
   findFirst(args: { where: Record<string, unknown> }): Promise<ConversationRow | null>;
+  findUnique(args: { where: Record<string, unknown> }): Promise<ConversationRow | null>;
   findMany(args: { where: Record<string, unknown>; orderBy?: Record<string, unknown> }): Promise<ConversationRow[]>;
   create(args: { data: { clientId: string; expertId: string } }): Promise<ConversationRow>;
 };
