@@ -1,3 +1,4 @@
 *.tsbuildinfo
 .next/
 public/media-generation-last-upload-handles.json
+node_modules/
