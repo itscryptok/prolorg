@@ -16,6 +16,12 @@ export default function Splash() {
 
   return (
     <div className={`splash${hidden ? " hidden" : ""}`} aria-hidden={hidden}>
+      <img
+        src="/splash-bars.jpg"
+        alt=""
+        aria-hidden="true"
+        className="splash-bars"
+      />
       <LogoMark size={72} />
       <div className="splash-name">Prolice AI</div>
       <div className="splash-tag">{SITE_TAGLINE}</div>
