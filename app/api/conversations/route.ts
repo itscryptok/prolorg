@@ -62,7 +62,8 @@ export async function GET(req: Request) {
 }
 
 // POST /api/conversations — client starts (or reopens) a conversation
-// with an AI pro. Body: { expertProfileId }
+// with an AI pro. Body: { expertSlug } (preferred) or { expertProfileId }.
+// Returns { conversation: { id } }.
 export async function POST(req: Request) {
   const user = await getSessionUser(req);
   if (!user) {
@@ -79,22 +80,31 @@ export async function POST(req: Request) {
     return NextResponse.json({ error: "Database unavailable." }, { status: 503 });
   }
 
-  let body: { expertProfileId?: string };
+  let body: { expertProfileId?: string; expertSlug?: string };
   try {
     body = await req.json();
   } catch {
     return NextResponse.json({ error: "Invalid request." }, { status: 400 });
   }
-  if (!body.expertProfileId) {
-    return NextResponse.json({ error: "Choose an AI pro first." }, { status: 400 });
-  }
 
   const ix = inbox(db);
-  const profile = await ix.expertProfile.findFirst({
-    where: { id: body.expertProfileId, status: "APPROVED", isDeactivated: false },
-  });
+
+  // The "Message AI pro" button sends { expertSlug }; accept a profile id too.
+  let profile = null;
+  if (body.expertSlug) {
+    profile = await ix.expertProfile.findFirst({
+      where: { slug: body.expertSlug, status: "APPROVED", isDeactivated: false },
+    });
+  } else if (body.expertProfileId) {
+    profile = await ix.expertProfile.findFirst({
+      where: { id: body.expertProfileId, status: "APPROVED", isDeactivated: false },
+    });
+  }
   if (!profile) {
-    return NextResponse.json({ error: "AI pro not found." }, { status: 404 });
+    return NextResponse.json(
+      { error: body.expertSlug || body.expertProfileId ? "AI pro not found." : "Choose an AI pro first." },
+      { status: body.expertSlug || body.expertProfileId ? 404 : 400 }
+    );
   }
   if (!profile.userId) {
     return NextResponse.json(
@@ -118,5 +128,5 @@ export async function POST(req: Request) {
       data: { clientId: user.id, expertId: expertUser.id },
     });
   }
-  return NextResponse.json({ conversationId: convo.id });
+  return NextResponse.json({ conversation: { id: convo.id } });
 }
