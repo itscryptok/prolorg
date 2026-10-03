@@ -1,4 +1,7 @@
+"use client";
+
 import Link from "next/link";
+import { usePathname } from "next/navigation";
 
 export function HomeIcon() {
   return (
@@ -19,15 +22,22 @@ export function HomeIcon() {
   );
 }
 
-// Home button to /. Lives in the site header before the watch play button
-// (same bordered style), on desktop and mobile.
+// Home button to /. If already on the homepage, clicking scrolls back to
+// the top instead of navigating (Yemi 2026-10-02).
 export default function HomeLink({ className = "" }: { className?: string }) {
+  const pathname = usePathname();
   return (
     <Link
       href="/"
       className={`home-link ${className}`.trim()}
       aria-label="AiProlice home"
       title="AiProlice home"
+      onClick={(e) => {
+        if (pathname === "/") {
+          e.preventDefault();
+          window.scrollTo({ top: 0, behavior: "smooth" });
+        }
+      }}
     >
       <HomeIcon />
     </Link>
