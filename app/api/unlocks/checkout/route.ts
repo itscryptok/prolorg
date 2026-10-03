@@ -44,11 +44,22 @@ export async function POST(req: Request) {
     return NextResponse.json({ error: "This pair is already unlocked." }, { status: 409 });
   }
 
-  const origin = new URL(req.url).origin;
+  // Build the public origin for Stripe's success/cancel redirects. The
+  // app runs behind Render's proxy, so req.url alone can resolve to the
+  // internal address (localhost:10000) — prefer the forwarded host/proto.
+  const fwdHost = req.headers.get("x-forwarded-host");
+  const fwdProto = req.headers.get("x-forwarded-proto");
+  const origin =
+    fwdHost != null
+      ? `${fwdProto ?? "https"}://${fwdHost}`
+      : new URL(req.url).origin;
   let url: string | null;
   try {
     const session = await getStripe().checkout.sessions.create({
-      ui_mode: "hosted",
+      // Stripe API version 2026-09-30.endive renamed this value:
+      // "hosted" is rejected ("no longer supported"), "hosted_page" is
+      // the hosted checkout page mode.
+      ui_mode: "hosted_page",
       mode: "payment",
       line_items: [
         {
