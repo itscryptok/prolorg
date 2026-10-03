@@ -65,6 +65,18 @@ export async function GET(req: Request) {
 // with an AI pro. Body: { expertSlug } (preferred) or { expertProfileId }.
 // Returns { conversation: { id } }.
 export async function POST(req: Request) {
+  try {
+    return await createConversation(req);
+  } catch (err) {
+    console.error("[conversations] POST failed:", err);
+    return NextResponse.json(
+      { error: "Could not start the conversation — please try again." },
+      { status: 500 }
+    );
+  }
+}
+
+async function createConversation(req: Request) {
   const user = await getSessionUser(req);
   if (!user) {
     return NextResponse.json({ error: "Not signed in." }, { status: 401 });
