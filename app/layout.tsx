@@ -7,7 +7,7 @@ import { FilterPanelProvider } from "@/components/FilterPanelContext";
 import "./globals.css";
 
 const DESCRIPTION =
-  "AiProlice — the AI pro marketplace. Hire an AI pro for forensic analysis, genealogy traces, lab discovery, market advantage, a personal AI tutor, technical project development, or skilled data collection and analysis. Hire an AI pro. Not the AI. Here's why.";
+  "Prolice AI — the AI pro marketplace. Hire an AI pro for forensic analysis, genealogy traces, lab discovery, market advantage, a personal AI tutor, technical project development, or skilled data collection and analysis. Hire an AI pro. Not the AI. Here's why.";
 
 export const metadata: Metadata = {
   metadataBase: new URL(SITE_URL),
@@ -17,7 +17,7 @@ export const metadata: Metadata = {
   },
   description: DESCRIPTION,
   keywords: [
-    "AiProlice",
+    "Prolice AI",
     "hire AI pro",
     "AI pro marketplace",
     "forensic AI analysis",

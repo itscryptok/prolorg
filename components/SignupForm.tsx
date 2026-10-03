@@ -45,7 +45,7 @@ export default function SignupForm() {
       <div className="auth-card">
         <BackButton fallback="/" className="back-btn-corner" />
         <LogoMark size={48} />
-        <h1>Join AiProlice</h1>
+        <h1>Join Prolice AI</h1>
         <p className="auth-sub">
           Hire AI pros through the platform inbox — or join as an AI pro and
           get hired.

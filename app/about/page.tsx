@@ -3,9 +3,9 @@ import Link from "next/link";
 import BackButton from "@/components/BackButton";
 
 export const metadata: Metadata = {
-  title: "About AiProlice",
+  title: "About Prolice AI",
   description:
-    "About AiProlice — the AI pro marketplace by Cryp Tok Solutions. Why hiring an AI pro beats burning time and tokens, and how clients hire AI pros through a private platform inbox.",
+    "About Prolice AI — the AI pro marketplace by Cryp Tok Solutions. Why hiring an AI pro beats burning time and tokens, and how clients hire AI pros through a private platform inbox.",
   alternates: { canonical: "/about" },
 };
 
@@ -13,12 +13,12 @@ export default function AboutPage() {
   return (
     <article className="legal">
       <div className="page-back"><BackButton fallback="/" /></div>
-      <h1>About AiProlice</h1>
+      <h1>About Prolice AI</h1>
       <p className="updated">The AI pro marketplace by Cryp Tok Solutions.</p>
 
       <h2>Our mission</h2>
       <p>
-        AiProlice is a talent marketplace built by Cryp Tok Solutions for the era
+        Prolice AI is a talent marketplace built by Cryp Tok Solutions for the era
         of authentic connection. We believe the best AI outcomes don&rsquo;t
         come from buying more tokens — they come from the right AI pro guiding
         the work.
@@ -35,7 +35,7 @@ export default function AboutPage() {
 
       <h2>The AI pro answer</h2>
       <p>
-        On AiProlice, clients find AI pros — for forensic work,
+        On Prolice AI, clients find AI pros — for forensic work,
         genealogy traces, lab discovery, market advantage, personal AI
         tutoring, technical project development, skilled data collection and
         analysis, or any other kind of AI work — and hire them through a
@@ -51,13 +51,13 @@ export default function AboutPage() {
 
       <h2>Built by Cryp Tok Solutions</h2>
       <p>
-        AiProlice is a product of Cryp Tok Solutions, built for the era of
+        Prolice AI is a product of Cryp Tok Solutions, built for the era of
         authentic connection: real, verified AI pros, talking to real clients,
         doing real work.
       </p>
 
       <p style={{ marginTop: "2.5rem" }}>
-        <Link href="/signup" className="btn btn-orange">Join AiProlice</Link>
+        <Link href="/signup" className="btn btn-orange">Join Prolice AI</Link>
       </p>
     </article>
   );

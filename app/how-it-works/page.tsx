@@ -5,7 +5,7 @@ import BackButton from "@/components/BackButton";
 export const metadata: Metadata = {
   title: "How It Works",
   description:
-    "How AiProlice works: clients browse AI pro profiles, open the platform inbox, and hire through AiProlice. AI pros create profiles, get discovered, and get hired. Direct contact unlocks with a one-time fee per client/AI pro pair, payable by either side.",
+    "How Prolice AI works: clients browse AI pro profiles, open the platform inbox, and hire through Prolice AI. AI pros create profiles, get discovered, and get hired. Direct contact unlocks with a one-time fee per client/AI pro pair, payable by either side.",
   alternates: { canonical: "/how-it-works" },
 };
 
@@ -16,7 +16,7 @@ const CLIENT_STEPS = [
   },
   {
     title: "Open the inbox",
-    text: "Message the AI pro directly inside AiProlice. All communication stays on the platform — no exposed emails, no outside links. You can discuss payment here, but never share payment details in the chat.",
+    text: "Message the AI pro directly inside Prolice AI. All communication stays on the platform — no exposed emails, no outside links. You can discuss payment here, but never share payment details in the chat.",
   },
   {
     title: "Hire through the platform",
@@ -47,7 +47,7 @@ export default function HowItWorksPage() {
         <h1 className="section-title">How It Works</h1>
         <p className="section-lead">
           Clients find AI pros. AI pros get hired. Everything happens inside
-          AiProlice.
+          Prolice AI.
         </p>
         <div className="tracks">
           <div className="track">
@@ -70,7 +70,7 @@ export default function HowItWorksPage() {
               dot com&rsquo; tricks, and other workarounds.
             </div>
             <div className="notice" role="note">
-              <strong>Prolice trade unlock:</strong> Either client or expert
+              <strong>Prolice AI trade unlock:</strong> Either client or expert
               can pay to unlock limitless conversation so as to be able to
               exchange external communication details and payment details.
             </div>
@@ -103,7 +103,7 @@ export default function HowItWorksPage() {
           </div>
           <ol className="safety-steps">
             <li>
-              <strong>Agree the work and the price</strong> in the AiProlice
+              <strong>Agree the work and the price</strong> in the Prolice AI
               inbox — discussing payment here is allowed and encouraged.
             </li>
             <li>
@@ -119,7 +119,7 @@ export default function HowItWorksPage() {
             </li>
             <li>
               <strong>Exchange payment details outside the app</strong> — only
-              after unlocking. AiProlice never sees or handles your payment
+              after unlocking. Prolice AI never sees or handles your payment
               details, so keep them out of the chat entirely.
             </li>
           </ol>
@@ -162,7 +162,7 @@ export default function HowItWorksPage() {
             <li>
               <strong>Requests for sensitive data</strong> — never share ID
               documents, Social Security numbers, bank logins, or passwords in
-              the chat. AiProlice will never ask for your password or payment
+              the chat. Prolice AI will never ask for your password or payment
               details by email.
             </li>
           </ul>

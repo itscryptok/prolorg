@@ -1,6 +1,6 @@
-# AiProlice
+# Prolice AI
 
-**Find your AI expert.** AiProlice is an AI expert marketplace built by Cryp Tok
+**Find your AI expert.** Prolice AI is an AI expert marketplace built by Cryp Tok
 Solutions: clients browse vetted AI-expert profiles and hire them through a
 private platform inbox — no exposed emails, no outside links, no guesswork.
 
@@ -8,7 +8,7 @@ private platform inbox — no exposed emails, no outside links, no guesswork.
 
 ## Phase 1 scope
 
-Landing page (hero, live stats band, Why AiProlice, expert categories, How It
+Landing page (hero, live stats band, Why Prolice AI, expert categories, How It
 Works with client/expert tracks, About, final CTA), full About and How It
 Works pages, Terms of Use, Privacy Policy, and tasteful coming-soon stubs for
 `/experts`, `/login`, and `/signup`. Phase 1 needs no live database.

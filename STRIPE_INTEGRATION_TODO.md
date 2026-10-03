@@ -1,6 +1,6 @@
 # STRIPE_INTEGRATION_TODO.md
 
-Single source of truth for the AiProlice Stripe Checkout integration
+Single source of truth for the Prolice AI Stripe Checkout integration
 (Scenario A — an existing `stripe.checkout.sessions.create(...)` call was
 found and updated with Yemi's Checkout Studio values on 2026-10-02).
 
@@ -18,11 +18,11 @@ and was preserved per Scenario A precedence rules.
 | line_items | inline `price_data` — $1.50 USD, product name set in code | Live — no dashboard Price ID needed; the $1.50 fee comes from `CONTACT_UNLOCK_FEE_USD` in [lib/unlock.ts](lib/unlock.ts). |
 
 Checkout item line (as Yemi wrote it 2026-10-02 — note the spelling
-"Prolice"; change to "AiProlice" in the `product_data.name` in
+"Prolice"; change to "Prolice AI" in the `product_data.name` in
 [app/api/unlocks/checkout/route.ts](app/api/unlocks/checkout/route.ts)
 if that was a typo):
 
-> Prolice trade unlock - Either client or expert can pay to unlock limitless conversation so as to be able to exchange external communication details and payment details
+> Prolice AI trade unlock - Either client or expert can pay to unlock limitless conversation so as to be able to exchange external communication details and payment details
 
 ## Configured Parameters
 

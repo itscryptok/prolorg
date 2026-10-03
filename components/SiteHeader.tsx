@@ -78,9 +78,9 @@ export default function SiteHeader() {
         className="brand-bars"
       />
       <div className="container site-header-inner">
-        <Link href="/" className="brand" aria-label="AiProlice home">
+        <Link href="/" className="brand" aria-label="Prolice AI home">
           <LogoMark size={34} />
-          <span className="brand-name">AiProlice</span>
+          <span className="brand-name">Prolice AI</span>
         </Link>
         <div className="header-menu-col">
           <nav className="site-nav" aria-label="Primary">
@@ -132,7 +132,7 @@ export default function SiteHeader() {
         aria-label="Mobile"
       >
         <Link href="/#why" onClick={() => setOpen(false)}>
-          Why AiProlice
+          Why Prolice AI
         </Link>
         {navLinks
           .filter((link) => link.href !== "/login")

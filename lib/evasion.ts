@@ -1,6 +1,6 @@
-// AiProlice contact-evasion detection (Big/MVP stage, extended 2026-10-02).
+// Prolice AI contact-evasion detection (Big/MVP stage, extended 2026-10-02).
 //
-// All communication must stay inside the AiProlice inbox until the paid
+// All communication must stay inside the Prolice AI inbox until the paid
 // contact unlock. These checks catch direct-contact attempts in inbox
 // messages, including obfuscated variants:
 //

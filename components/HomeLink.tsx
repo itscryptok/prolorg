@@ -30,8 +30,8 @@ export default function HomeLink({ className = "" }: { className?: string }) {
     <Link
       href="/"
       className={`home-link ${className}`.trim()}
-      aria-label="AiProlice home"
-      title="AiProlice home"
+      aria-label="Prolice AI home"
+      title="Prolice AI home"
       onClick={(e) => {
         if (pathname === "/") {
           e.preventDefault();

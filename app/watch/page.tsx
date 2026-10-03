@@ -8,7 +8,7 @@ export const dynamic = "force-dynamic";
 export const metadata: Metadata = {
   title: "Watch AI pro Intros",
   description:
-    "Swipe through AiProlice AI pro video intros — forensic analysis, genealogy trace, lab discovery, market advantage, personal AI tutoring, technical project development, and data collection & analysis. Like an AI pro or open their full profile.",
+    "Swipe through Prolice AI pro video intros — forensic analysis, genealogy trace, lab discovery, market advantage, personal AI tutoring, technical project development, and data collection & analysis. Like an AI pro or open their full profile.",
   alternates: { canonical: "/watch" },
 };
 
@@ -60,7 +60,7 @@ export default async function WatchPage({
   const experts: WatchExpert[] = (rows as unknown as Record<string, unknown>[]).map((r) => ({
     id: String(r.id ?? ""),
     slug: String(r.slug ?? ""),
-    name: String(r.name ?? "AiProlice AI pro"),
+    name: String(r.name ?? "Prolice AI pro"),
     headline: String(r.headline ?? ""),
     specialty: String(r.specialty ?? (Array.isArray(r.specialties) ? r.specialties[0] : "") ?? ""),
     skills: Array.isArray(r.skills) ? (r.skills as string[]) : [],

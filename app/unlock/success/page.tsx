@@ -2,7 +2,7 @@ import Link from "next/link";
 import { getStripe, stripeConfigured } from "@/lib/stripe";
 import { unlockFeeLabel } from "@/lib/unlock";
 
-export const metadata = { title: "Payment successful — AiProlice" };
+export const metadata = { title: "Payment successful — Prolice AI" };
 
 // Shown after Stripe Checkout completes for a $1.50 contact unlock.
 // Verifies the session server-side with Stripe before confirming.

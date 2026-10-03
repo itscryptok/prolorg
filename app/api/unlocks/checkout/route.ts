@@ -71,7 +71,7 @@ export async function POST(req: Request) {
             currency: "usd",
             unit_amount: unlockFeeCents(), // from CONTACT_UNLOCK_FEE_USD ($1.50)
             product_data: {
-              name: "Prolice trade unlock - Either client or expert can pay to unlock limitless conversation so as to be able to exchange external communication details and payment details",
+              name: "Prolice AI trade unlock - Either client or expert can pay to unlock limitless conversation so as to be able to exchange external communication details and payment details",
             },
           },
           quantity: 1,

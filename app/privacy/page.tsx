@@ -4,7 +4,7 @@ import BackButton from "@/components/BackButton";
 export const metadata: Metadata = {
   title: "Privacy Policy",
   description:
-    "AiProlice Privacy Policy — what we collect (account info, profiles, messages, usage data), who can see it, and your rights to access, correct, or delete your data.",
+    "Prolice AI Privacy Policy — what we collect (account info, profiles, messages, usage data), who can see it, and your rights to access, correct, or delete your data.",
   alternates: { canonical: "/privacy" },
 };
 
@@ -15,9 +15,9 @@ export default function PrivacyPage() {
       <h1>Privacy Policy</h1>
       <p className="updated">Last updated: September 2026</p>
 
-      <h2>Who operates AiProlice</h2>
+      <h2>Who operates Prolice AI</h2>
       <p>
-        AiProlice is operated by Cryp Tok Solutions. Contact:
+        Prolice AI is operated by Cryp Tok Solutions. Contact:
         support@aiprolice.com.
       </p>
 
@@ -33,7 +33,7 @@ export default function PrivacyPage() {
       <p>
         AI pro profiles are visible to anyone, including guests who are not
         signed in. Inbox message contents are private to the participants and
-        to AiProlice administrators for safety review (including detecting
+        to Prolice AI administrators for safety review (including detecting
         attempts to exchange contact details to evade the unlock fee).
       </p>
 

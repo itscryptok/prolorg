@@ -21,7 +21,7 @@ export async function generateMetadata({
   if (!expert) return { title: "AI pro not found" };
   return {
     title: `${expert.name} — ${expert.specialty} AI pro`,
-    description: `${expert.headline} Hire ${expert.name}, an AiProlice ${expert.specialty} AI pro, through the platform inbox. ${formatRate(expert.hourlyRate, expert.projectRate)}.`,
+    description: `${expert.headline} Hire ${expert.name}, an Prolice AI ${expert.specialty} AI pro, through the platform inbox. ${formatRate(expert.hourlyRate, expert.projectRate)}.`,
     alternates: { canonical: `/experts/${expert.slug}` },
   };
 }
@@ -297,7 +297,7 @@ export default async function ExpertProfilePage({
             </p>
           </div>
           <div className="notice" style={{ marginTop: "1rem" }}>
-            <strong>Stays on AiProlice.</strong> AI pros never share website
+            <strong>Stays on Prolice AI.</strong> AI pros never share website
             links or email addresses here — every conversation and hire happens
             inside the platform inbox.
           </div>

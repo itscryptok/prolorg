@@ -70,7 +70,7 @@ const CLIENT_STEPS = [
   },
   {
     title: "Open the inbox",
-    text: "Message the AI pro directly inside AiProlice — no exposed emails, no outside links.",
+    text: "Message the AI pro directly inside Prolice AI — no exposed emails, no outside links.",
   },
   {
     title: "Hire through the platform",
@@ -156,10 +156,10 @@ export default async function HomePage() {
         </div>
       </section>
 
-      {/* 3. Why AiProlice */}
+      {/* 3. Why Prolice AI */}
       <section className="section" id="why">
         <div className="container">
-          <h2 className="section-title">Why AiProlice</h2>
+          <h2 className="section-title">Why Prolice AI</h2>
           <p className="section-lead">
             Hire an AI pro. Not the AI.
           </p>
@@ -180,7 +180,7 @@ export default async function HomePage() {
           <h2 className="section-title">How It Works</h2>
           <p className="section-lead">
             Clients find AI pros. AI pros get hired. Everything happens inside
-            AiProlice.
+            Prolice AI.
           </p>
           <div className="tracks">
             <div className="track">
@@ -203,15 +203,15 @@ export default async function HomePage() {
         </div>
       </section>
 
-      {/* 6. About AiProlice */}
+      {/* 6. About Prolice AI */}
       <section className="section" id="about" style={{ paddingTop: 0 }}>
         <div className="container">
-          <h2 className="section-title">About AiProlice</h2>
+          <h2 className="section-title">About Prolice AI</h2>
           <p className="section-lead" style={{ maxWidth: "72ch" }}>
-            AiProlice is a talent marketplace built by Cryp Tok Solutions for the
+            Prolice AI is a talent marketplace built by Cryp Tok Solutions for the
             era of authentic connection. The best AI outcomes don&rsquo;t come
             from buying more tokens — they come from the right AI pro guiding
-            the work. On AiProlice, clients find AI pros and hire them
+            the work. On Prolice AI, clients find AI pros and hire them
             through a private platform inbox: no exposed emails, no outside
             links, no guesswork.
           </p>
@@ -224,7 +224,7 @@ export default async function HomePage() {
       {/* 7. Final CTA band */}
       <section className="cta-band">
         <h2>You are the big deal. Let clients find you.</h2>
-        <Link href="/signup" className="btn btn-orange">Join AiProlice</Link>
+        <Link href="/signup" className="btn btn-orange">Join Prolice AI</Link>
       </section>
     </>
   );

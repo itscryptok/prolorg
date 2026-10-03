@@ -1,7 +1,7 @@
 import { createHash, randomBytes } from "crypto";
 import { getDb } from "./db";
 
-// AiProlice user sessions (Big/MVP stage).
+// Prolice AI user sessions (Big/MVP stage).
 //
 // The session token lives in an httpOnly, SameSite=Lax cookie
 // ("prolorg_session"); only its SHA-256 hash is stored in the Session

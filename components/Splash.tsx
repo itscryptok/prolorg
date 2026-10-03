@@ -5,7 +5,7 @@ import LogoMark from "./LogoMark";
 import { SITE_TAGLINE } from "@/lib/site";
 
 // Splash screen shown on first load (~2.8s): gray background, centered logo,
-// "AiProlice" in lime, tagline, thin animated lime progress bar.
+// "Prolice AI" in lime, tagline, thin animated lime progress bar.
 export default function Splash() {
   const [hidden, setHidden] = useState(false);
 
@@ -17,7 +17,7 @@ export default function Splash() {
   return (
     <div className={`splash${hidden ? " hidden" : ""}`} aria-hidden={hidden}>
       <LogoMark size={72} />
-      <div className="splash-name">AiProlice</div>
+      <div className="splash-name">Prolice AI</div>
       <div className="splash-tag">{SITE_TAGLINE}</div>
       <div className="splash-bar" aria-hidden="true">
         <div className="splash-bar-inner" />

@@ -41,7 +41,7 @@ export default function LoginForm() {
         <BackButton fallback="/" className="back-btn-corner" />
         <LogoMark size={48} />
         <h1>Log in</h1>
-        <p className="auth-sub">Welcome back to AiProlice.</p>
+        <p className="auth-sub">Welcome back to Prolice AI.</p>
         <form onSubmit={onSubmit} className="auth-form">
           <label className="auth-label">
             Email

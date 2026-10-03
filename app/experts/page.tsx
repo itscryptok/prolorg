@@ -14,7 +14,7 @@ export const dynamic = "force-dynamic";
 export const metadata: Metadata = {
   title: "Find AI pros",
   description:
-    "Browse AiProlice's directory of AI pros — forensic analysis, genealogy trace, lab discovery, market advantage, personal AI tutoring, technical project development, and data collection & analysis. Filter by specialty, rate, and availability, then hire through the platform inbox.",
+    "Browse Prolice AI's directory of AI pros — forensic analysis, genealogy trace, lab discovery, market advantage, personal AI tutoring, technical project development, and data collection & analysis. Filter by specialty, rate, and availability, then hire through the platform inbox.",
   alternates: { canonical: "/experts" },
 };
 
@@ -83,7 +83,7 @@ export default async function ExpertsPage({
         <p className="section-lead" style={{ marginBottom: 0 }}>
           Hire an AI pro. Not the AI. Browse
           AI pros by specialty, compare rates and availability, and hire
-          through the AiProlice inbox — no bidding, no exposed emails.
+          through the Prolice AI inbox — no bidding, no exposed emails.
         </p>
       </div>
 
@@ -123,7 +123,7 @@ export default async function ExpertsPage({
 
       <div className="directory-cta">
         <h2>Are you an AI pro?</h2>
-        <p>Create your AiProlice profile and get hired through the inbox — no bidding wars, no proposal spam.</p>
+        <p>Create your Prolice AI profile and get hired through the inbox — no bidding wars, no proposal spam.</p>
         <Link href="/join" className="btn btn-orange">Join as an AI pro</Link>
       </div>
     </div>

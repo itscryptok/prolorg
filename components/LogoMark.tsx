@@ -3,9 +3,9 @@ interface LogoMarkProps {
   title?: string;
 }
 
-// AiProlice logo mark: royal-blue police badge with gold outline, gold star,
+// Prolice AI logo mark: royal-blue police badge with gold outline, gold star,
 // and gold "Pro" text.
-export default function LogoMark({ size = 36, title = "AiProlice logo" }: LogoMarkProps) {
+export default function LogoMark({ size = 36, title = "Prolice AI logo" }: LogoMarkProps) {
   return (
     <svg
       width={size}

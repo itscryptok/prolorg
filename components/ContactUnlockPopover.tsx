@@ -135,7 +135,7 @@ export default function ContactUnlockPopover({
           </div>
 
           <p>
-            On AiProlice, contact details stay locked by default — emails and
+            On Prolice AI, contact details stay locked by default — emails and
             phone numbers typed in the chat get flagged, and sharing them can
             get an account blocked.
           </p>
@@ -162,7 +162,7 @@ export default function ContactUnlockPopover({
 
           <p className="unlock-pay-note" role="note">
             <strong>Payment rule:</strong> you can <em>discuss</em> payment in
-            the AiProlice chat, but <em>payment details</em> — card numbers,
+            the Prolice AI chat, but <em>payment details</em> — card numbers,
             bank account details, wallet addresses, payment links — must be
             exchanged <em>outside</em> the app, only after unlocking. Sharing
             payment details in the chat will get your account banned.
