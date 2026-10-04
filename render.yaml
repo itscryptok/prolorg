@@ -1,7 +1,7 @@
 # Render blueprint for Prolorg (Phase 2).
 #
-# Hosting plan: free "sleepy" web service (sleeps after 15 min idle) + a
-# SEPARATE `prolorg` database on the existing paid Postgres server (emus-db).
+# Hosting plan: PAID "always-on" web service (Starter $7/mo, never sleeps) +
+# a SEPARATE `prolorg` database on the existing paid Postgres server (emus-db).
 # Same $6/mo server, no extra cost; REMU's database is untouched.
 #
 # Nothing here is provisioned until you deploy this repo on Render.
@@ -10,7 +10,7 @@ services:
   - type: web
     name: proliceai
     runtime: node
-    plan: free # sleepy: sleeps after 15 min idle; upgrade to `starter` ($7/mo) to keep awake
+    plan: starter # PAID always-on (Yemi 2026-10-03): ~$7/mo, never sleeps after idle
     buildCommand: bash scripts/render-build.sh
     # (build logic lives in scripts/render-build.sh — inline shell in YAML kept breaking the Blueprint sync)
     startCommand: npm start
