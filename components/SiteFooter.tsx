@@ -5,8 +5,10 @@ import { CONTACT_EMAIL, CONTACT_X } from "@/lib/site";
 const FOOTER_NAV = [
   { href: "/", label: "Home" },
   { href: "/experts", label: "Find AI pros" },
+  { href: "/watch", label: "Watch Intros" },
   { href: "/how-it-works", label: "How It Works" },
   { href: "/about", label: "About" },
+  { href: "/join", label: "Become an AI Pro" },
   { href: "/login", label: "Login" },
   { href: "/signup", label: "Sign Up" },
   { href: "/terms", label: "Terms of Use" },
@@ -64,7 +66,15 @@ export default function SiteFooter() {
         </div>
         <div className="footer-bottom">
           <span className="made">
-            Product of <strong>Cryp Tok Solutions</strong> 2026
+            Product of{" "}
+            <a
+              href="https://cryptok.online"
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              <strong>Cryp Tok Solutions</strong>
+            </a>{" "}
+            2026
           </span>
           <span>© 2026 Cryp Tok Solutions</span>
         </div>
