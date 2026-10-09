@@ -24,14 +24,14 @@ function SunIcon() {
 }
 
 // Day/night mode toggle. Persists to localStorage; the theme is applied to
-// <html data-theme="light|dark"> (see the inline init script in layout.tsx).
+// <html data-theme="dark"> for night; no attribute = day (see the inline init script in layout.tsx).
 export default function ThemeToggle({ className = "" }: { className?: string }) {
-  // Lazy init reads the saved theme on the client; SSR prerenders dark.
+  // Lazy init reads the saved theme on the client; SSR prerenders day.
   const [theme, setTheme] = useState<"dark" | "light">(() => {
-    if (typeof window === "undefined") return "dark";
+    if (typeof window === "undefined") return "light";
     try {
       const saved = window.localStorage.getItem(STORAGE_KEY);
-      return saved === "light" || saved === "dark" ? saved : "dark";
+      return saved === "light" || saved === "dark" ? saved : "light";
     } catch {
       return "dark";
     }
@@ -40,7 +40,8 @@ export default function ThemeToggle({ className = "" }: { className?: string }) 
   const toggle = () => {
     const next = theme === "dark" ? "light" : "dark";
     setTheme(next);
-    document.documentElement.setAttribute("data-theme", next);
+    if (next === "dark") document.documentElement.setAttribute("data-theme", "dark");
+    else document.documentElement.removeAttribute("data-theme");
     try {
       localStorage.setItem(STORAGE_KEY, next);
     } catch {
